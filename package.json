@@ -14,7 +14,7 @@
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
 		"generate": "drizzle-kit generate:pg",
-		"migrate": "ts-node src/db/migrate",
+		"migrate": "ts-node src/lib/db/migrate",
 		"push": "drizzle-kit push:pg"
 	},
 	"devDependencies": {

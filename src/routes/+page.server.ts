@@ -7,6 +7,6 @@ type MainPageData = {
 /** @type {import('./$types').PageLoad} */
 export async function load({content}: MainPageData) {
     return {
-        data: await db.select().from(users) 
+        data: "Hello"
     }
 }
