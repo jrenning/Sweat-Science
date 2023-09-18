@@ -6,7 +6,7 @@ import type { PageServerLoad } from './$types';
 import {superValidate} from "sveltekit-superforms/server"
 import { insertExerciseRoutineSchema} from '$lib/db/schema';
 import { getWorkoutsInPlan } from '$lib/db/mutations/workout_plan';
-import { getPossibleExercises } from '$lib/db/mutations/exercise';
+import { getPossibleExercises } from '$lib/db/queries/exercise';
 
 
 const newWorkoutRoutineSchema = z.object({
