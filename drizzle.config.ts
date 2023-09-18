@@ -8,7 +8,7 @@ export default {
     driver: "pg",
     dbCredentials: {
         //@ts-ignore
-        connectionString: process.env.DATABASE_URL
+        connectionString: process.env.DATABASE_URL_BACKUP
     }
     
 } satisfies Config

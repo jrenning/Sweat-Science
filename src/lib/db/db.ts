@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import {Pool} from "pg"
 import { users } from './schema';
-import {  DATABASE_URL} from '$env/static/private';
+import { DATABASE_URL_BACKUP } from '$env/static/private';
 import * as schema from "./schema"
 
 const connectionString = process.env.DATABASE_URL;
@@ -14,8 +14,7 @@ const connectionString = process.env.DATABASE_URL;
 
 // });
 const pool = new Pool({
-    connectionString: DATABASE_URL
-
-})
+	connectionString: DATABASE_URL_BACKUP
+});
 export const db = drizzle(pool, {schema});
 

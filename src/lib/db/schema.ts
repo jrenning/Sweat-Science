@@ -1,42 +1,80 @@
 
 import { timestamp, pgTable, text, primaryKey, integer, serial, pgEnum, PgArray, real } from 'drizzle-orm/pg-core';
 import type { AdapterAccount } from '@auth/core/adapters';
-import { relations } from 'drizzle-orm';
-import { int } from 'drizzle-orm/mysql-core';
+import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
+import { createInsertSchema } from 'drizzle-zod';
+
+/* TYPES */
+
+
+/* SELECT TYPES*/
+
+export type ExerciseRoutineWithExercise = InferSelectModel<typeof exercise_routine> & {
+	exercise: InferSelectModel<typeof exercises>;
+};
+
+export type WorkoutRoutineWithExercises = InferSelectModel<typeof workout_routine> & {
+	exercises: {
+		exercise_routine: ExerciseRoutineWithExercise
+	}[]
+}
+
+/* INSERT TYPES */
+
+export type InsertEquipment = InferInsertModel<typeof equipment>;
+
+export type InsertExercise = InferInsertModel<typeof exercises> & {
+	equipment: InsertEquipment;
+};
+
+export type InsertExerciseRoutine = InferInsertModel<typeof exercise_routine> & {
+	exercise: InsertExercise;
+};
+export type InsertWorkoutRoutineWithExercises = InferInsertModel<typeof workout_routine> & {
+	exercises: InsertExerciseRoutine[];
+};
+export type InsertFullWorkoutPlan = InferInsertModel<typeof workout_plans> & {
+	workouts: InsertWorkoutRoutineWithExercises[];
+};
+
+
+
 
 export const users = pgTable('user', {
 	id: text('id').notNull().primaryKey(),
 	name: text('name'),
 	email: text('email').notNull(),
 	emailVerified: timestamp('emailVerified', { mode: 'date' }),
-	image: text('image')
+	image: text('image'),
+	created_at: timestamp('created_at').defaultNow()
 });
 
 
 /* WORKOUTS */
 
 export const MuscleGroups = pgEnum("muscle_groups", ["Other"])
-export const EquipmentTypes = pgEnum("equipment_type", ["Machine", "Barbell", "Dumbbell", "Body Weight"])
+export const EquipmentTypes = pgEnum("equipment_type", ["Machine", "Barbell", "Dumbbell", "Body Weight", "Other"])
 
 
 export const equipment = pgTable('equipment', {
 	id: serial('id').primaryKey(),
-	name: text("name").notNull().unique(),
-	muscle_groups: MuscleGroups("muscle_groups").array(),
-	type: EquipmentTypes("equipment_type")
-
+	name: text('name').notNull().unique(),
+	muscle_groups: MuscleGroups('muscle_groups').array(),
+	type: EquipmentTypes('equipment_type').notNull(),
+	created_at: timestamp('created_at').defaultNow()
 });
 
 export const ExerciseCategories = pgEnum("exercise_categories", ["Cardio", "Strength", "Flexibility"])
 
-export const exercises = pgTable("exercises", {
-    id: serial("id").primaryKey(),
-	user_id: text("user_id").references(()=> users.id),
-    name: text("name").notNull().unique(),
-	description: text("description"),
-	category: ExerciseCategories("exercise_categories").notNull(),
-	equipment_id: integer("equipment_id").references(()=> equipment.id)
-})
+export const exercises = pgTable('exercises', {
+	id: serial('id').primaryKey(),
+	user_id: text('user_id').references(() => users.id),
+	name: text('name').notNull().unique(),
+	description: text('description'),
+	category: ExerciseCategories('exercise_categories').notNull(),
+	equipment_id: integer('equipment_id').references(() => equipment.id),
+	created_at: timestamp('created_at').defaultNow()
+});
 
 export const exerciseRelations = relations(exercises, ({one})=> ({
 	workout: one(equipment, {
@@ -45,6 +83,7 @@ export const exerciseRelations = relations(exercises, ({one})=> ({
 	})
 }))
 
+export const Status = pgEnum('status', ['Pending', 'Completed', 'Current']);
 
 export const workout_plans = pgTable('workout_plans', {
 	user_id: text('user_id')
@@ -55,21 +94,29 @@ export const workout_plans = pgTable('workout_plans', {
 	description: text('description'),
 	created_at: timestamp('created_at').defaultNow(),
 	start_date: timestamp('created_at').defaultNow(),
-	total_days: integer("total_days").notNull()
+	total_days: integer("total_days").notNull(),
+	status: Status("status").default("Pending")
 });
 
 export const workoutPlansRelations = relations(workout_plans, ({many})=> ({
 	workouts: many(workout_routine)
 }))
 
+
+
 export const DaysOfWeek = pgEnum("days_of_week", ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
 
-export const workout_routine = pgTable('workouts', {
-	user_id: text('user_id').references(() => users.id).notNull(),
+
+export const workout_routine = pgTable('workout_routine', {
+	user_id: text('user_id')
+		.references(() => users.id)
+		.notNull(),
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique(),
-	days: integer("days").array().notNull(),
-	workout_plan_id: integer("workout_plan_id").references(()=> workout_plans.id)
+	days: integer('days').array().notNull(),
+	workout_plan_id: integer('workout_plan_id').references(() => workout_plans.id),
+	created_at: timestamp('created_at').defaultNow(),
+	status: Status('status').default("Pending")
 });
 
 export const workoutsRelations = relations(workout_routine, ({one, many})=> ({
@@ -77,7 +124,7 @@ export const workoutsRelations = relations(workout_routine, ({one, many})=> ({
 		fields: [workout_routine.workout_plan_id],
 		references: [workout_plans.id]
 	}),
-	exercises: many(exercise_routine)
+	exercises: many(workoutToExerciseRoutines)
 }))
 
 export const WeightUnits = pgEnum("weight_units", ["kg", "lb"])
@@ -86,7 +133,8 @@ export const DurationUnits = pgEnum("duration units", ["second", "minute", "hour
 
 
 export const exercise_routine = pgTable("exercise_routine", {
-	id: integer("id").primaryKey(),
+	id: serial("id").primaryKey(),
+	user_id: text("user_id").references(()=> users.id),
 	exercise_id: integer("exercise_id").notNull().references(()=> exercises.id),
 	name: text("name"),
 	sets: integer("sets").notNull(),
@@ -96,16 +144,19 @@ export const exercise_routine = pgTable("exercise_routine", {
 	duration: real("duration"),
 	duration_units: DurationUnits("duration_units"),
 	distance: integer("distance"),
-	distance_units: DistanceUnits("distance_units")
+	distance_units: DistanceUnits("distance_units"),
+	created_at: timestamp('created_at').defaultNow(),
 
 })
+
+export const insertExerciseRoutineSchema = createInsertSchema(exercise_routine)
 
 export const exerciseRoutineRelations = relations(exercise_routine, ({one, many})=> ({
 	exercise: one(exercises, {
 		fields: [exercise_routine.exercise_id],
 		references: [exercises.id]
 	}),
-	workouts: many(workout_routine)
+	workouts: many(workoutToExerciseRoutines)
 }))
 
 export const workoutToExerciseRoutines = pgTable("workout_routine_to_exercise_routine", {
@@ -129,9 +180,10 @@ export const workoutToExerciseRoutineRelations = relations(workoutToExerciseRout
 /* LOGS */
 
 export const exerciseLog = pgTable("exercise_log", {
-	id: integer("id").primaryKey(),
+	id: serial("id").primaryKey(),
 	user_id: text("user_id").references(()=> users.id),
-	exercise_routine_id: integer("exercise_routine_id").references(()=> exercise_routine.id)
+	exercise_routine_id: integer("exercise_routine_id").references(()=> exercise_routine.id),
+	created_at: timestamp('created_at').defaultNow()
 })
 
 export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({
@@ -146,9 +198,10 @@ export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({
 }));
 
 export const workoutLog = pgTable('workout_log', {
-	id: integer('id').primaryKey(),
+	id: serial('id').primaryKey(),
 	user_id: text('user_id').references(() => users.id),
-	workout_routine_id: integer('workout_routine_id').references(() => workout_routine.id)
+	workout_routine_id: integer('workout_routine_id').references(() => workout_routine.id),
+	created_at: timestamp('created_at').defaultNow(),
 });
 
 export const workoutLogRelations = relations(workoutLog, ({ one }) => ({

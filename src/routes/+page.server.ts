@@ -1,12 +1,16 @@
-import { db } from "$lib/db/db"
-import { users } from "$lib/db/schema"
+import { getLastWorkout } from "$lib/db/mutations/workout_routine_";
+import { getSession } from "@auth/sveltekit";
+import type { PageServerLoad } from "./$types";
 
-type MainPageData = {
-    content: string
-}
-/** @type {import('./$types').PageLoad} */
-export async function load({content}: MainPageData) {
+
+
+export const load: PageServerLoad = async ({locals}) => {
+    const session = await locals.getSession()
+    const workout = await getLastWorkout(session ? session.user.id : '');
+    console.log(workout)
     return {
-        data: "Hello"
+        data: {
+            last_workout: await getLastWorkout(session ? session.user.id : "")
+        }
     }
 }

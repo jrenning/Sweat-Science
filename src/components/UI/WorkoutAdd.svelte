@@ -1,12 +1,14 @@
 <script>
-	import WorkoutAddCard from './WorkoutAddCard.svelte';
+	import HorizontalScrollBox from './HorizontalScrollBox.svelte';
+import WorkoutAddCard from './WorkoutAddCard.svelte';
 </script>
 
-<div class="overflow-x-auto overflow-y-hidden flex-nowrap flex space-x-6 bg-slate-50 p-2 rounded-md shadow-md">
+<HorizontalScrollBox>
 		<WorkoutAddCard>Hello</WorkoutAddCard>
 		<WorkoutAddCard>Hello</WorkoutAddCard>
 		<WorkoutAddCard>Hello</WorkoutAddCard>
 		<WorkoutAddCard>Hello</WorkoutAddCard>
 		<WorkoutAddCard>Hello</WorkoutAddCard>
 		<WorkoutAddCard>Hello</WorkoutAddCard>
-</div>
+</HorizontalScrollBox>
+

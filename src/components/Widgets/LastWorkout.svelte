@@ -1,16 +1,28 @@
-<script>
+<script lang="ts">
+	import type { WorkoutRoutineWithExercises } from "$lib/db/schema";
 	import Card from "../UI/Card.svelte";
+	import HorizontalScrollBox from "../UI/HorizontalScrollBox.svelte";
+	import CardioCard from "./CardioCard.svelte";
+	import FlexibilityCard from "./FlexibilityCard.svelte";
+	import StrengthCard from "./StrengthCard.svelte";
 
+    export let last_workout: WorkoutRoutineWithExercises | undefined
 </script>
 
-<Card>
-		<div class="flex flex-col w-full">
-			<div class="font-bold text-4xl mx-4 mt-2">Run</div>
-			<div class="italic mx-4">Sep 19th 2023</div>
-            <div class="grid grid-cols-3 gap-4 w-full p-2">
-                <div class="bg-slate-100 rounded-md shadow-md w-full h-[100px] ">Test</div>
-                <div class="bg-slate-100 rounded-md shadow-md w-full h-full ">Test</div>
-                <div class="bg-slate-100 rounded-md shadow-md w-full h-full ">Test</div>
+{#if last_workout}
+<div class="bg-slate-100 rounded-md shadow-md p-1">
+			<div class="font-bold text-4xl mx-4 mt-2">{last_workout?.name}</div>
+			<div class="italic mx-4 mb-2">{last_workout?.created_at?.toDateString()}</div>
+            <HorizontalScrollBox>
+                {#each last_workout.exercises as exercise}
+                    {#if exercise.exercise_routine.exercise.category == "Cardio"}
+                        <CardioCard exercise={exercise.exercise_routine}/>
+                    {:else if exercise.exercise_routine.exercise.category == "Strength"}
+                        <StrengthCard exercise={exercise.exercise_routine}/>
+                    {:else}
+                        <FlexibilityCard exercise={exercise.exercise_routine}/>
+                    {/if}
+                {/each}
+            </HorizontalScrollBox>
             </div>
-		</div>
-</Card>
+{/if}
