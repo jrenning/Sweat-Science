@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 
 import {superValidate} from "sveltekit-superforms/server"
 import { insertExerciseRoutineSchema} from '$lib/db/schema';
-import { getWorkoutsInPlan } from '$lib/db/mutations/workout_plan';
+import { getWorkoutsInPlan } from '$lib/db/queries/workout_plan';
 import { getPossibleExercises } from '$lib/db/queries/exercise';
 
 
@@ -25,6 +25,9 @@ export const load: PageServerLoad = async (event) =>  {
     const data = await getWorkoutsInPlan(1, user_id)
 
     const exercise_choices = await getPossibleExercises(user_id, "")
+
+
+
 
     // super forms 
     const form = await superValidate(event, newWorkoutRoutineSchema)

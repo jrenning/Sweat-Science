@@ -1,6 +1,7 @@
-import { getLastWorkout } from "$lib/db/mutations/workout_routine_";
+
 import { getSession } from "@auth/sveltekit";
 import type { PageServerLoad } from "./$types";
+import { getLastWorkout } from "$lib/db/queries/workout_routine";
 
 
 

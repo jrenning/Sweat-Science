@@ -37,6 +37,8 @@ export type InsertFullWorkoutPlan = InferInsertModel<typeof workout_plans> & {
 	workouts: InsertWorkoutRoutineWithExercises[];
 };
 
+export type InsertWorkoutPlan = InferInsertModel<typeof workout_plans>
+
 
 
 
@@ -149,7 +151,7 @@ export const exercise_routine = pgTable("exercise_routine", {
 
 })
 
-export const insertExerciseRoutineSchema = createInsertSchema(exercise_routine)
+
 
 export const exerciseRoutineRelations = relations(exercise_routine, ({one, many})=> ({
 	exercise: one(exercises, {
@@ -259,3 +261,10 @@ export const verificationTokens = pgTable(
 		compoundKey: primaryKey(vt.identifier, vt.token)
 	})
 );
+
+
+/* ZOD SCHEMAS */
+
+export const insertExerciseRoutineSchema = createInsertSchema(exercise_routine);
+export const insertWorkoutRoutine = createInsertSchema(workout_routine)
+export const insertWorkoutPlanSchema = createInsertSchema(workout_plans)
