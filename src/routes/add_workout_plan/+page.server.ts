@@ -21,10 +21,11 @@ export const actions = {
 	workout_plan: async ({ request }) => {
 		const planForm = await superValidate(request, insertWorkoutPlanSchema);
 
-		console.log(planForm)
-		console.log("Heree")
 
 		if (!planForm.valid) return fail(400, {planForm})
+
+
+		
 
 
 		// TODO add insert

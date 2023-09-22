@@ -7,6 +7,7 @@
 	import { page } from '$app/stores';
 	import FormStepChange from '../../components/AddWorkout/FormStepChange.svelte';
 	import AdjustableCalender from '../../components/AddWorkout/AdjustableCalender.svelte';
+	import { current_plan_id } from '../../stores/workout_plan';
 	let days: number = 1;
 
 	let pg = $page.url.searchParams.get('page') ? Number($page.url.searchParams.get('page')) : 1;
@@ -18,18 +19,21 @@
 
 	const { form: planForm } = superForm(data.formWorkoutPlan);
 	const { form: workoutForm } = superForm(data.formWorkout);
+
+	
 </script>
 
 <FormStepChange bind:pg names={['General', 'Workouts']} />
 <SuperDebug data={$planForm} />
 {#if pg == 1}
 	<form method="POST" action="/add_workout_plan?/workout_plan" class="flex flex-col space-y-4 bg-red-50 m-4 rounded-md p-2">
+		<input type="hidden" name="user_id" value={$page.data.session?.user.id}/>
 		<label for="name" >Name</label>
-		<input type="text" id="name" bind:value={$planForm.name}/>
+		<input type="text" id="name" name="name" bind:value={$planForm.name}/>
 		<label for="description">Description</label>
-		<input type="text" id="description" bind:value={$planForm.description}/>
+		<input type="text" id="description" name="description" bind:value={$planForm.description}/>
 		<label for="start_date">Start Date</label>
-		<input type="date" id="start_date" bind:value={$planForm.start_date}/>
+		<input type="date" id="start_date" name="start_date" bind:value={$planForm.start_date}/>
 
 		<button> Submit </button>
 		

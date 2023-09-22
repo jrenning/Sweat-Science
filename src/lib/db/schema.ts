@@ -134,18 +134,19 @@ export const DistanceUnits = pgEnum("distance_units", ["mile", "kilometer", "met
 export const DurationUnits = pgEnum("duration units", ["second", "minute", "hour", "day"])
 
 
+// TODO figure out how to remove not null on everything without typescript throwing a hissy fit
 export const exercise_routine = pgTable("exercise_routine", {
 	id: serial("id").primaryKey(),
 	user_id: text("user_id").references(()=> users.id),
 	exercise_id: integer("exercise_id").notNull().references(()=> exercises.id),
 	name: text("name"),
 	sets: integer("sets").notNull(),
-	reps: integer("reps").array(),
-	weight: integer("weight").notNull().array(),
+	reps: integer("reps").array().notNull(),
+	weight: integer("weight").array().notNull(),
 	weight_units: WeightUnits("weight_units"),
-	duration: real("duration"),
+	duration: real("duration").array().notNull(),
 	duration_units: DurationUnits("duration_units"),
-	distance: integer("distance"),
+	distance: integer("distance").array().notNull(),
 	distance_units: DistanceUnits("distance_units"),
 	created_at: timestamp('created_at').defaultNow(),
 

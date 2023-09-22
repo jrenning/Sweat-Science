@@ -1,4 +1,4 @@
-import { db } from '$lib/db/db';
+
 import { z } from 'zod';
 import type {  Actions } from '../$types';
 import type { PageServerLoad } from './$types';
@@ -7,6 +7,7 @@ import {superValidate} from "sveltekit-superforms/server"
 import { insertExerciseRoutineSchema} from '$lib/db/schema';
 import { getWorkoutsInPlan } from '$lib/db/queries/workout_plan';
 import { getPossibleExercises } from '$lib/db/queries/exercise';
+import { fail } from '@sveltejs/kit';
 
 
 const newWorkoutRoutineSchema = z.object({
@@ -27,16 +28,29 @@ export const load: PageServerLoad = async (event) =>  {
     const exercise_choices = await getPossibleExercises(user_id, "")
 
 
+    const plan_id = Number(event.url.searchParams.get("plan_id"))
+
+
+
+
 
 
     // super forms 
     const form = await superValidate(event, newWorkoutRoutineSchema)
 
-	return {form, data, exercise_choices}
+	return {form, data, exercise_choices, plan_id}
 }
 
 export const actions: Actions = {
-    default: async (event) => {
+    default: async ({request}) => {
+        const workoutForm = await superValidate(request, newWorkoutRoutineSchema);
+        console.log(workoutForm);
+        if (!workoutForm.valid) return fail(400, {workoutForm})
 
+
+
+
+        return {workoutForm}
+        
     }
 }
