@@ -18,8 +18,12 @@
   {#if $page.data.session}
   <div class="flex flex-col justify-center items-center">
     <div class="w-[80%]">
-  <AddButton />
-  <SeedEquipment />
+      <div class="flex flex-row space-x-6 justify-center items-center my-6">
+          <AddButton object="Workout Plan" link="/add_workout_plan"/>
+          <AddButton object="Workout" link="/add_workout" />
+
+      </div>
+
 
 
 

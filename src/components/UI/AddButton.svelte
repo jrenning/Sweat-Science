@@ -1,6 +1,12 @@
-<a href="/add_workout_plan">
-    <button class="rounded-md bg-red-50 shadow-md px-2 py-1">
-        Add Workout Plan
+<script lang="ts">
+    export let link: string
+    export let object: string
+</script>
+
+
+<a href={link}>
+    <button class="btn-sm variant-filled-surface shadow-md rounded-md text-md">
+        Add {object}
 
 </button>
 

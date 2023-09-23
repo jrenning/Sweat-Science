@@ -1,18 +1,15 @@
-import { z } from 'zod';
+
 import type { Actions } from '../$types';
 import type { PageServerLoad } from './$types';
 
 import { setError, superValidate } from 'sveltekit-superforms/server';
-import { insertExerciseRoutineSchema } from '$lib/db/schema';
 import { getWorkoutsInPlan } from '$lib/db/queries/workout_plan';
 import { getPossibleExercises } from '$lib/db/queries/exercise';
 import { fail } from '@sveltejs/kit';
 import { addWorkout, addWorkoutToPlan } from '$lib/db/mutations/workout_routine_';
+import { newWorkoutRoutineSchema } from './schemas';
 
-const newWorkoutRoutineSchema = z.object({
-	name: z.string(),
-	exercises: z.array(insertExerciseRoutineSchema)
-});
+
 
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.getSession();
