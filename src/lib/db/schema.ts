@@ -27,9 +27,7 @@ export type InsertExercise = InferInsertModel<typeof exercises> & {
 	equipment: InsertEquipment;
 };
 
-export type InsertExerciseRoutine = InferInsertModel<typeof exercise_routine> & {
-	exercise: InsertExercise;
-};
+export type InsertExerciseRoutine = InferInsertModel<typeof exercise_routine> 
 export type InsertWorkoutRoutineWithExercises = InferInsertModel<typeof workout_routine> & {
 	exercises: InsertExerciseRoutine[];
 };
@@ -115,7 +113,7 @@ export const workout_routine = pgTable('workout_routine', {
 		.notNull(),
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique(),
-	days: integer('days').array().notNull(),
+	days: integer('days').array(),
 	workout_plan_id: integer('workout_plan_id').references(() => workout_plans.id),
 	created_at: timestamp('created_at').defaultNow(),
 	status: Status('status').default("Pending")

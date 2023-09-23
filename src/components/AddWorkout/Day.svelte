@@ -6,7 +6,7 @@
 
 
 </script>
-    <a href="/add_workout?plan_id">
+    <a href={`/add_workout?plan_id=${$current_plan_id}`}>
     <div class="w-full h-[60px] border border-black rounded-md bg-red-200 text-lg font-semibold">
         <div class="mx-2">{number ? number : ""}</div>
     </div>

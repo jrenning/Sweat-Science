@@ -18,9 +18,9 @@ const days_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "F
         {#each days_of_week as day, _}
         <div>{day[0].toUpperCase()}</div>
         {/each}
-        {#each dates as date, _}
+        {#each dates as date, index}
 
-        <Day number={date} />
+        <Day number={date}/>
 
         {/each}
 

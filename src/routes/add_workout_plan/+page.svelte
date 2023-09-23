@@ -20,6 +20,7 @@
 	const { form: planForm } = superForm(data.formWorkoutPlan);
 	const { form: workoutForm } = superForm(data.formWorkout);
 
+	$current_plan_id = 1
 	
 </script>
 

@@ -10,6 +10,12 @@
 		dates = generateDateArr(new Date(start_date), new Date(end_date));
 	}
 
+
+	type CalenderInfo = {
+		days: number[],
+		offset: number
+	}
+
 	function generateDateArr(start: Date, end: Date) {
 		let dates: number[][] = [];
 		let int_dates: number[] = [];

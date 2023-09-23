@@ -45,7 +45,6 @@
 	<form class="space-y-4" use:enhance method="POST" >
 		<label for="name" >Name</label>
 		<input type="text" class="input" id="name" name="name" bind:value={$form.name} />
-
 		<button
 			type="button"
 			class="btn-sm rounded-md variant-outline-surface text-md"
