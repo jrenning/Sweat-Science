@@ -93,7 +93,7 @@ export const workout_plans = pgTable('workout_plans', {
 	name: text('name').notNull().unique(),
 	description: text('description'),
 	created_at: timestamp('created_at').defaultNow(),
-	start_date: timestamp('created_at').defaultNow(),
+	start_date: timestamp('start_date').defaultNow(),
 	total_days: integer("total_days").notNull(),
 	status: Status("status").default("Pending")
 });

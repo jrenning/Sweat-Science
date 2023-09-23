@@ -1,12 +1,15 @@
 <script lang="ts">
-	import Day from "./Day.svelte";
+	import { number } from "zod";
+import Day from "./Day.svelte";
 
 
     export let dates: number[]
     export let start_date: Date
-    export let offset: number
+    export let day_offset: number
+    export let month_offset: number
+    export let day_start: number
     const new_date = new Date(start_date)
-    new_date.setMonth(start_date.getMonth()+offset)
+    new_date.setMonth(start_date.getMonth()+month_offset)
 
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 const days_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -18,9 +21,12 @@ const days_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "F
         {#each days_of_week as day, _}
         <div>{day[0].toUpperCase()}</div>
         {/each}
+        {#each {length: day_offset} as _, i}
+            <Day number={0} />
+        {/each}
         {#each dates as date, index}
 
-        <Day number={date}/>
+        <Day number={date} global_day={day_start+index}/>
 
         {/each}
 

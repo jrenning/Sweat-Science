@@ -7,7 +7,7 @@
 <header
 	class="flex flex-row items-center justify-around shadow-md relative text-center w-full bg-red-300 h-[58px] mb-[10px]"
 >	<div></div>
-	<h1 class="text-3xl text-white">Workout Planner</h1>
+	<a href="/"><h1 class="text-3xl text-white">Workout Planner</h1></a>
 	  {#if $page.data.session}
     <button on:click={() => signOut()} class="rounded-md bg-blue-200 shadow-md px-2 py-1">Sign out</button>
   {:else}

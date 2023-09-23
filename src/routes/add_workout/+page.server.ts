@@ -33,6 +33,7 @@ export const actions: Actions = {
 	default: async ({ request, locals, url }) => {
 		const workoutForm = await superValidate(request, newWorkoutRoutineSchema);
 		const plan_id = Number(url.searchParams.get('plan_id'));
+		const day = Number(url.searchParams.get('day'));
 		const session = await locals.getSession();
 		// pass in workout plan id
 		// TODO pass in param for id
@@ -42,27 +43,32 @@ export const actions: Actions = {
 
 		// validate stuff
 
-        for (let i=0; i<workoutForm.data.exercises.length; i++) {
-            if (workoutForm.data.exercises[i].weight.length !== workoutForm.data.exercises[i].reps.length) {
-                return setError(workoutForm, "Weight and rep count doesn't match")
-            }
-        }
-
-
+		for (let i = 0; i < workoutForm.data.exercises.length; i++) {
+			if (
+				workoutForm.data.exercises[i].weight.length !== workoutForm.data.exercises[i].reps.length
+			) {
+				return setError(workoutForm, "Weight and rep count doesn't match");
+			}
+		}
 
 		// insert workout
-		// const data = {
-		// 	...workoutForm.data,
-		// 	user_id: user_id
-		// };
 
-		// if (plan_id) {
-		// 	await addWorkoutToPlan(plan_id, data);
-		// } else {
-		// 	// no days required if not in workout plan
+		if (plan_id) {
+			const data = {
+				...workoutForm.data,
+				user_id: user_id,
+				days: [day]
+			};
+			await addWorkoutToPlan(plan_id, data);
+		} else {
+			const data = {
+				...workoutForm.data,
+				user_id: user_id
+			};
+			// no days required if not in workout plan
 
-		// 	await addWorkout(data);
-		// }
+			await addWorkout(data);
+		}
 
 		return { workoutForm };
 	}

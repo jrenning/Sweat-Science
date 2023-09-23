@@ -5,22 +5,30 @@ import { addExerciseRoutineToWorkout } from './exercise_routine';
 
 export async function addWorkoutToPlan(plan_id: number, input: InsertWorkoutRoutineWithExercises) {
 	return await db.transaction(async (tx) => {
-		const routine = await tx
-			.insert(workout_routine)
-			.values({
-				name: input.name,
-				user_id: input.user_id,
-				workout_plan_id: plan_id,
-				days: input.days
-			})
-			.onConflictDoNothing({ target: workout_routine.name }).returning({id: workout_routine.id});
+		// if input has an id just do an update
+		if (input.id) {
+			await tx.update(workout_routine).set(input).where(
+				eq(workout_routine.id, input.id)
+			)
 
-        // add exercises 
-        if (input.exercises) {
-            input.exercises.forEach(async (exercise)=> {
-                await addExerciseRoutineToWorkout(routine[0].id, exercise)
-            })
-        }
+		} else {
+			const routine = await tx
+				.insert(workout_routine)
+				.values({
+					name: input.name,
+					user_id: input.user_id,
+					workout_plan_id: plan_id,
+					days: input.days
+				})
+				.returning({ id: workout_routine.id });
+
+			// add exercises
+			if (input.exercises) {
+				input.exercises.forEach(async (exercise) => {
+					await addExerciseRoutineToWorkout(routine[0].id, exercise);
+				});
+			}
+		}
 	});
 }
 

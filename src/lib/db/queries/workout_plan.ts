@@ -1,5 +1,5 @@
 import { and, arrayContains, eq } from 'drizzle-orm';
-import { workout_routine } from '../schema';
+import { workout_plans, workout_routine } from '../schema';
 import { db } from '../db';
 
 export async function getWorkoutsInPlan(plan_id: number, user_id: string) {
@@ -22,4 +22,13 @@ export async function getWorkoutsInPlanOnDay(plan_id: number, user_id: string, d
 			arrayContains(workout_routine.days, [day])
 		)
 	});
+}
+
+export async function getPendingPlans(user_id: string) {
+	const data =  await db
+		.select({ id: workout_plans.id })
+		.from(workout_plans)
+		.limit(1)
+		.where(and(eq(workout_plans.status, 'Pending'), eq(workout_plans.user_id, user_id)));
+	return data
 }
