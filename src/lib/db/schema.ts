@@ -19,6 +19,12 @@ export type WorkoutRoutineWithExercises = InferSelectModel<typeof workout_routin
 	}[]
 }
 
+export type ExerciseWithEquipment = InferSelectModel<typeof exercises> & {
+	equipment: InferSelectModel<typeof equipment>
+}
+
+export type Equipment = InferSelectModel<typeof equipment>
+
 /* INSERT TYPES */
 
 export type InsertEquipment = InferInsertModel<typeof equipment>;
@@ -77,7 +83,7 @@ export const exercises = pgTable('exercises', {
 });
 
 export const exerciseRelations = relations(exercises, ({one})=> ({
-	workout: one(equipment, {
+	equipment: one(equipment, {
 		fields: [exercises.equipment_id],
 		references: [equipment.id]
 	})
