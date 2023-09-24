@@ -4,7 +4,7 @@
 </script>
 
 
-<a href={link}>
+<a href={link} data-sveltekit-preload-data="off">
     <button class="btn-sm variant-filled-surface shadow-md rounded-md text-md">
         Add {object}
 

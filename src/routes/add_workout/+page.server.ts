@@ -1,4 +1,3 @@
-
 import type { Actions } from '../$types';
 import type { PageServerLoad } from './$types';
 
@@ -6,10 +5,8 @@ import { setError, superValidate } from 'sveltekit-superforms/server';
 import { getWorkoutsInPlan } from '$lib/db/queries/workout_plan';
 import { getPossibleExercises } from '$lib/db/queries/exercise';
 import { fail } from '@sveltejs/kit';
-import { addWorkout, addWorkoutToPlan } from '$lib/db/mutations/workout_routine_';
+import { addWorkout, addWorkoutToPlan } from '$lib/db/mutations/workout_routine';
 import { newWorkoutRoutineSchema } from './schemas';
-
-
 
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.getSession();

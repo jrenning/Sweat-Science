@@ -6,4 +6,4 @@ export const newWorkoutRoutineSchema = z.object({
 	exercises: z.array(insertExerciseRoutineSchema)
 });
 
-export type newWorkoutRoutineSchema = typeof newWorkoutRoutineSchema
+export type newWorkoutRoutine = typeof newWorkoutRoutineSchema

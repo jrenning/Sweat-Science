@@ -1,17 +1,20 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-	import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
+	import { Accordion, AccordionItem, getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
+	import ExerciseForm from '../../components/Exercises/ExerciseForm.svelte';
 
 	const date = new Date();
 
-	let exercises = 1;
-
 	export let data: PageData;
 
-	let sets = 1;
 
-	let type = '';
+
+
+
+
+	let type_select = "Weight"
+
 
 	const { form, enhance, errors } = superForm(data.form, {
 		dataType: 'json'
@@ -30,13 +33,6 @@
 		<div></div>
 		
 	</div>
-	{#if data.data.length > 0}
-		<div>Current Workouts</div>
-		{#each data.data as workout}
-			<div>{workout.name}</div>
-			<div>{workout.exercises.length} Exercises</div>
-		{/each}
-	{/if}
 
 	<form class="space-y-4" use:enhance method="POST">
 		<label for="name">Name</label>
@@ -58,7 +54,7 @@
 							{#each data.exercise_choices as choice}
 								<option value={choice.id}>{choice.name}</option>
 							{/each}
-							<option><a href="/add_exercise">Add Exercise</a></option>
+							<option>Add Exercise</option>
 						</select>
 						{#if $errors.exercises?.[i].exercise_id}
 							<span class="invalid text-red-300">{$errors.exercises[i].exercise_id}</span>
@@ -72,15 +68,15 @@
 						/>
 						<div class="flex flex-row space-x-6 mt-6">
 							<label class="label" for="weight">Weight</label>
-							<input type="radio" class="radio" name="type" value="Weight" bind:group={type} />
+							<input type="radio" class="radio" name="type" value="Weight" bind:group={type_select} />
 							<label for="distance">Distance</label>
-							<input type="radio" class="radio" name="type" value="Distance" bind:group={type} />
+							<input type="radio" class="radio" name="type" value="Distance" bind:group={type_select} />
 							<label for="time">Time</label>
-							<input type="radio" class="radio" name="type" value="Time" bind:group={type} />
+							<input type="radio" class="radio" name="type" value="Time" bind:group={type_select} />
 						</div>
 						{#each { length: $form.exercises[i].sets } as _, set}
 							<div class="flex flex-row space-x-4">
-								{#if type == 'Weight'}
+								{#if type_select == 'Weight'}
 									<div class="input-group w-30 input-group-divider grid-cols-[auto_1fr_auto]">
 										<input
 											type="number"
@@ -100,7 +96,7 @@
 										class="input w-10"
 										bind:value={$form.exercises[i].reps[set]}
 									/>
-								{:else if type == 'Distance'}
+								{:else if type_select == 'Distance'}
 									<p>Distance</p>
 									<div class="input-group w-30 input-group-divider grid-cols-[auto_1fr_auto]">
 										<input
@@ -114,7 +110,7 @@
 											<option>km</option>
 										</select>
 									</div>
-								{:else if type == 'Time'}
+								{:else if type_select == 'Time'}
 									<p>Time</p>
 									<div class="input-group w-40 input-group-divider grid-cols-[auto_1fr_auto]">
 										<input
