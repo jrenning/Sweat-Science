@@ -37,9 +37,7 @@ export type Equipment = InferSelectModel<typeof equipment>;
 
 export type InsertEquipment = InferInsertModel<typeof equipment>;
 
-export type InsertExercise = InferInsertModel<typeof exercises> & {
-	equipment: InsertEquipment;
-};
+export type InsertExercise = InferInsertModel<typeof exercises>
 
 export type InsertExerciseRoutine = InferInsertModel<typeof exercise_routine>;
 export type InsertWorkoutRoutineWithExercises = InferInsertModel<typeof workout_routine> & {
@@ -319,5 +317,7 @@ export const verificationTokens = pgTable(
 /* ZOD SCHEMAS */
 
 export const insertExerciseRoutineSchema = createInsertSchema(exercise_routine);
+export const insertExerciseSchema = createInsertSchema(exercises)
+export const insertEquipmentSchema = createInsertSchema(equipment)
 export const insertWorkoutRoutine = createInsertSchema(workout_routine);
 export const insertWorkoutPlanSchema = createInsertSchema(workout_plans);

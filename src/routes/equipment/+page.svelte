@@ -10,7 +10,8 @@
 	const modalStore = getModalStore();
 
 	const modalComponent: ModalComponent = {
-		ref: EquipmentForm
+		ref: EquipmentForm,
+		props: {data: data.form}
 	};
 
 	const modal: ModalSettings = {

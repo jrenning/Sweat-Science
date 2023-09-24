@@ -57,11 +57,11 @@ export const actions: Actions = {
 		} else {
 			const data = {
 				...workoutForm.data,
-				user_id: user_id
+				user_id: user_id,
 			};
 			// no days required if not in workout plan
 
-			await addWorkout(data);
+			await addWorkout({...data, status: "Completed"});
 		}
 
 		return { workoutForm };

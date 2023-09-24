@@ -1,5 +1,5 @@
 import { db } from '../db';
-import { equipment } from '../schema';
+import { equipment, type InsertEquipment } from '../schema';
 
 export async function seedEquipmentData() {
 
@@ -30,4 +30,9 @@ export async function seedEquipmentData() {
 	];
 
 	await db.insert(equipment).values(values);
+}
+
+
+export async function addEquipment(input: InsertEquipment) {
+    return await db.insert(equipment).values(input)
 }
