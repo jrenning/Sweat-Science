@@ -1,0 +1,21 @@
+{
+	"name": "Sweat Science",
+	"short_name": "Sweat Science",
+	"description": "A way to plan workouts",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+	"theme_color": "#FF6961",
+	"icons": [
+		{
+			"src": "icon_192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "icon_512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
+}
