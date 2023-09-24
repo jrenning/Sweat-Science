@@ -1,8 +1,10 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
-import {Pool} from "pg"
-import { users } from './schema';
+import pkg from "pg"
+
 import { DATABASE_URL_BACKUP } from '$env/static/private';
 import * as schema from "./schema"
+
+const {Pool} = pkg
 
 const connectionString = process.env.DATABASE_URL;
 // const client = postgres({
