@@ -35,13 +35,12 @@
 
 <div class="card p-4 flex flex-col">
     <div class="flex justify-center items-center font-bold text-lg">Add Exercise</div>
-    <SuperDebug data={$form} />
 <form method="POST" class="resize-y" use:enhance>
     <label for="name">Name</label>
     <input class="input" bind:value={$form.name} type="text" name="name" />
     {#if $errors.name} <span>{$errors.name}</span> {/if}
     <label for="description" >Description</label>
-    <textarea class="textarea resize-y" bind:value={$form.description} type="text"  name="description"/>
+    <textarea class="textarea resize-y" bind:value={$form.description} name="description"/>
     <label for="category">Category</label>
     <select class="select" bind:value={$form.category} name="category">
         {#each ExerciseCategories.enumValues as category}

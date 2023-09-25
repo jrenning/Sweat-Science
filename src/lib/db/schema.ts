@@ -49,6 +49,8 @@ export type InsertFullWorkoutPlan = InferInsertModel<typeof workout_plans> & {
 
 export type InsertWorkoutPlan = InferInsertModel<typeof workout_plans>;
 
+/* USER */
+
 export const users = pgTable('user', {
 	id: text('id').notNull().primaryKey(),
 	name: text('name'),
@@ -57,6 +59,13 @@ export const users = pgTable('user', {
 	image: text('image'),
 	created_at: timestamp('created_at').defaultNow()
 });
+
+export const favorites = pgTable("favorites", {
+	user_id: text("user_id").references(()=> users.id).primaryKey()
+
+})
+
+
 
 /* WORKOUTS */
 
@@ -87,8 +96,8 @@ export const EquipmentTypes = pgEnum('equipment_type', [
 
 export const equipment = pgTable('equipment', {
 	id: serial('id').primaryKey(),
+	user_id: text("user_id").references(()=> users.id, {onDelete: "cascade"}),
 	name: text('name').notNull().unique(),
-	muscle_groups: MuscleGroups('muscle_groups').array(),
 	type: EquipmentTypes('equipment_type').notNull(),
 	created_at: timestamp('created_at').defaultNow()
 });
@@ -101,11 +110,12 @@ export const ExerciseCategories = pgEnum('exercise_categories', [
 
 export const exercises = pgTable('exercises', {
 	id: serial('id').primaryKey(),
-	user_id: text('user_id').references(() => users.id),
+	user_id: text('user_id').references(() => users.id, {onDelete: "cascade"}),
 	name: text('name').notNull().unique(),
 	description: text('description'),
 	category: ExerciseCategories('exercise_categories').notNull(),
-	equipment_id: integer('equipment_id').references(() => equipment.id),
+	equipment_id: integer('equipment_id').references(() => equipment.id, {onDelete: "set null"}),
+	muscle_groups: MuscleGroups('muscle_groups').array(),
 	created_at: timestamp('created_at').defaultNow()
 });
 
@@ -120,7 +130,7 @@ export const Status = pgEnum('status', ['Pending', 'Completed', 'Current']);
 
 export const workout_plans = pgTable('workout_plans', {
 	user_id: text('user_id')
-		.references(() => users.id)
+		.references(() => users.id, {onDelete: "cascade"})
 		.notNull(),
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique(),
@@ -147,12 +157,12 @@ export const DaysOfWeek = pgEnum('days_of_week', [
 
 export const workout_routine = pgTable('workout_routine', {
 	user_id: text('user_id')
-		.references(() => users.id)
+		.references(() => users.id, {onDelete: "cascade"})
 		.notNull(),
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique(),
 	days: integer('days').array(),
-	workout_plan_id: integer('workout_plan_id').references(() => workout_plans.id),
+	workout_plan_id: integer('workout_plan_id').references(() => workout_plans.id, {onDelete: "set null"}),
 	created_at: timestamp('created_at').defaultNow(),
 	status: Status('status').default('Pending')
 });
@@ -180,10 +190,10 @@ export const DurationUnits = pgEnum('duration units', ['second', 'minute', 'hour
 // TODO figure out how to remove not null on everything without typescript throwing a hissy fit
 export const exercise_routine = pgTable('exercise_routine', {
 	id: serial('id').primaryKey(),
-	user_id: text('user_id').references(() => users.id),
+	user_id: text('user_id').references(() => users.id, {onDelete: "cascade"}),
 	exercise_id: integer('exercise_id')
 		.notNull()
-		.references(() => exercises.id),
+		.references(() => exercises.id, {onDelete: "set null"}),
 	name: text('name'),
 	sets: integer('sets').notNull(),
 	reps: integer('reps').array().notNull(),
@@ -209,10 +219,10 @@ export const workoutToExerciseRoutines = pgTable(
 	{
 		exercise_routine_id: integer('exercise_routine_id')
 			.notNull()
-			.references(() => exercise_routine.id),
+			.references(() => exercise_routine.id, {onDelete: "cascade"}),
 		workout_routine_id: integer('workout_routine_id')
 			.notNull()
-			.references(() => workout_routine.id)
+			.references(() => workout_routine.id, {onDelete: "cascade"})
 	},
 	(t) => ({
 		pk: primaryKey(t.exercise_routine_id, t.workout_routine_id)
@@ -237,8 +247,8 @@ export const workoutToExerciseRoutineRelations = relations(
 
 export const exerciseLog = pgTable('exercise_log', {
 	id: serial('id').primaryKey(),
-	user_id: text('user_id').references(() => users.id),
-	exercise_routine_id: integer('exercise_routine_id').references(() => exercise_routine.id),
+	user_id: text('user_id').references(() => users.id, {onDelete: "cascade"}),
+	exercise_routine_id: integer('exercise_routine_id').references(() => exercise_routine.id, {onDelete: "cascade"}),
 	created_at: timestamp('created_at').defaultNow()
 });
 
@@ -256,7 +266,7 @@ export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({
 export const workoutLog = pgTable('workout_log', {
 	id: serial('id').primaryKey(),
 	user_id: text('user_id').references(() => users.id),
-	workout_routine_id: integer('workout_routine_id').references(() => workout_routine.id),
+	workout_routine_id: integer('workout_routine_id').references(() => workout_routine.id, {onDelete: "cascade"}),
 	created_at: timestamp('created_at').defaultNow()
 });
 

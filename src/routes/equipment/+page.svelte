@@ -41,7 +41,6 @@
 				<tr>
 					<td>{equipment.name}</td>
 					<td>{equipment.type}</td>
-					<td>{equipment.muscle_groups?.join(', ')}</td>
 				</tr>
 			{/each}
 		</tbody>

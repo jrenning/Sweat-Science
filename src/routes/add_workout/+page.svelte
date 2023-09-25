@@ -9,7 +9,7 @@
 	export let data: PageData;
 
 
-
+	
 
 
 
@@ -50,12 +50,14 @@
 					<svelte:fragment slot="summary">Exercise {i + 1}</svelte:fragment>
 					<svelte:fragment slot="content">
 						<div>Select an exercise:</div>
+						<div class="flex flex-row space-x-6">
 						<select class="select" bind:value={$form.exercises[i].exercise_id}>
 							{#each data.exercise_choices as choice}
 								<option value={choice.id}>{choice.name}</option>
 							{/each}
-							<option>Add Exercise</option>
 						</select>
+						<button class="rounded-full variant-filled-surface px-2 py-1 text-lg font-semibold shadow-md">+</button>
+						</div>
 						{#if $errors.exercises?.[i].exercise_id}
 							<span class="invalid text-red-300">{$errors.exercises[i].exercise_id}</span>
 						{/if}

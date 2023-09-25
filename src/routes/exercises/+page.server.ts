@@ -38,6 +38,7 @@ export const actions: Actions = {
 
 		// validate stuff
 
+		//@ts-ignore
 		await addExercise(exerciseForm.data);
 
 		return { exerciseForm };

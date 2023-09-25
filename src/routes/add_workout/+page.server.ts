@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { getWorkoutsInPlan } from '$lib/db/queries/workout_plan';
 import { getPossibleExercises } from '$lib/db/queries/exercise';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { addWorkout, addWorkoutToPlan } from '$lib/db/mutations/workout_routine';
 import { newWorkoutRoutineSchema } from './schemas';
 
@@ -64,6 +64,6 @@ export const actions: Actions = {
 			await addWorkout({...data, status: "Completed"});
 		}
 
-		return { workoutForm };
+		throw redirect(303, "/");
 	}
 };

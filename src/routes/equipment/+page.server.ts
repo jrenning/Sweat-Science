@@ -39,7 +39,7 @@ export const actions: Actions = {
 			return err
 		}
 
-		//@ts-ignore
+		
 		await addEquipment(equipmentForm.data);
 
 		return { equipmentForm };

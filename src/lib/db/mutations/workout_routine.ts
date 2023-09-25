@@ -39,7 +39,9 @@ export async function addWorkout(input: InsertWorkoutRoutineWithExercises) {
 			.values({
 				name: input.name,
 				user_id: input.user_id,
-				days: input.days
+				days: input.days,
+				status: input.status,
+				
 			})
 			.onConflictDoNothing({ target: workout_routine.name })
 			.returning({ id: workout_routine.id });
