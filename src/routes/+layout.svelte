@@ -3,7 +3,7 @@
 	import { signIn, signOut } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
 	import Footer from '../components/UI/Footer.svelte';
-	import { Modal, initializeStores } from '@skeletonlabs/skeleton';
+	import { LightSwitch, Modal, Toast, initializeStores } from '@skeletonlabs/skeleton';
 
 
 
@@ -12,10 +12,11 @@
 </script>
 
 <Modal />
+<Toast />
 <header
 	class="flex flex-row items-center justify-around shadow-md relative text-center w-full bg-red-300 h-[58px] mb-[10px]"
 >
-	<div />
+	<LightSwitch />
 	<a href="/"><h1 class="text-3xl text-white">Workout Planner</h1></a>
 	{#if $page.data.session}
 		<button on:click={() => signOut()} class="rounded-md bg-blue-200 shadow-md px-2 py-1"

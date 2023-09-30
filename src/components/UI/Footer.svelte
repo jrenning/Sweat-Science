@@ -8,18 +8,13 @@
 		>
 	</div>
 	<div>
-		<a href="/exercises"
-			><button class="btn-md rounded-md shadow-md variant-outline-surface">Exercises</button></a
-		>
-	</div>
-	<!-- <div>
 		<a href="/progress"
 			><button class="btn-md rounded-md shadow-md variant-outline-surface">Progress</button></a
 		>
-	</div> -->
+	</div>
 	<div>
-		<a href="/equipment"
-			><button class="btn-md rounded-md shadow-md variant-outline-surface">Equipment</button></a
+		<a href="/index"
+			><button class="btn-md rounded-md shadow-md variant-outline-surface">Index</button></a
 		>
 	</div>
 	</div>

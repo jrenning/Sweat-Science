@@ -7,11 +7,13 @@ import {
 	serial,
 	pgEnum,
 	PgArray,
-	real
+	real,
+	boolean
 } from 'drizzle-orm/pg-core';
 import type { AdapterAccount } from '@auth/core/adapters';
 import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
+import { float } from 'drizzle-orm/mysql-core';
 
 /* TYPES */
 
@@ -28,7 +30,7 @@ export type WorkoutRoutineWithExercises = InferSelectModel<typeof workout_routin
 };
 
 export type ExerciseWithEquipment = InferSelectModel<typeof exercises> & {
-	equipment: InferSelectModel<typeof equipment>;
+	equipment: InferSelectModel<typeof equipment> | null;
 };
 
 export type Equipment = InferSelectModel<typeof equipment>;
@@ -64,6 +66,20 @@ export const favorites = pgTable("favorites", {
 	user_id: text("user_id").references(()=> users.id).primaryKey()
 
 })
+
+export const PRTypes = pgEnum("pr_types", [
+	"Max Weight",
+	"Distance",
+	"Time"
+])
+
+// export const personal_records = pgTable("personal_records", {
+// 	user_id: text("user_id").references(()=> users.id, {onDelete: "cascade"}).notNull(),
+// 	exercise_id: integer("id").references(()=> exercises.id, {onDelete: "cascade"}).notNull(),
+// 	type: PRTypes("pr_types"),
+// 	value: float
+
+// })
 
 
 
@@ -164,7 +180,8 @@ export const workout_routine = pgTable('workout_routine', {
 	days: integer('days').array(),
 	workout_plan_id: integer('workout_plan_id').references(() => workout_plans.id, {onDelete: "set null"}),
 	created_at: timestamp('created_at').defaultNow(),
-	status: Status('status').default('Pending')
+	status: Status('status').default('Pending'),
+	favorite: boolean("favorite")
 });
 
 export const workoutsRelations = relations(workout_routine, ({ one, many }) => ({
@@ -197,6 +214,8 @@ export const exercise_routine = pgTable('exercise_routine', {
 	name: text('name'),
 	sets: integer('sets').notNull(),
 	reps: integer('reps').array().notNull(),
+	rests: integer("rests").array().notNull(),
+	rest_units: DurationUnits("duration_units"),
 	weight: integer('weight').array().notNull(),
 	weight_units: WeightUnits('weight_units'),
 	duration: real('duration').array().notNull(),
@@ -248,14 +267,28 @@ export const workoutToExerciseRoutineRelations = relations(
 export const exerciseLog = pgTable('exercise_log', {
 	id: serial('id').primaryKey(),
 	user_id: text('user_id').references(() => users.id, {onDelete: "cascade"}),
-	exercise_routine_id: integer('exercise_routine_id').references(() => exercise_routine.id, {onDelete: "cascade"}),
-	created_at: timestamp('created_at').defaultNow()
+	exercise_id: integer('exercise_id')
+		.notNull()
+		.references(() => exercises.id, {onDelete: "set null"}),
+	name: text('name'),
+	sets: integer('sets').notNull(),
+	reps: integer('reps').array().notNull(),
+	rests: integer("rests").array().notNull(),
+	rest_units: DurationUnits("duration_units"),
+	weight: integer('weight').array().notNull(),
+	weight_units: WeightUnits('weight_units'),
+	duration: real('duration').array().notNull(),
+	duration_units: DurationUnits('duration_units'),
+	distance: integer('distance').array().notNull(),
+	distance_units: DistanceUnits('distance_units'),
+	created_at: timestamp('created_at').defaultNow(),
+	workout_log_id: integer("workout_log_id").references(()=> workoutLog.id)
 });
 
 export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({
-	exercise_routine: one(exercise_routine, {
-		fields: [exerciseLog.exercise_routine_id],
-		references: [exercise_routine.id]
+	workout_log: one(workoutLog, {
+		fields: [exerciseLog.workout_log_id],
+		references: [workoutLog.id]
 	}),
 	user: one(users, {
 		fields: [exerciseLog.user_id],
@@ -266,15 +299,12 @@ export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({
 export const workoutLog = pgTable('workout_log', {
 	id: serial('id').primaryKey(),
 	user_id: text('user_id').references(() => users.id),
-	workout_routine_id: integer('workout_routine_id').references(() => workout_routine.id, {onDelete: "cascade"}),
-	created_at: timestamp('created_at').defaultNow()
+	created_at: timestamp('created_at').defaultNow(),
+	notes: text("notes")
 });
 
-export const workoutLogRelations = relations(workoutLog, ({ one }) => ({
-	exercise_routine: one(workout_routine, {
-		fields: [workoutLog.workout_routine_id],
-		references: [workout_routine.id]
-	}),
+export const workoutLogRelations = relations(workoutLog, ({ one, many }) => ({
+	exercise_routines: many(exerciseLog),
 	user: one(users, {
 		fields: [workoutLog.user_id],
 		references: [users.id]
