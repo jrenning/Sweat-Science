@@ -10,7 +10,6 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	console.log(data);
 </script>
 
 <div>
@@ -21,7 +20,7 @@
 					<AddButton object="Workout Plan" link="/add_workout_plan" />
 				</div>
 
-				<LastWorkout last_workout={data && data.data.last_workout[0]} />
+				<LastWorkout last_workout={data.data.last_workout && data.data.last_workout} />
 				<div class="flex flex-col space-y-4">
 					<SectionHeader name="Workouts" />
 					<AddButton object="Workout" link="/add_workout" />

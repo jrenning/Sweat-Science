@@ -38,14 +38,14 @@
 								<div class="flex flex-row text-xl space-x-6 justify-center items-center">
 									<div class="flex flex-col space-y-4">
 										<div class="text-2xl">
-											{current_exercise.weight[set]}
+											<input class="w-10" value={current_exercise.weight[set]} />
 											{current_exercise.weight_units}
 										</div>
 										<div class="text-sm">Weight</div>
 									</div>
 									<div class="flex flex-col space-y-4">
 										<div class="text-2xl">
-											{current_exercise.reps[set]}
+											<input class="w-8" value={current_exercise.reps[set]} />
 										</div>
 										<div class="text-sm">Reps</div>
 									</div>
@@ -53,7 +53,8 @@
 							{:else if current_exercise.type == 'Distance'}
 								<div class="flex flex-col space-y-4">
 									<div class="text-2xl">
-										{current_exercise.distance[set]}
+										<input class="w-10" value={current_exercise.distance[set]} />
+
 										{current_exercise.distance_units}
 									</div>
 									<div class="text-sm">Distance</div>
@@ -79,9 +80,11 @@
 					{current_exercise.duration_units}
 				</div>
 			{:else}
-				<div class="text-5xl">
-					{current_exercise.distance}
-					{current_exercise.distance_units}
+				<div class="flex flex-row justify-center items-center">
+					<input class="text-3xl w-10" type="number" value={current_exercise.distance} />
+					<div>
+						{current_exercise.distance_units}
+					</div>
 				</div>
 			{/if}
 			{#if current_exercise.rest}

@@ -7,10 +7,10 @@ export let workouts: WorkoutLogWithExercises[]
 
 </script>
 
-<div>
+<div class="flex flex-col space-y-4">
     {#each workouts as workout}
 
-    <div class="flex flex-row space-x-6 rounded-md variant-outline-secondary p-4">
+    <div class="flex flex-row space-x-6 rounded-md variant-outline-secondary mx-4 p-4">
 
     <div>
         <div class="font-semibold">{workout.name}</div>

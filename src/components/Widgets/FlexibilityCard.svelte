@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { ExerciseRoutineWithExercise } from "$lib/db/schema";
+	import type { ExerciseLogWithExercises, ExerciseRoutineWithExercise } from "$lib/db/schema";
 	import ClockIcon from "../Icons/ClockIcon.svelte";
 	import RulerIcon from "../Icons/RulerIcon.svelte";
 
-    export let exercise: ExerciseRoutineWithExercise
+    export let exercise: ExerciseLogWithExercises
 
     
 

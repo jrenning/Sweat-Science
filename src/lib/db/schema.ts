@@ -35,8 +35,12 @@ export type ExerciseWithEquipment = InferSelectModel<typeof exercises> & {
 
 export type Equipment = InferSelectModel<typeof equipment>;
 
+
+export type ExerciseLogWithExercises = InferSelectModel<typeof exerciseLog> & {
+	exercise: InferSelectModel<typeof exercises>;
+};
 export type WorkoutLogWithExercises = InferSelectModel<typeof workoutLog> & {
-	exercise_routines: InferSelectModel<typeof exerciseLog>[]
+	exercise_routines: ExerciseLogWithExercises[]
 }
 
 /* INSERT TYPES */
@@ -304,6 +308,10 @@ export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({
 	user: one(users, {
 		fields: [exerciseLog.user_id],
 		references: [users.id]
+	}),
+	exercise: one(exercises, {
+		fields: [exerciseLog.exercise_id],
+		references: [exercises.id]
 	})
 }));
 

@@ -15,17 +15,17 @@
 <Modal />
 <Toast />
 <header
-	class="flex flex-row items-center justify-around shadow-md relative text-center w-full bg-red-300 h-[58px] mb-[10px]"
+	class="flex flex-row items-center justify-around shadow-md relative text-center w-full bg-surface-500 h-[58px] mb-[10px]"
 >
 	<LightSwitch />
 	<a href="/"><h1 class="text-3xl text-white">Workout Planner</h1></a>
 	{#if $page.data.session}
-		<button on:click={() => signOut()} class="rounded-md bg-blue-200 shadow-md px-2 py-1"
+		<button on:click={() => signOut()} class="rounded-md bg-primary-500 text-black shadow-md px-2 py-1"
 			>Sign out</button
 		>
 	{:else}
 		<span class="notSignedInText">You are not signed in</span>
-		<button on:click={() => signIn('google')} class="rounded-md bg-blue-200 shadow-md px-2 py-1"
+		<button on:click={() => signIn('google')} class="rounded-md bg-primary-500 shadow-md px-2 py-1"
 			>Sign In with Google</button
 		>
 	{/if}

@@ -63,8 +63,7 @@
 
 <div class="card py-4 px-14 flex flex-col">
 	<div class="flex justify-center items-center font-bold text-lg">Add Exercise</div>
-	<form method="POST" action="?/exercise_form" class="resize-y flex flex-row space-x-8" use:enhance>
-		<div class="flex flex-col space-y-6">
+	<form method="POST" action="?/exercise_form" class="resize-y flex flex-col space-y-4 justify-center items-center" use:enhance>
 			<label for="name">Name</label>
 			<input class="input text-center" bind:value={$form.name} type="text" name="name" />
 			{#if $errors.name} <span>{$errors.name}</span> {/if}
@@ -81,8 +80,6 @@
 				{/each}
 			</select>
 			{#if $errors.category} <span>{$errors.category}</span> {/if}
-		</div>
-		<div class="flex flex-col">
 			<label for="equipment">Equipment</label>
 			<select class="select" bind:value={$form.equipment_id} name="equipment_id">
 				{#each equipment_options as option}
@@ -107,7 +104,6 @@
 					on:selection={onInputSelectionMuscle}
 				/>
 			</div>
-		</div>
 	</form>
 	<button
 		type="submit"

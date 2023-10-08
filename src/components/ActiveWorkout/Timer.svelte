@@ -89,7 +89,7 @@
 	</ProgressRadial>
 	<button
 		on:click={() => handleButton()}
-		class="rounded-full variant-filled-secondary w-8 h-8 font-semibold shadow-md flex justify-center items-center text-lg"
+		class="rounded-full variant-filled-secondary w-10 h-10 font-semibold shadow-md flex justify-center items-center text-lg"
 	>
 		{#if STATE == 'Running'}
 			<div class="w-4 h-4 flex justify-center items-center">
