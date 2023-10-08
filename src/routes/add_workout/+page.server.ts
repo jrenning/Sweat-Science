@@ -32,7 +32,7 @@ export const actions: Actions = {
 		// pass in workout plan id
 		// TODO pass in param for id
 		const user_id = session?.user.id ? session.user.id : '';
-
+		console.log(workoutForm.errors.exercises)
 		if (!workoutForm.valid) return fail(400, { workoutForm });
 
 		// validate stuff

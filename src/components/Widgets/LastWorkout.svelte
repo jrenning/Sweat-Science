@@ -10,7 +10,7 @@
 </script>
 
 {#if last_workout}
-<div class="bg-slate-100 rounded-md shadow-md p-1">
+<div class="bg-slate-100 dark:bg-red-300 rounded-md shadow-md p-1">
 			<div class="font-bold text-4xl mx-4 mt-2">{last_workout?.name}</div>
 			<div class="italic mx-4 mb-2">{last_workout?.created_at?.toDateString()}</div>
             <HorizontalScrollBox>

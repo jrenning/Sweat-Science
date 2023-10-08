@@ -2,8 +2,12 @@
 	import { Tab, TabGroup } from "@skeletonlabs/skeleton";
 	import ClockIcon from "../../components/Icons/ClockIcon.svelte";
 	import ChartIcon from "../../components/Icons/ChartIcon.svelte";
+	import type { PageData } from "./$types";
+	import WorkoutLogs from "../../components/Log/WorkoutLogs.svelte";
 
     let tabSet: number = 0
+
+	export let data: PageData
 
 </script>
 
@@ -19,7 +23,7 @@
 	<!-- Tab Panels --->
 	<svelte:fragment slot="panel">
 		{#if tabSet === 0}
-			(tab panel 1 contents)
+			<WorkoutLogs workouts={data.workouts}/>
 		{:else if tabSet === 1}
 			(tab panel 2 contents)
         {/if}

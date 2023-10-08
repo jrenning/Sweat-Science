@@ -9,7 +9,7 @@
 
 </script>
 
-<div class=" flex-grow-0 flex-shrink-0 flex-auto bg-green-200 w-[160px] h-[150px] p-2 border border-white rounded-md shadow-md">
+<div class=" flex-grow-0  dark:text-black flex-shrink-0 flex-auto bg-secondary-300 w-[160px] h-[150px] p-2 border border-white rounded-md shadow-md">
 
 <div class="font-semibold">{exercise.name}</div>
 <div class="mt-4 space-y-4">

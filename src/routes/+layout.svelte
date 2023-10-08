@@ -4,11 +4,12 @@
 	import { page } from '$app/stores';
 	import Footer from '../components/UI/Footer.svelte';
 	import { LightSwitch, Modal, Toast, initializeStores } from '@skeletonlabs/skeleton';
+	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
+	import { storePopup } from '@skeletonlabs/skeleton';
+	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
-
-
-	// init skeleton 
-	initializeStores()
+	// init skeleton
+	initializeStores();
 </script>
 
 <Modal />

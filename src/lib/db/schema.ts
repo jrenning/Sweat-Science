@@ -35,6 +35,10 @@ export type ExerciseWithEquipment = InferSelectModel<typeof exercises> & {
 
 export type Equipment = InferSelectModel<typeof equipment>;
 
+export type WorkoutLogWithExercises = InferSelectModel<typeof workoutLog> & {
+	exercise_routines: InferSelectModel<typeof exerciseLog>[]
+}
+
 /* INSERT TYPES */
 
 export type InsertEquipment = InferInsertModel<typeof equipment>;
@@ -50,6 +54,10 @@ export type InsertFullWorkoutPlan = InferInsertModel<typeof workout_plans> & {
 };
 
 export type InsertWorkoutPlan = InferInsertModel<typeof workout_plans>;
+
+
+export type InsertExerciseLog = InferInsertModel<typeof exerciseLog>
+export type InsertWorkoutLog = InferInsertModel<typeof workoutLog>
 
 /* USER */
 
@@ -203,6 +211,8 @@ export const DistanceUnits = pgEnum('distance_units', [
 	'centimeters'
 ]);
 export const DurationUnits = pgEnum('duration units', ['second', 'minute', 'hour', 'day']);
+export const ExerciseGoalTypes = pgEnum("exercise_goal_types", ["Duration", "Weight", "Distance"])
+
 
 // TODO figure out how to remove not null on everything without typescript throwing a hissy fit
 export const exercise_routine = pgTable('exercise_routine', {
@@ -212,10 +222,11 @@ export const exercise_routine = pgTable('exercise_routine', {
 		.notNull()
 		.references(() => exercises.id, {onDelete: "set null"}),
 	name: text('name'),
+	type: ExerciseGoalTypes("exercise_goal_types"),
 	sets: integer('sets').notNull(),
 	reps: integer('reps').array().notNull(),
-	rests: integer("rests").array().notNull(),
-	rest_units: DurationUnits("duration_units"),
+	rest: integer("rest").notNull(),
+	rest_units: DurationUnits("rest_units").default("second"),
 	weight: integer('weight').array().notNull(),
 	weight_units: WeightUnits('weight_units'),
 	duration: real('duration').array().notNull(),
@@ -273,15 +284,15 @@ export const exerciseLog = pgTable('exercise_log', {
 	name: text('name'),
 	sets: integer('sets').notNull(),
 	reps: integer('reps').array().notNull(),
-	rests: integer("rests").array().notNull(),
-	rest_units: DurationUnits("duration_units"),
+	rest: integer("rest").notNull(),
+	rest_units: DurationUnits("rest_units"),
 	weight: integer('weight').array().notNull(),
 	weight_units: WeightUnits('weight_units'),
 	duration: real('duration').array().notNull(),
 	duration_units: DurationUnits('duration_units'),
 	distance: integer('distance').array().notNull(),
 	distance_units: DistanceUnits('distance_units'),
-	created_at: timestamp('created_at').defaultNow(),
+	created_at: timestamp('created_at').defaultNow().notNull(),
 	workout_log_id: integer("workout_log_id").references(()=> workoutLog.id)
 });
 
@@ -298,8 +309,9 @@ export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({
 
 export const workoutLog = pgTable('workout_log', {
 	id: serial('id').primaryKey(),
+	name: text("name"),
 	user_id: text('user_id').references(() => users.id),
-	created_at: timestamp('created_at').defaultNow(),
+	created_at: timestamp('created_at').defaultNow().notNull(),
 	notes: text("notes")
 });
 
@@ -361,3 +373,5 @@ export const insertExerciseSchema = createInsertSchema(exercises)
 export const insertEquipmentSchema = createInsertSchema(equipment)
 export const insertWorkoutRoutine = createInsertSchema(workout_routine);
 export const insertWorkoutPlanSchema = createInsertSchema(workout_plans);
+export const insertWorkoutLogSchema = createInsertSchema(workoutLog)
+export const insertExerciseLogSchema = createInsertSchema(exerciseLog)

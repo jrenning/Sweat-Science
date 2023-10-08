@@ -66,7 +66,7 @@
 		}
 	];
 
-	let type = '';
+
 
 	function updatePlanDays(change: number) {
 		if ($planForm.total_days + change < 0) {
@@ -87,19 +87,20 @@
 <form
 	method="POST"
 	action="/add_workout_plan?/workout_plan"
-	class="flex flex-col space-y-4 bg-red-50 m-4 rounded-md p-2"
+	class="flex flex-col space-y-4 bg-red-300 m-4 rounded-md p-2"
 	use:planEnhance
 >
 	{#if pg == 1}
 		<input type="hidden" name="user_id" value={$page.data.session?.user.id} />
 		{#if $planForm.id}<input type="hidden" name="id" value={$planForm.id} />{/if}
-		<label for="name">Name</label>
-		<input type="text" id="name" name="name" bind:value={$planForm.name} />
+		<label for="name" class="label">Name</label>
+		<input type="text" id="name" name="name" class="input" bind:value={$planForm.name} />
 		{#if $planFormErrors.name}<span>{$planFormErrors.name}</span>{/if}
-		<label for="description">Description</label>
-		<input type="text" id="description" name="description" bind:value={$planForm.description} />
-		<label for="start_date">Start Date</label>
+		<label for="description" class="label">Description</label>
+		<input type="text" id="description" class="input" name="description" bind:value={$planForm.description} />
+		<label for="start_date" class="label">Start Date</label>
 		<input
+			class="input"
 			type="date"
 			id="start_date"
 			name="start_date"
@@ -109,7 +110,7 @@
 		{#if $planFormErrors.start_date}<span>{$planFormErrors.start_date}</span>{/if}
 
 		<button
-			class="rounded-md shadow-md px-2 py-1 bg-red-100"
+			class="rounded-md shadow-md px-2 py-1 bg-surface-active-token"
 			type="button"
 			on:click={() => (pg += 1)}
 		>
@@ -120,28 +121,28 @@
 			<label for="days">Number of Days</label>
 			<div class="flex justify-center items-center space-x-4">
 				<button
-					class="rounded-md shadow-md px-2 py-1 bg-red-100"
+					class="rounded-md btn-md shadow-md px-2 py-1"
 					on:click={() => {
 						updatePlanDays(-7);
 					}}
 					type="button">- Week</button
 				>
 				<button
-					class="rounded-md shadow-md px-2 py-1 bg-red-100"
+					class="rounded-md shadow-md px-2 py-1 btn-md"
 					on:click={() => {
 						updatePlanDays(-1);
 					}}
 					type="button">-</button
 				>
 
-				<input bind:value={$planForm.total_days} class="w-8" name="days" />
+				<input bind:value={$planForm.total_days} class=" input w-8" name="days" />
 				<button
-					class="rounded-md shadow-md px-2 py-1 bg-red-100"
+					class="rounded-md shadow-md px-2 py-1 btn-md"
 					on:click={() => updatePlanDays(1)}
 					type="button">+</button
 				>
 				<button
-					class="rounded-md shadow-md px-2 py-1 bg-red-100"
+					class="rounded-md shadow-md px-2 py-1 btn-md"
 					on:click={() => updatePlanDays(7)}
 					type="button">+ Week</button
 				>
@@ -199,7 +200,7 @@
 											class="radio"
 											name="type"
 											value="Weight"
-											bind:group={type}
+											bind:group={workout.exercises[i].type}
 										/>
 										<label for="distance">Distance</label>
 										<input
@@ -207,14 +208,14 @@
 											class="radio"
 											name="type"
 											value="Distance"
-											bind:group={type}
+											bind:group={workout.exercises[i].type}
 										/>
 										<label for="time">Time</label>
-										<input type="radio" class="radio" name="type" value="Time" bind:group={type} />
+										<input type="radio" class="radio" name="type" value="Duration" bind:group={workout.exercises[i].type} />
 									</div>
 									{#each { length: workout.exercises[i].sets } as _, set}
 										<div class="flex flex-row space-x-4">
-											{#if type == 'Weight'}
+											{#if workout.exercises[i].type == 'Weight'}
 												<div class="input-group w-30 input-group-divider grid-cols-[auto_1fr_auto]">
 													<input
 														type="number"
@@ -234,7 +235,7 @@
 													class="input w-10"
 													bind:value={workout.exercises[i].reps[set]}
 												/>
-											{:else if type == 'Distance'}
+											{:else if workout.exercises[i].type == 'Distance'}
 												<p>Distance</p>
 												<div class="input-group w-30 input-group-divider grid-cols-[auto_1fr_auto]">
 													<input
@@ -248,7 +249,7 @@
 														<option>km</option>
 													</select>
 												</div>
-											{:else if type == 'Time'}
+											{:else if workout.exercises[i].type == 'Duration'}
 												<p>Time</p>
 												<div class="input-group w-40 input-group-divider grid-cols-[auto_1fr_auto]">
 													<input
