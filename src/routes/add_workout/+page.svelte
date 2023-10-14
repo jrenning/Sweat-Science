@@ -12,6 +12,7 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import RestTimeSelect from '../../components/AddWorkout/Form/RestTimeSelect.svelte';
 	import { DurationUnits } from '$lib/db/schema';
+	import BackButton from '../../components/UI/BackButton.svelte';
 
 	const date = new Date();
 
@@ -38,11 +39,11 @@
 
 <div class="flex flex-col justify-center items-center">
 	<div class="flex flex-row w-full justify-evenly mb-4 variant-outline-primary rounded-md">
-		<a href="/"><button class="text-2xl rotate-180">&#x279F;</button></a>
+		<BackButton link="/" />
 		<div class="text-lg font-semibold">{date.toDateString()}</div>
 		<div />
 	</div>
-	<form class="space-y-4" use:enhance method="POST">
+	<form class="space-y-4 flex flex-col" use:enhance method="POST">
 		<label for="name">Name</label>
 		<input type="text" class="input" id="name" name="name" bind:value={$form.name} />
 
@@ -107,10 +108,10 @@
 									/>
 								</div>
 							</div>
-							<div>
+							<div class="flex flex-col justify-center items-center my-4">
 								<label class="label" for="sets">Sets</label>
 								<input
-									class="input justify-center flex items-center"
+									class="input text-center rounded-md"
 									type="number"
 									name="sets"
 									bind:value={$form.exercises[i].sets}

@@ -4,10 +4,16 @@
 	import ChartIcon from "../../components/Icons/ChartIcon.svelte";
 	import type { PageData } from "./$types";
 	import WorkoutLogs from "../../components/Log/WorkoutLogs.svelte";
+	import ExerciseSelector from "../../components/UI/ExerciseSelector.svelte";
+	import { goto } from "$app/navigation";
 
     let tabSet: number = 0
 
 	export let data: PageData
+
+	function goToProgress(id: unknown) {
+		goto(`/progress/${id}`)
+	}
 
 </script>
 
@@ -25,7 +31,7 @@
 		{#if tabSet === 0}
 			<WorkoutLogs workouts={data.workouts}/>
 		{:else if tabSet === 1}
-			(tab panel 2 contents)
+			<ExerciseSelector exercises={data.exercises} callback={goToProgress}/>
         {/if}
 	</svelte:fragment>
 </TabGroup>

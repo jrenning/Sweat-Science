@@ -1,27 +1,20 @@
-import { db } from "../db";
-import { getWorkoutById } from "../queries/workout_routine";
-import { exerciseLog, workoutLog, type InsertExerciseLog } from "../schema";
+import { db } from '../db';
+import { getWorkoutById } from '../queries/workout_routine';
+import { exerciseLog, workoutLog, type InsertExerciseLog, type AddWorkoutLog } from '../schema';
 
-export async function createLogFromWorkout(workout_id: number, user_id: string, notes: string) {
-    const workout = await getWorkoutById(user_id, workout_id)
+export async function createLogFromWorkout(input: AddWorkoutLog) {
+	const data = await db.insert(workoutLog).values({
+		name: input.name,
+		user_id: input.user_id,
+		notes: input.notes
+	}).returning({id: workoutLog.id});
 
-    if (workout) {
-    // create initial log
-    await db.insert(workoutLog).values({
-        name: workout.name,
-        user_id: user_id,
-        notes: notes
-
-    })
-
-    // attach exercise logs 
-    workout.exercises.forEach((exercise)=> {
-        createExerciseLog({...exercise.exercise_routine, created_at: new Date()})
-    })
-    }   
-
+	// attach exercise logs
+	input.exercises.forEach((exercise) => {
+		createExerciseLog({ ...exercise, created_at: new Date(), id: undefined, workout_log_id: data[0].id, user_id: input.user_id});
+	});
 }
 
 export async function createExerciseLog(input: InsertExerciseLog) {
-    return await db.insert(exerciseLog).values(input)
+	return await db.insert(exerciseLog).values(input);
 }

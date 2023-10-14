@@ -1,6 +1,6 @@
 import { and, desc, eq } from "drizzle-orm";
 import { db } from "../db";
-import { workoutLog } from "../schema";
+import { exerciseLog, exercise_routine, workoutLog } from "../schema";
 
 
 export async function getUserWorkoutLogs(user_id: string) {
@@ -11,6 +11,12 @@ export async function getUserWorkoutLogs(user_id: string) {
         where: eq(workoutLog.user_id, user_id)
     }
     )
+}
+
+export async function  getUserExerciseLogById(user_id: string, exercise_id: number) {
+    return await db.query.exerciseLog.findMany({
+        where: and(eq(exerciseLog.exercise_id, exercise_id), eq(exerciseLog.user_id, user_id))
+    })
 }
 
 export async function getLastWorkout(user_id: string) {

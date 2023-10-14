@@ -19,6 +19,7 @@ import { float } from 'drizzle-orm/mysql-core';
 
 /* SELECT TYPES*/
 
+export type ExerciseRoutine = InferSelectModel<typeof exercise_routine>
 export type ExerciseRoutineWithExercise = InferSelectModel<typeof exercise_routine> & {
 	exercise: InferSelectModel<typeof exercises>;
 };
@@ -29,6 +30,7 @@ export type WorkoutRoutineWithExercises = InferSelectModel<typeof workout_routin
 	}[];
 };
 
+export type Exercise = InferSelectModel<typeof exercises>
 export type ExerciseWithEquipment = InferSelectModel<typeof exercises> & {
 	equipment: InferSelectModel<typeof equipment> | null;
 };
@@ -62,6 +64,9 @@ export type InsertWorkoutPlan = InferInsertModel<typeof workout_plans>;
 
 export type InsertExerciseLog = InferInsertModel<typeof exerciseLog>
 export type InsertWorkoutLog = InferInsertModel<typeof workoutLog>
+export type AddWorkoutLog = InsertWorkoutLog & {
+	exercises: InsertExerciseLog[]
+}
 
 /* USER */
 
@@ -144,7 +149,7 @@ export const exercises = pgTable('exercises', {
 	category: ExerciseCategories('exercise_categories').notNull(),
 	equipment_id: integer('equipment_id').references(() => equipment.id, {onDelete: "set null"}),
 	muscle_groups: MuscleGroups('muscle_groups').array(),
-	created_at: timestamp('created_at').defaultNow()
+	created_at: timestamp('created_at').notNull().defaultNow()
 });
 
 export const exerciseRelations = relations(exercises, ({ one }) => ({
@@ -237,7 +242,7 @@ export const exercise_routine = pgTable('exercise_routine', {
 	duration_units: DurationUnits('duration_units'),
 	distance: integer('distance').array().notNull(),
 	distance_units: DistanceUnits('distance_units'),
-	created_at: timestamp('created_at').defaultNow()
+	created_at: timestamp('created_at').defaultNow().notNull()
 });
 
 export const exerciseRoutineRelations = relations(exercise_routine, ({ one, many }) => ({
@@ -281,15 +286,16 @@ export const workoutToExerciseRoutineRelations = relations(
 
 export const exerciseLog = pgTable('exercise_log', {
 	id: serial('id').primaryKey(),
-	user_id: text('user_id').references(() => users.id, {onDelete: "cascade"}),
+	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
 	exercise_id: integer('exercise_id')
 		.notNull()
-		.references(() => exercises.id, {onDelete: "set null"}),
+		.references(() => exercises.id, { onDelete: 'set null' }),
 	name: text('name'),
+	type: ExerciseGoalTypes('exercise_goal_types'),
 	sets: integer('sets').notNull(),
 	reps: integer('reps').array().notNull(),
-	rest: integer("rest").notNull(),
-	rest_units: DurationUnits("rest_units"),
+	rest: integer('rest').notNull(),
+	rest_units: DurationUnits('rest_units'),
 	weight: integer('weight').array().notNull(),
 	weight_units: WeightUnits('weight_units'),
 	duration: real('duration').array().notNull(),
@@ -297,7 +303,7 @@ export const exerciseLog = pgTable('exercise_log', {
 	distance: integer('distance').array().notNull(),
 	distance_units: DistanceUnits('distance_units'),
 	created_at: timestamp('created_at').defaultNow().notNull(),
-	workout_log_id: integer("workout_log_id").references(()=> workoutLog.id)
+	workout_log_id: integer('workout_log_id').references(() => workoutLog.id)
 });
 
 export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({

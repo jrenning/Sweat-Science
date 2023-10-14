@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
+	import NewActiveCard from './NewActiveCard.svelte';
 
 	import WorkoutViewCard from './WorkoutViewCard.svelte';
 
@@ -13,7 +14,8 @@
 
 	<div
 		class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 overflow-x-auto px-4 py-10"
-	>
+	>	
+		<NewActiveCard />
 		{#each workouts as workout}
 			<WorkoutViewCard {workout} />
 		{/each}

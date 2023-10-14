@@ -5,7 +5,7 @@
 	import AddButton from '../components/UI/AddButton.svelte';
 	import LastWorkout from '../components/Widgets/LastWorkout.svelte';
 	import SectionHeader from '../components/UI/SectionHeader.svelte';
-	import WorkoutAdd from '../components/UI/WorkoutView.svelte';
+	import WorkoutAdd from '../components/ActiveWorkout/WorkoutView.svelte';
 	import SeedEquipment from '../components/SeedData/SeedEquipment.svelte';
 	import type { PageData } from './$types';
 

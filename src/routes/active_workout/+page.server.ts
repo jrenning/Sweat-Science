@@ -4,7 +4,8 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { superValidate } from 'sveltekit-superforms/client';
 import { insertWorkoutLogSchema } from '$lib/db/schema';
-import { addWorkoutLogSchema } from '../schemas';
+import { addWorkoutLogSchema } from './schemas';
+import { getPossibleExercises } from '$lib/db/queries/exercise';
 
 export const load: PageServerLoad = async ({ locals, url, params }) => {
 	const session = await locals.getSession();
@@ -12,19 +13,12 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 	// TODO pass in param for id
 	const user_id = session?.user.id ? session.user.id : '';
 
-	const workout = await getWorkoutById(
-		user_id,
-		Number(params.workout_id) ? Number(params.workout_id) : 0
-	);
-
-	const workoutExercises = workout?.exercises.map((exercise) => exercise.exercise_routine);
-
+    const exercises = await getPossibleExercises(user_id, "")
 	const workoutForm = await superValidate(
-		{ name: workout?.name, exercises: workoutExercises },
 		addWorkoutLogSchema
 	);
 	return {
-		workout,
+        exercises,
 		workoutForm
 	};
 };
@@ -39,7 +33,7 @@ export const actions: Actions = {
 		const session = await locals.getSession();
 		const user_id = session?.user.id ? session.user.id : '';
 
-		await createLogFromWorkout({user_id: user_id, ...workoutForm.data});
+		await createLogFromWorkout({ user_id: user_id, ...workoutForm.data });
 
 		throw redirect(303, '/');
 	}
