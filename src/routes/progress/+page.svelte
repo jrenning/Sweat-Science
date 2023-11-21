@@ -29,7 +29,7 @@
 	<!-- Tab Panels --->
 	<svelte:fragment slot="panel">
 		{#if tabSet === 0}
-			<WorkoutLogs workouts={data.workouts}/>
+			<!-- <WorkoutLogs workouts={data.workouts}/> -->
 		{:else if tabSet === 1}
 			<ExerciseSelector exercises={data.exercises} callback={goToProgress}/>
         {/if}

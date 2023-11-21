@@ -16,17 +16,10 @@
 	{#if $page.data.session}
 		<div class="flex flex-col justify-center items-center">
 			<div class="w-[80%]">
-				<div class="flex flex-row space-x-6 justify-center items-center my-6">
-					<AddButton object="Workout Plan" link="/add_workout_plan" />
-				</div>
-
 				<LastWorkout last_workout={data.data.last_workout && data.data.last_workout} />
-				<div class="flex flex-col space-y-4">
-					<SectionHeader name="Workouts" />
-					<AddButton object="Workout" link="/add_workout" />
-
-					<WorkoutAdd workouts={data.data.all_workouts} />
-				</div>
+				<SectionHeader name="Start Workout" />
+				<WorkoutAdd workouts={data.data.all_workouts} />
+				<SectionHeader name="My Activity" />
 			</div>
 		</div>
 	{:else}
