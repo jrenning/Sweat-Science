@@ -4,12 +4,10 @@
 	import Timer from '../../../components/ActiveWorkout/Timer.svelte';
 	import { current_day } from '../../../stores/workout_plan';
 	import { superForm } from 'sveltekit-superforms/client';
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import ExerciseStepper from '../../../components/ActiveWorkout/ExerciseStepper.svelte';
-	import ExerciseSingleStep from '../../../components/ActiveWorkout/ExerciseSingleStep.svelte';
-	import FormStepChange from '../../../components/AddWorkout/FormStepChange.svelte';
-	import ActiveFormStepChange from '../../../components/ActiveWorkout/ActiveFormStepChange.svelte';
-
+	import BackStep from '../../../components/Icons/BackStep.svelte';
+	import CheckIcon from '../../../components/Icons/CheckIcon.svelte';
+	import PlayIcon from '../../../components/Icons/PlayIcon.svelte';
+	import BackButton from '../../../components/UI/BackButton.svelte';
 	export let data: PageData;
 
 	let exercise: number = 0;
@@ -23,14 +21,19 @@
 	});
 
 	const onComplete = (e: Event) => {
-		exercise += 1
-	}
+		exercise += 1;
+	};
 </script>
 
 {#if data.workout}
 	<form use:enhance method="POST">
 		<div class="flex flex-col justify-center items-center space-y-6">
+			<div class="flex justify-evenly w-full">
+				<BackButton link="/"/>
+				
 			<div class="text-2xl font-semibold">{data.workout.name}</div>
+			<div></div>
+			</div>
 			<div class="w-[80%] flex flex-row justify-center items-center space-x-4">
 				<ProgressBar max={data.workout.exercises.length} value={progress} />
 				{#if exercise + 1 <= exercise_total}
@@ -40,27 +43,43 @@
 				{/if}
 			</div>
 			{#if current_exercise}
-				{current_exercise.exercise.name}
+				<div class="text-2xl">{current_exercise.exercise.name}</div>
+				<div>Set {current_exercise.sets} / {current_exercise.sets}</div>
 
-				{#if current_exercise.sets > 1}
-					<ExerciseStepper current_exercise={current_exercise} form={form} exercise={exercise} completeHandler={onComplete}/>
-				{:else}
-					<ExerciseSingleStep current_exercise={current_exercise} form={form} exercise={exercise} />
-				{/if}
-				{#if current_exercise.rest}
-					<div>Rest</div>
-					<Timer duration={current_exercise.rest} />
-				{/if}
-			{:else}
-					<div class="flex flex-col space-y-6">
-						<label class="label" for="notes">Notes</label>
-						<textarea class="textarea" name="notes" bind:value={$form.notes} />
+				<div class="rounded-md bg-surface-400 text-black shadow-md flex justify-evenly items-center w-[75%] h-[200px]">
+					<div class="flex flex-col space-y-4 ">
+						<div class="text-6xl font-bold">{current_exercise.weight[0]}</div>
+						<div class="text-lg">Weight</div>
 					</div>
-					<button type="submit" class="btn-md rounded-md variant-filled-surface shadow-md"
-						>Log Workout</button
-					>
+					<div class="flex flex-col space-y-4">
+						<div class="text-6xl font-bold">{current_exercise.reps[0]}</div>
+						<div class="text-lg">Reps</div>
+					</div>
+				</div>
+				<div class="flex flex-row space-x-6">
+					<button class="rounded-md bg-surface-600 shadow-md p-4 flex justify-center items-center">
+						<div class="w-8 h-8 flex justify-center items-center"><BackStep /></div>
+					</button>
+					<button class="rounded-md bg-surface-600 shadow-md p-6 flex justify-center items-center">
+						<div class="w-8 h-8 flex justify-center items-center"><CheckIcon /></div>
+					</button>
+					<button class="rounded-md bg-surface-600 shadow-md p-4 flex justify-center items-center">
+						<div class="w-8 h-8 flex justify-center items-center"><PlayIcon /></div>
+					</button>
+				</div>
+
+				<div class="text-4xl font-semibold text-gray-400">23:30</div>
+
+				<div class="text-right italic font-semibold w-full mr-4">Next: 1 min rest</div>
+			{:else}
+				<div class="flex flex-col space-y-6">
+					<label class="label" for="notes">Notes</label>
+					<textarea class="textarea" name="notes" bind:value={$form.notes} />
+				</div>
+				<button type="submit" class="btn-md rounded-md variant-filled-surface shadow-md"
+					>Log Workout</button
+				>
 			{/if}
-			<ActiveFormStepChange bind:exercise={exercise} bind:exercise_total={exercise_total} />
 		</div>
 	</form>
 {:else}

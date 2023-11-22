@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ExerciseLogWithExercises, ExerciseRoutineWithExercise } from '$lib/db/schema';
-	import HandPointIcon from '../Icons/HandPointIcon.svelte';
-	import WeightIcon from '../Icons/WeightIcon.svelte';
+	import HandPointIcon from '../../Icons/HandPointIcon.svelte';
+	import WeightIcon from '../../Icons/WeightIcon.svelte';
 
 	export let exercise: ExerciseLogWithExercises
 </script>

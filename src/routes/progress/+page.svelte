@@ -32,6 +32,17 @@
 			<!-- <WorkoutLogs workouts={data.workouts}/> -->
 		{:else if tabSet === 1}
 			<ExerciseSelector exercises={data.exercises} callback={goToProgress}/>
+			<div class="flex flex-col space-y-2 mt-8 text-3xl font-semibold">
+				<div class="rounded-md w-full py-8 justify-center flex px-10 bg-surface-400">
+					Strength
+				</div>
+				<div class="rounded-md w-full py-8 justify-center flex px-10 bg-surface-400">
+					Cardio
+				</div>
+				<div class="rounded-md w-full py-8 justify-center flex px-10 bg-surface-400">
+					Flexibility
+				</div>
+			</div>
         {/if}
 	</svelte:fragment>
 </TabGroup>

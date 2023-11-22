@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
-	import NewActiveCard from './NewActiveCard.svelte';
+	import NewActiveCard from '../ActiveWorkout/NewActiveCard.svelte';
 
 	import WorkoutViewCard from './WorkoutViewCard.svelte';
 

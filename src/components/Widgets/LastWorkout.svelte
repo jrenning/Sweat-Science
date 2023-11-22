@@ -5,15 +5,15 @@
 	import RobotIcon from '../Icons/RobotIcon.svelte';
 	import Card from '../UI/Card.svelte';
 	import HorizontalScrollBox from '../UI/HorizontalScrollBox.svelte';
-	import CardioCard from './CardioCard.svelte';
-	import FlexibilityCard from './FlexibilityCard.svelte';
-	import StrengthCard from './StrengthCard.svelte';
+	import CardioCard from './Cards/CardioCard.svelte';
+	import FlexibilityCard from './Cards/FlexibilityCard.svelte';
+	import StrengthCard from './Cards/StrengthCard.svelte';
 
 	export let last_workout: WorkoutLogWithExercises | undefined;
 </script>
 
 {#if last_workout}
-	<div class="bg-slate-100 dark:bg-[#C65F5F] rounded-md shadow-md text-black p-1">
+	<div class=" bg-[#C65F5F] rounded-md shadow-md text-black p-1">
 		<div class="font-bold text-3xl italic mx-4 mt-2">{last_workout?.name}</div>
 		<div class="italic mx-4 mb-2">{last_workout?.created_at?.toDateString()}</div>
 		<div class="grid grid-cols-3 mx-2 mt-6 mb-8">

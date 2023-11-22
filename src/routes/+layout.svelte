@@ -22,7 +22,7 @@
 <Modal />
 <Toast />
 <header
-	class="flex flex-row items-center mt-6 justify-around mb-10 relative text-center w-full bg-surface-900"
+	class="flex flex-row items-center mt-6 justify-around mb-10 relative text-center w-full bg-surface-50 dark:bg-surface-900"
 >
 	{#if $page.data.session}
 		<div class="flex flex-row justify-center space-x-5">
