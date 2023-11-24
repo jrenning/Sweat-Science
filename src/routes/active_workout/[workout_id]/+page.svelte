@@ -53,7 +53,8 @@
 			set -= 1;
 		} else {
 			exercise -= 1;
-			set = current_exercise.sets;
+			//@ts-ignore
+			set = data.workout?.exercises[exercise-1].exercise_routine.sets;
 		}
 	}
 </script>
@@ -90,7 +91,7 @@
 					>
 						<div class="flex flex-col space-y-4">
 							<input
-								class="text-6xl w-20 bg-transparent font-bold"
+								class="text-6xl w-28 bg-transparent font-bold"
 								type="number"
 								bind:value={$form.exercises[exercise].weight[set - 1]}
 							/>
@@ -98,7 +99,7 @@
 						</div>
 						<div class="flex flex-col space-y-4">
 							<input
-								class="text-6xl w-20 bg-transparent font-bold"
+								class="text-6xl w-28 bg-transparent font-bold"
 								type="number"
 								bind:value={$form.exercises[exercise].reps[set - 1]}
 							/>

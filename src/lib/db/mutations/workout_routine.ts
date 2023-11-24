@@ -21,8 +21,9 @@ export async function addWorkoutToPlan(plan_id: number, input: InsertWorkoutRout
 
 			// add exercises
 			if (input.exercises) {
+				let parent_id: number | null = null
 				input.exercises.forEach(async (exercise) => {
-					await addExerciseRoutineToWorkout(routine[0].id, exercise);
+					parent_id = await addExerciseRoutineToWorkout(routine[0].id, exercise, parent_id);
 				});
 			}
 		}
@@ -50,9 +51,11 @@ export async function addWorkout(input: InsertWorkoutRoutineWithExercises) {
 
 		// add exercises
 		if (input.exercises) {
-			input.exercises.forEach(async (exercise) => {
-				await addExerciseRoutineToWorkout(routine[0].id, exercise);
-			});
+			let parent_id = null
+			for(let i=0; i<input.exercises.length; i++) {
+				parent_id = await addExerciseRoutineToWorkout(routine[0].id, input.exercises[i], parent_id);
+
+			}
 		}
 	});
 }

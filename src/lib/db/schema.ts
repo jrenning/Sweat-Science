@@ -259,13 +259,18 @@ export const exercise_routine = pgTable('exercise_routine', {
 	duration_units: DurationUnits('duration_units'),
 	distance: integer('distance').array().notNull(),
 	distance_units: DistanceUnits('distance_units'),
-	created_at: timestamp('created_at').defaultNow().notNull()
+	created_at: timestamp('created_at').defaultNow().notNull(),
+	parent_id: integer("parent_id")
 });
 
 export const exerciseRoutineRelations = relations(exercise_routine, ({ one, many }) => ({
 	exercise: one(exercises, {
 		fields: [exercise_routine.exercise_id],
 		references: [exercises.id]
+	}),
+	parent: one(exercise_routine, {
+		fields: [exercise_routine.parent_id],
+		references: [exercise_routine.id]
 	}),
 	workouts: many(workoutToExerciseRoutines)
 }));

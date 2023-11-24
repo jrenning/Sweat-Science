@@ -4,7 +4,8 @@ import { exercise_routine, workoutToExerciseRoutines, type InsertExerciseRoutine
 
 export async function addExerciseRoutineToWorkout(
 	workout_routine_id: number,
-	input: InsertExerciseRoutine
+	input: InsertExerciseRoutine,
+	parent_id: number | null
 ) {
 	return await db.transaction(async (tx) => {
 		const routine = await tx.insert(exercise_routine).values({
@@ -21,7 +22,8 @@ export async function addExerciseRoutineToWorkout(
 			distance: input.distance,
 			distance_units: input.distance_units,
 			duration: input.duration,
-			duration_units: input.duration_units
+			duration_units: input.duration_units,
+			parent_id: input.parent_id
 		}).returning({id: exercise_routine.id});
 
         // add to joined table
@@ -29,5 +31,7 @@ export async function addExerciseRoutineToWorkout(
             workout_routine_id: workout_routine_id,
             exercise_routine_id: routine[0].id
         })
+
+		return routine[0].id
 	});
 }
