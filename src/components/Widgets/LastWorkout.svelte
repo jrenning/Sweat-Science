@@ -22,7 +22,7 @@
 				<div
 					class="rounded-md bg-[#E67070] flex justify-center items-center font-bold text-xl w-20 h-12"
 				>
-					1
+					{last_workout.exercise_routines.length}
 				</div>
 			</div>
 			<div class="flex flex-col justify-center items-center space-y-4">

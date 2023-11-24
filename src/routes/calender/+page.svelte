@@ -1,6 +1,6 @@
 <script lang="ts">
 	let days = ['Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa'];
-	let selected_day = 'Su';
+	let selected_day = days[new Date().getDay()];
 </script>
 
 <div>

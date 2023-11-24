@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ExerciseRoutine } from '$lib/db/schema';
-	import { calcOneRepMax } from '../../helpers/rep_max';
+	import { calcOneRepMax } from '../../../helpers/rep_max';
 
 	export let log_entry: ExerciseRoutine;
 

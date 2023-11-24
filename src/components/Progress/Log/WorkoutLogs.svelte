@@ -13,7 +13,7 @@ export let workouts: WorkoutLogWithExercises[]
     <div class="flex flex-row space-x-6 rounded-md variant-outline-secondary mx-4 p-4">
 
     <div>
-        <div class="font-semibold">{workout.name}</div>
+        <div class="font-semibold">{workout.name ? workout.name : "Unnamed Workout"}</div>
         <div>{workout.created_at.toDateString()}</div>
     </div>
 

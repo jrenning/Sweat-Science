@@ -135,11 +135,15 @@ export const equipment = pgTable('equipment', {
 	created_at: timestamp('created_at').defaultNow()
 });
 
+/* EXERCISES */
+
 export const ExerciseCategories = pgEnum('exercise_categories', [
 	'Cardio',
 	'Strength',
 	'Flexibility'
 ]);
+
+
 
 export const exercises = pgTable('exercises', {
 	id: serial('id').primaryKey(),
@@ -151,6 +155,19 @@ export const exercises = pgTable('exercises', {
 	muscle_groups: MuscleGroups('muscle_groups').array(),
 	created_at: timestamp('created_at').notNull().defaultNow()
 });
+
+
+export const exercise_info = pgTable("exercise_info", {
+	exercise_id: integer("exercise_id").references(()=> exercises.id, {onDelete: "cascade"}),
+	exercise_name: text("exercise_name"),
+	weight: integer("weight"),
+	novice: integer("novice"),
+	intermediate: integer("intermediate"),
+	advanced: integer("advanced"),
+	elite: integer("elite")
+})
+
+
 
 export const exerciseRelations = relations(exercises, ({ one }) => ({
 	equipment: one(equipment, {

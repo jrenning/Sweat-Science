@@ -60,6 +60,7 @@
 		"drizzle-orm": "^0.28.6",
 		"drizzle-zod": "^0.5.1",
 		"pg": "^8.11.3",
+		"svelvet": "^9.0.0",
 		"trpc-sveltekit": "^3.5.22"
 	}
 }

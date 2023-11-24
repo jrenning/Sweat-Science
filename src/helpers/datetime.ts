@@ -11,3 +11,12 @@ export function getDateInputFormatString(date: Date) {
 		date.getDate()
 	)}`;
 }
+
+export function prettifyDate(date: Date) {
+
+	const month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+
+	return `${month_names[date.getMonth()]} ${getLeadingZeroFormat(date.getDate())} ${date.getFullYear()}`
+}

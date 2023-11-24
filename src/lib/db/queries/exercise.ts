@@ -1,7 +1,8 @@
 import { and, asc, desc, eq, isNull, or } from 'drizzle-orm';
 import { db } from '../db';
-import { exercises, type ExerciseWithEquipment } from '../schema';
+import { exercise_info, exerciseLog, exercises, type ExerciseWithEquipment } from '../schema';
 import { getEquipmentById } from './equipment';
+import { calcOneRepMax } from '../../../helpers/rep_max';
 
 export async function getPossibleExercises(user_id: string, search_term: string) {
 	const data = await db
@@ -20,18 +21,46 @@ export async function getExercisesWithEquipment(user_id: string) {
 		}
 	});
 
-
 	return data;
 }
 
 export async function getExerciseById(id: number, user_id: string) {
-		const data = await db.query.exercises.findFirst({
-			where: and(or(eq(exercises.user_id, user_id), isNull(exercises.user_id)), eq(exercises.id, id)),
-		
-			with: {
-				equipment: true
-			}
-		});
+	const data = await db.query.exercises.findFirst({
+		where: and(or(eq(exercises.user_id, user_id), isNull(exercises.user_id)), eq(exercises.id, id)),
 
-		return data;
+		with: {
+			equipment: true
+		}
+	});
+
+	return data;
+}
+
+export async function getExerciseWeightsByName(name: string) {
+	const data = await db.select().from(exercise_info).where(eq(exercise_info.exercise_name, name));
+
+	return data;
+}
+
+export async function getEstimatedOneRepMax(exercise_id: number) {
+	const data = await db
+		.select({
+			weight: exerciseLog.weight,
+			reps: exerciseLog.reps
+		})
+		.from(exerciseLog)
+		.where(eq(exerciseLog.exercise_id, exercise_id))
+		.orderBy(desc(exerciseLog.weight))
+		.limit(1);
+
+	// GET MAX INDEX
+	if (data.length > 0 && data[0].weight) {
+		let weights = data[0].weight;
+		let i = weights.indexOf(Math.max(...weights));
+
+		return calcOneRepMax(weights[i], data[0].reps[i]);
+	}
+	else {
+		return undefined
+	}
 }

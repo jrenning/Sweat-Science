@@ -13,6 +13,7 @@
 	import RestTimeSelect from '../../components/AddWorkout/Form/RestTimeSelect.svelte';
 	import { DurationUnits } from '$lib/db/schema';
 	import BackButton from '../../components/UI/BackButton.svelte';
+	import FlowDiagram from '../../components/AddWorkout/FlowDiagram.svelte';
 
 	const date = new Date();
 
@@ -38,14 +39,16 @@
 </script>
 
 <div class="flex flex-col justify-center items-center">
-	<div class="flex flex-row w-full justify-evenly mb-4 variant-outline-primary rounded-md">
+	<div class="flex flex-row w-[90%] justify-between  mb-4">
 		<BackButton link="/" />
-		<div class="text-lg font-semibold">{date.toDateString()}</div>
-		<div />
 	</div>
+	<input type="text" class="text-3xl text-center bg-transparent mb-6 flex justify-center items-center" id="name" name="name" placeholder="Workout Name" bind:value={$form.name} />
+
+	<!-- <FlowDiagram /> -->
+
 	<form class="space-y-4 flex flex-col" use:enhance method="POST">
 		<label for="name">Name</label>
-		<input type="text" class="input" id="name" name="name" bind:value={$form.name} />
+		<input type="text" class="text-2xl" id="name" name="name" bind:value={$form.name} />
 
 		<button
 			type="button"
@@ -118,7 +121,6 @@
 								/>
 							</div>
 
-							<!-- <RestTimeSelect value={$form.exercises[i].rest} /> -->
 						</div>
 
 						<div class="flex flex-row space-x-6 mt-6">

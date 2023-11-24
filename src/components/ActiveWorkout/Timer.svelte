@@ -6,8 +6,10 @@
 	import { tweened } from 'svelte/motion';
 	import PauseIcon from '../Icons/PauseIcon.svelte';
 	import PlayIcon from '../Icons/PlayIcon.svelte';
+	import type { Writable } from 'svelte/store';
 
 	export let duration = 60;
+	export let finished: Writable<boolean>;
 
 	let startTime: number;
 	let elapsedTime = tweened(0);
@@ -15,7 +17,7 @@
 
 	type States = 'Running' | 'Paused' | 'Completed';
 
-	let STATE: States = 'Paused';
+	let STATE: States = 'Running';
 
 	let interval: NodeJS.Timeout;
 	const start = () => {
@@ -28,6 +30,7 @@
 			if ($elapsedTime > duration) {
 				STATE = 'Completed';
 				$elapsedTime = 0;
+				finished.set(false)
 			}
 		});
 	};
@@ -87,7 +90,7 @@
 	<ProgressRadial value={($elapsedTime / duration) * 100}>
 		{formatTime(duration - $elapsedTime)}
 	</ProgressRadial>
-	<button
+	<!-- <button
 		on:click={() => handleButton()}
 		class="rounded-full variant-filled-secondary w-10 h-10 font-semibold shadow-md flex justify-center items-center text-lg"
 	>
@@ -100,5 +103,5 @@
 				<PlayIcon />
 			</div>
 		{/if}
-	</button>
+	</button> -->
 </div>
