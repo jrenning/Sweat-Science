@@ -25,9 +25,7 @@ export type ExerciseRoutineWithExercise = InferSelectModel<typeof exercise_routi
 };
 
 export type WorkoutRoutineWithExercises = InferSelectModel<typeof workout_routine> & {
-	exercises: {
-		exercise_routine: ExerciseRoutineWithExercise;
-	}[];
+	exercises: ExerciseRoutineWithExercise[];
 };
 
 export type Exercise = InferSelectModel<typeof exercises>
@@ -50,7 +48,9 @@ export type WorkoutLogWithExercises = InferSelectModel<typeof workoutLog> & {
 export type InsertEquipment = InferInsertModel<typeof equipment>;
 
 export type InsertExercise = InferInsertModel<typeof exercises>
-
+export type InsertExerciceRoutineWithExercises = InferInsertModel<typeof exercise_routine> & {
+	exercise: InsertExercise
+}
 export type InsertExerciseRoutine = InferInsertModel<typeof exercise_routine>;
 export type InsertWorkoutRoutineWithExercises = InferInsertModel<typeof workout_routine> & {
 	exercises: InsertExerciseRoutine[];
@@ -223,7 +223,7 @@ export const workoutsRelations = relations(workout_routine, ({ one, many }) => (
 		fields: [workout_routine.workout_plan_id],
 		references: [workout_plans.id]
 	}),
-	exercises: many(workoutToExerciseRoutines)
+	exercises: many(exercise_routine)
 }));
 
 export const WeightUnits = pgEnum('weight_units', ['kg', 'lb']);
@@ -247,7 +247,7 @@ export const exercise_routine = pgTable('exercise_routine', {
 	exercise_id: integer('exercise_id')
 		.notNull()
 		.references(() => exercises.id, {onDelete: "set null"}),
-	name: text('name'),
+	workout_routine_id: integer("workout_routine_id").references(()=> workout_routine.id, {onDelete: "cascade"}),
 	type: ExerciseGoalTypes("exercise_goal_types"),
 	sets: integer('sets').notNull(),
 	reps: integer('reps').array().notNull(),
@@ -260,7 +260,7 @@ export const exercise_routine = pgTable('exercise_routine', {
 	distance: integer('distance').array().notNull(),
 	distance_units: DistanceUnits('distance_units'),
 	created_at: timestamp('created_at').defaultNow().notNull(),
-	parent_id: integer("parent_id")
+	position: integer("position").notNull()
 });
 
 export const exerciseRoutineRelations = relations(exercise_routine, ({ one, many }) => ({
@@ -268,41 +268,13 @@ export const exerciseRoutineRelations = relations(exercise_routine, ({ one, many
 		fields: [exercise_routine.exercise_id],
 		references: [exercises.id]
 	}),
-	parent: one(exercise_routine, {
-		fields: [exercise_routine.parent_id],
-		references: [exercise_routine.id]
-	}),
-	workouts: many(workoutToExerciseRoutines)
+	workout_routine: one(workout_routine, {
+		fields: [exercise_routine.workout_routine_id],
+		references: [workout_routine.id]
+	})
 }));
 
-export const workoutToExerciseRoutines = pgTable(
-	'workout_routine_to_exercise_routine',
-	{
-		exercise_routine_id: integer('exercise_routine_id')
-			.notNull()
-			.references(() => exercise_routine.id, {onDelete: "cascade"}),
-		workout_routine_id: integer('workout_routine_id')
-			.notNull()
-			.references(() => workout_routine.id, {onDelete: "cascade"})
-	},
-	(t) => ({
-		pk: primaryKey(t.exercise_routine_id, t.workout_routine_id)
-	})
-);
 
-export const workoutToExerciseRoutineRelations = relations(
-	workoutToExerciseRoutines,
-	({ one }) => ({
-		exercise_routine: one(exercise_routine, {
-			fields: [workoutToExerciseRoutines.exercise_routine_id],
-			references: [exercise_routine.id]
-		}),
-		workout_routine: one(workout_routine, {
-			fields: [workoutToExerciseRoutines.workout_routine_id],
-			references: [workout_routine.id]
-		})
-	})
-);
 
 /* LOGS */
 

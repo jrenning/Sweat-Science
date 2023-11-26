@@ -1,9 +1,14 @@
-import { insertExerciseRoutineSchema } from "$lib/db/schema";
+import { insertExerciseRoutineSchema, insertExerciseSchema } from "$lib/db/schema";
 import { z } from "zod";
+
+
+export const insertExerciseRoutineWithExercisesSchema = insertExerciseRoutineSchema.extend({
+	exercise: insertExerciseSchema
+})
+
 
 export const newWorkoutRoutineSchema = z.object({
 	name: z.string(),
-	exercises: z.array(insertExerciseRoutineSchema)
 });
 
 export type newWorkoutRoutine = typeof newWorkoutRoutineSchema

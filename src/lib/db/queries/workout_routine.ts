@@ -1,28 +1,19 @@
-import { and, asc, desc, eq } from 'drizzle-orm';
+import { and, asc, desc, eq, ne } from 'drizzle-orm';
 import { db } from '../db';
-import { workout_routine } from '../schema';
-
+import { exercise_routine, workout_routine } from '../schema';
 
 export async function getAllUserWorkouts(user_id: string) {
 	return await db.query.workout_routine.findMany({
-		where: eq(workout_routine.user_id, user_id),
+		where: and(eq(workout_routine.user_id, user_id), ne(workout_routine.status, "Pending")),
 		orderBy: desc(workout_routine.created_at),
 		with: {
 			exercises: {
-				columns: {
-					exercise_routine_id: false,
-					workout_routine_id: false
-				},
 				with: {
-					exercise_routine: {
-						with: {
-							exercise: true
-						}
-					}
+					exercise: true
 				}
 			}
 		}
-	})
+	});
 }
 
 export async function getWorkoutById(user_id: string, id: number) {
@@ -30,18 +21,22 @@ export async function getWorkoutById(user_id: string, id: number) {
 		where: and(eq(workout_routine.id, id), eq(workout_routine.user_id, user_id)),
 		with: {
 			exercises: {
-				columns: {
-					exercise_routine_id: false,
-					workout_routine_id: false
-				},
 				with: {
-					exercise_routine: {
-						with: {
-							exercise: true
-						}
-					}
+					exercise: true
 				}
 			}
 		}
 	});
 }
+
+export async function getPendingWorkouts(user_id: string) {
+	const data = await db
+		.select({ id: workout_routine.id })
+		.from(workout_routine)
+		.where(and(eq(workout_routine.user_id, user_id), eq(workout_routine.status, 'Pending')));
+
+	return data;
+}
+
+
+

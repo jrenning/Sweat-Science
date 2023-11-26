@@ -1,11 +1,11 @@
-import { createTRPCRouter, type Context } from '$lib/trpc/context';
-import { initTRPC } from '@trpc/server';
-import { workoutRouter } from './routers/workouts';
+// import { createTRPCRouter, type Context } from '$lib/trpc/context';
+// import { initTRPC } from '@trpc/server';
+// import { workoutRouter } from './routers/workouts';
 
 
 
-export const router = createTRPCRouter({
-	workouts: workoutRouter
-});
+// export const router = createTRPCRouter({
+// 	workouts: workoutRouter
+// });
 
-export type Router = typeof router;
+// export type Router = typeof router;

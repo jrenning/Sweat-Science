@@ -1,6 +1,12 @@
-import { and, asc, desc, eq, isNull, or } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, isNull, or } from 'drizzle-orm';
 import { db } from '../db';
-import { exercise_info, exerciseLog, exercises, type ExerciseWithEquipment } from '../schema';
+import {
+	exercise_info,
+	exercise_routine,
+	exerciseLog,
+	exercises,
+	type ExerciseWithEquipment
+} from '../schema';
 import { getEquipmentById } from './equipment';
 import { calcOneRepMax } from '../../../helpers/rep_max';
 
@@ -59,8 +65,11 @@ export async function getEstimatedOneRepMax(exercise_id: number) {
 		let i = weights.indexOf(Math.max(...weights));
 
 		return calcOneRepMax(weights[i], data[0].reps[i]);
-	}
-	else {
-		return undefined
+	} else {
+		return undefined;
 	}
 }
+
+
+
+

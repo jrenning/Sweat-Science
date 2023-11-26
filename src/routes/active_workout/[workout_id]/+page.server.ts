@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 		Number(params.workout_id) ? Number(params.workout_id) : 0
 	);
 
-	const workoutExercises = workout?.exercises.map((exercise) => exercise.exercise_routine);
+	const workoutExercises = workout?.exercises
 
 	const workoutForm = await superValidate(
 		{ name: workout?.name, exercises: workoutExercises },

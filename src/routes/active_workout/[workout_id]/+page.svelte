@@ -18,10 +18,8 @@
 
 	$: progress = exercise + 1;
 	$: exercise_total = data.workout?.exercises.length ? data.workout.exercises.length : 0;
-	$: arr = data.workout?.exercises[exercise];
-	$: current_exercise = arr?.exercise_routine;
-	$: arr_future = data.workout?.exercises[exercise + 1];
-	$: future_exercise = arr_future?.exercise_routine;
+	$: current_exercise = data.workout?.exercises[exercise];
+	$: future_exercise = data.workout?.exercises[exercise + 1];
 
 	const { form, enhance } = superForm(data.workoutForm, {
 		dataType: 'json'
@@ -54,7 +52,7 @@
 		} else {
 			exercise -= 1;
 			//@ts-ignore
-			set = data.workout?.exercises[exercise-1].exercise_routine.sets;
+			set = data.workout?.exercises[exercise-1].sets;
 		}
 	}
 </script>

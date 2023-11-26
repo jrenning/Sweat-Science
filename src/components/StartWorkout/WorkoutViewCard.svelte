@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
-	import { trpc } from '$lib/trpc/client';
+
 	import {page} from "$app/stores"
 
 	export let workout: WorkoutRoutineWithExercises;
@@ -20,17 +20,6 @@
 	}
 	const modal = getModalStore()
 
-	const deleteWorkout = async (id: number, user_id: string) => {
-		// const data = {id: id, user_id: user_id}
-
-		// const response = await fetch("/api/delete/workout", {
-		// 	method: "POST",
-		// 	body: JSON.stringify(data)
-		// })
-
-		// alert(response)
-		console.log(await trpc($page).workouts.deleteWorkout.mutate({id: id, user_id: user_id}))
-	}
 
 </script>
 
@@ -59,7 +48,7 @@
 				{#each workout.exercises as exercise, index}
 					<li>
 						<span class="rounded-full variant-filled-secondary px-2 py-1">{index + 1}.</span>
-						<span class="flex-auto text-md">{exercise.exercise_routine.exercise.name}</span>
+						<span class="flex-auto text-md">{exercise.exercise.name}</span>
 					</li>
 				{/each}
 			</ol>

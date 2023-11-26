@@ -1,52 +1,49 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-	import {
-		Accordion,
-		AccordionItem,
-		getModalStore,
-		type ModalComponent,
-		type ModalSettings
-	} from '@skeletonlabs/skeleton';
-	import ExerciseForm from '../../components/Exercises/ExerciseForm.svelte';
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import RestTimeSelect from '../../components/AddWorkout/Form/RestTimeSelect.svelte';
-	import { DurationUnits } from '$lib/db/schema';
+	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import BackButton from '../../components/UI/BackButton.svelte';
-	import FlowDiagram from '../../components/AddWorkout/FlowDiagram.svelte';
-
-	const date = new Date();
-
+	import ExerciseSelectionForm from '../../components/Exercises/ExerciseSelectionForm.svelte';
+	import AddExerciseCard from '../../components/AddWorkout/AddExerciseCard.svelte';
 	export let data: PageData;
+	const modalStore = getModalStore();
+	const equipment_names = data.equipment_choices.map((equip) => {
+		return { name: equip.name, id: equip.id };
+	});
+
 	const _form = superForm(data.form, {
 		dataType: 'json'
 	});
 	const { form, enhance, errors } = _form;
 
-	// workaround, need to provide starting values for arrays or super forms messes up
-	const genNewExerciseArray = (arr: any) => {
-		arr.push({
-			exercise_id: 0,
-			sets: 1,
-			rest: 0,
-			weight: [],
-			reps: [],
-			distance: [],
-			duration: []
-		});
-		return arr;
+	let exercises = 0;
+	const modalComponentExercise: ModalComponent = {
+		ref: ExerciseSelectionForm,
+		props: { exercise_options: data.exercise_choices, data: data.exerciseForm, index: exercises }
+	};
+	const exerciseModal: ModalSettings = {
+		type: 'component',
+		title: 'Add Exercise',
+		component: modalComponentExercise
 	};
 </script>
 
 <div class="flex flex-col justify-center items-center">
-	<div class="flex flex-row w-[90%] justify-between  mb-4">
+	<div class="flex flex-row w-[90%] justify-between mb-4">
 		<BackButton link="/" />
 	</div>
-	<input type="text" class="text-3xl text-center bg-transparent mb-6 flex justify-center items-center" id="name" name="name" placeholder="Workout Name" bind:value={$form.name} />
+	<input
+		type="text"
+		class="text-3xl text-center bg-transparent mb-6 flex justify-center items-center"
+		id="name"
+		name="name"
+		placeholder="Workout Name"
+		bind:value={$form.name}
+	/>
 
 	<!-- <FlowDiagram /> -->
 
-	<form class="space-y-4 flex flex-col" use:enhance method="POST">
+	<form class="space-y-4 flex flex-col" use:enhance method="POST" action="?/add_workout">
 		<label for="name">Name</label>
 		<input type="text" class="text-2xl" id="name" name="name" bind:value={$form.name} />
 
@@ -54,10 +51,16 @@
 			type="button"
 			class="btn-sm rounded-md variant-outline-surface text-md"
 			on:click={() => {
-				$form.exercises = genNewExerciseArray($form.exercises);
+				modalStore.trigger(exerciseModal);
 			}}>Add Exercise</button
 		>
-		<Accordion>
+		{#if data.workout_routine}
+			{#each data.workout_routine.exercises as exercise}
+				<AddExerciseCard {exercise} />
+			{/each}
+		{/if}
+
+		<!-- <Accordion>
 			{#each $form.exercises as _, i}
 				<AccordionItem open={i == 0}>
 					<svelte:fragment slot="summary">Exercise {i + 1}</svelte:fragment>
@@ -120,7 +123,6 @@
 									bind:value={$form.exercises[i].sets}
 								/>
 							</div>
-
 						</div>
 
 						<div class="flex flex-row space-x-6 mt-6">
@@ -195,8 +197,8 @@
 											bind:value={$form.exercises[i].duration[set]}
 										/>
 										<select bind:value={$form.exercises[i].duration_units}>
-											{#each DurationUnits.enumValues as unit} 
-											<option>{unit}</option>
+											{#each DurationUnits.enumValues as unit}
+												<option>{unit}</option>
 											{/each}
 										</select>
 									</div>
@@ -206,7 +208,7 @@
 					</svelte:fragment>
 				</AccordionItem>
 			{/each}
-		</Accordion>
+		</Accordion> -->
 		<button class="btn variant-outline-surface">Add Workout</button>
 	</form>
 </div>
