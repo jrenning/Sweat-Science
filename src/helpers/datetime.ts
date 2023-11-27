@@ -20,3 +20,15 @@ export function prettifyDate(date: Date) {
 
 	return `${month_names[date.getMonth()]} ${getLeadingZeroFormat(date.getDate())} ${date.getFullYear()}`
 }
+
+// https://stackoverflow.com/questions/4156434/javascript-get-the-first-day-of-the-week-from-current-date
+export function firstDayOfWeek(dateObject: Date, firstDayOfWeekIndex: number) {
+	const dayOfWeek = dateObject.getDay(),
+		firstDayOfWeek = new Date(dateObject),
+		diff = dayOfWeek >= firstDayOfWeekIndex ? dayOfWeek - firstDayOfWeekIndex : 6 - dayOfWeek;
+
+	firstDayOfWeek.setDate(dateObject.getDate() - diff);
+	firstDayOfWeek.setHours(0, 0, 0, 0);
+
+	return firstDayOfWeek;
+}

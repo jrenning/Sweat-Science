@@ -1,6 +1,27 @@
 <script lang="ts">
+	import WorkoutLogs from '../../components/Progress/Log/WorkoutLogs.svelte';
+	import { firstDayOfWeek } from '../../helpers/datetime';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 	let days = ['Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa'];
-	let selected_day = days[new Date().getDay()];
+	let today = new Date();
+	let start_of_week = firstDayOfWeek(today, 0);
+	let selected_day = days[today.getDay()];
+	$: idx = days.indexOf(selected_day);
+	$: workouts_this_week = data.workouts.filter(
+		(workout) => workout.created_at.getTime() > start_of_week.getTime()
+	);
+
+	$: workouts = workouts_this_week.filter((workout) => workout.created_at.getDay() == idx);
+
+	function getExerciseTotal() {
+		let total = 0;
+
+		workouts_this_week.forEach((workout) => (total += workout.exercise_routines.length));
+
+		return total;
+	}
 </script>
 
 <div>
@@ -13,31 +34,25 @@
 	<div class="flex w-full justify-evenly my-4">
 		{#each days as day}
 			{#if day == selected_day}
-				<div class="text-red-400">{day}</div>
+				<button class="text-red-400">{day}</button>
 			{:else}
-				<div>{day}</div>
+				<button on:click={() => (selected_day = day)}>{day}</button>
 			{/if}
 		{/each}
 	</div>
 
-    <div class="rounded-md bg-surface-400 pt-2 shadow-md mx-4 h-20 flex flex-col ">
-        <div class="flex flex-col mx-4">
-        <div class="text-xl font-semibold">Workout Name</div>
-        <div>Workout Plan</div>
-        </div>
+	<WorkoutLogs {workouts} />
 
-    </div>
+	<div class="mt-10">
+		<div class="text-2xl mb-6 font-semibold mx-4">Summary</div>
+		<div class="flex text-lg mx-4 justify-evenly">
+			<div>{getExerciseTotal()} Exercise</div>
+			<div>640 cal</div>
+			<div>48 min</div>
+		</div>
+	</div>
 
-    <div class="mt-10">
-        <div class="text-2xl mb-6 font-semibold mx-4">Summary</div>
-        <div class="flex text-lg mx-4 justify-evenly">
-            <div>10 Exercises</div>
-            <div>640 cal</div>
-            <div>48 min</div>
-        </div>
-    </div>
-
-    <div class="mx-4 rounded-md bg-surface-400 py-2 mt-8">
-        <div class="flex justify-center">3 New Achievements</div>
-    </div>
+	<div class="mx-4 rounded-md bg-surface-400 py-2 mt-8">
+		<div class="flex justify-center">3 New Achievements</div>
+	</div>
 </div>

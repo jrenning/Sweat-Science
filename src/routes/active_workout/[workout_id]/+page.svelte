@@ -112,27 +112,27 @@
 						disabled={exercise == 0 && set == 1}
 						on:click={() => handleBack()}
 					>
-						<div class="w-8 h-8 flex justify-center items-center"><BackStep /></div>
+						<div class="w-8 h-8 flex justify-center items-center rotate-180 text-4xl text-black">&#x27A4;</div>
 					</button>
 					<button
 						type="button"
 						class="rounded-md bg-surface-600 shadow-md p-6 flex justify-center items-center"
 						on:click={() => handleComplete()}
 					>
-						<div class="w-8 h-8 flex justify-center items-center"><CheckIcon /></div>
+						<div class="w-8 h-8 flex justify-center items-center text-black text-4xl ">&#x2714;</div>
 					</button>
 					<button
 						type="button"
 						class="rounded-md bg-surface-600 shadow-md p-4 flex justify-center items-center"
 					>
-						<div class="w-8 h-8 flex justify-center items-center"><PlayIcon /></div>
+						<div class="w-8 h-8 bg-black flex justify-center items-center"></div>
 					</button>
 				</div>
 
 				<div class="text-4xl font-semibold text-gray-400">23:30</div>
 
 				<div class="text-right italic font-semibold w-full mr-4">
-					Next: {future_exercise?.exercise.name}
+					Next: {future_exercise ? future_exercise.exercise.name : "Finish"}
 				</div>
 			{:else}
 				<div class="flex flex-col space-y-6">

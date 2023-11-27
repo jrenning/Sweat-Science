@@ -19,3 +19,9 @@ export function calcOneRepMax(weight: number, reps: number, formula: OneRepFormu
         return Math.round((100 * weight ) / (48.8 + (53.8 * Math.E**(-0.075*reps))))
 
 }
+
+export function calculateOneRepFromArray(weight: number[], reps: number[]) {
+    let i = weight.indexOf(Math.max(...weight));
+
+    return calcOneRepMax(weight[i], reps[i])
+}

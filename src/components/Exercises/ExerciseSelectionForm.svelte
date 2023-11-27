@@ -34,19 +34,36 @@
 	let sets = 1;
 	let actual_sets = 1;
 	let sets_same = false;
-	$form.sets = actual_sets
+	$form.sets = actual_sets;
 
 	//@ts-ignore
 	function updateExerciseId(value) {
 		$form.exercise_id = value;
+	}
 
-		console.log($form);
+	function updateSetsToSame() {
+		if ($form.type == 'Weight') {
+			for (let i = 1; i < $form.sets; i++) {
+				$form.weight[i] = $form.weight[0];
+				$form.reps[i] = $form.reps[0];
+			}
+		} else if ($form.type == 'Distance') {
+			for (let i = 1; i < $form.sets; i++) {
+				$form.distance[i] = $form.distance[0];
+			}
+		} else {
+			for (let i = 1; i < $form.sets; i++) {
+				$form.duration[i] = $form.duration[0];
+			}
+		}
 	}
 
 	function toggleSameSets() {
 		sets_same = !sets_same;
 		if (sets_same) {
 			sets = 1;
+			// update form values
+			updateSetsToSame();
 		} else {
 			sets = actual_sets;
 		}
@@ -60,6 +77,11 @@
 			actual_sets -= 1;
 		}
 		$form.sets = actual_sets;
+		if (sets_same) {
+			updateSetsToSame();
+		}
+
+		console.log($form);
 	}
 
 	function addSet() {
@@ -68,6 +90,9 @@
 		}
 		actual_sets += 1;
 		$form.sets = actual_sets;
+		if (sets_same) {
+			updateSetsToSame();
+		}
 
 		console.log($form);
 	}
@@ -116,6 +141,20 @@
 					<SetInput type="Distance" bind:distance={$form.distance[i]} />
 				{:else if $form.type == 'Duration'}
 					<SetInput type="Duration" bind:duration={$form.duration[i]} />
+				{/if}
+			{/each}
+			{#each { length: actual_sets - sets } as set, i}
+				{#if $form.type == 'Weight'}
+					<SetInput
+						type="Weight"
+						bind:weight={$form.weight[i + sets]}
+						bind:reps={$form.reps[i + sets]}
+						hidden={true}
+					/>
+				{:else if $form.type == 'Distance'}
+					<SetInput type="Distance" bind:distance={$form.distance[i + sets]} hidden={true} />
+				{:else if $form.type == 'Duration'}
+					<SetInput type="Duration" bind:duration={$form.duration[i + sets]} hidden={true} />
 				{/if}
 			{/each}
 		</div>

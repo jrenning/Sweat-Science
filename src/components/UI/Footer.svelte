@@ -31,7 +31,7 @@
 			<a href="/progress"><div class="w-6 h-6 dark:fill-white"><ChartIcon /></div></a>
 		</div>
 
-		<div use:popup={addPopup}>
+		<div use:popup={addPopup} class="cursor-pointer">
 			<div
 				class="w-10 h-10 rounded-full dark:bg-gray-50 bg-surface-300 text-red-500 flex justify-center items-center text-3xl"
 			>

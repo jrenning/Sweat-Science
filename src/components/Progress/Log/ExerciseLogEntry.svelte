@@ -1,36 +1,28 @@
 <script lang="ts">
-	import type { ExerciseRoutine } from '$lib/db/schema';
+	import type { ExerciseLogWithExercises, ExerciseRoutine } from '$lib/db/schema';
+	import { prettifyDate } from '../../../helpers/datetime';
 	import { calcOneRepMax } from '../../../helpers/rep_max';
 
-	export let log_entry: ExerciseRoutine;
+	export let log_entry: ExerciseLogWithExercises;
 
-	let sourceData = [];
+	console.log(log_entry)
 </script>
-
-<div class="rounded-md bg-surface-400 items-center flex flex-row space-x-6">
-	<div class="flex flex-col mx-4 space-y-4">
-		<div class="font-semibold text-2xl">Type</div>
-		<div class="text-xl">{log_entry.type}</div>
-	</div>
+<div class=" mx-2 text-xl font-bold">{prettifyDate(log_entry.created_at)}</div>
 	{#if log_entry.type == 'Weight'}
-		<table class="table table-hover mx-2">
+		<table class=" bg-surface-200 mx-2 p-2 border-solid rounded-xl shadow-md border-2 border-secondary-300">
 			<tr>
-				<th class="font-semibold">Weight</th>
+				<th class="font-semibold p-2">Weight</th>
 				{#each log_entry.weight as weight}
-					<td>{weight} {log_entry.weight_units}</td>
+					<td class="p-2">{weight} {log_entry.weight_units ? log_entry.weight_units : "lb"}</td>
 				{/each}
 			</tr>
 			<tr>
 				<th class="font-semibold">Reps</th>
 				{#each log_entry.reps as rep}
-					<td>{rep}</td>
+					<td class="p-2">{rep}</td>
 				{/each}
 			</tr>
 		</table>
-        <div class="flex flex-col">
-            <div>1rm</div>
-            <div>{calcOneRepMax(135, 5)}</div>
-        </div>
 	{:else if log_entry.type == 'Distance'}
 		<div class="flex flex-col">
 			<div class="font-semibold">Distance</div>
@@ -42,4 +34,3 @@
 			<div>{log_entry.duration}</div>
 		</div>
 	{/if}
-</div>

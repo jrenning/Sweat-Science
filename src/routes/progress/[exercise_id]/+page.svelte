@@ -10,11 +10,13 @@
 	import InfoSection from '../../../components/Progress/InfoSection.svelte';
 	import DataSection from '../../../components/Progress/DataSection.svelte';
 	import WorkoutLogs from '../../../components/Progress/Log/WorkoutLogs.svelte';
+	import ExerciseLogs from '../../../components/Progress/Log/ExerciseLogs.svelte';
+	import ChartContainer from '../../../components/Progress/Charts/ChartContainer.svelte';
 
 	export let data: PageData;
 	let tabSet: number = 0;
 
-	let categories = ['Weight', 'Beginner', 'Novice', 'Intermediate', 'Advanced'];
+	let categories = ['Wt', 'Begin', 'Nov', 'Int', 'Adv'];
 </script>
 
 {#if data.exercise}
@@ -45,13 +47,13 @@
 			<!-- Tab Panels --->
 			<svelte:fragment slot="panel">
 				{#if tabSet === 0}
-					<InfoSection exercise={data.exercise} rep_max={data.rep_max} />
+					<InfoSection exercise={data.exercise} rep_max={data.rep_max} times_performed={data.log.length}/>
 				{:else if tabSet === 1}
-					(tab panel 2 contents)
+					<ChartContainer exerciseLogs={data.log}/>
 				{:else if tabSet === 2}
 					<div class="table-container">
 						<table class="table table-hover">
-							<thead>
+							<thead class="space-x-2">
 								<tr>
 									{#each categories as category}
 										<th>{category}</th>
@@ -72,7 +74,7 @@
 						</table>
 					</div>
 				{:else if tabSet == 3}
-				<WorkoutLogs workouts={data.log}/>
+				<ExerciseLogs logs={data.log}/>
 
 				{/if}
 			</svelte:fragment>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { WorkoutLogWithExercises } from '$lib/db/schema';
+	import { calculateCalories } from '../../helpers/calories';
 	import ClockIcon from '../Icons/ClockIcon.svelte';
 	import DumbbellIcon from '../Icons/DumbbellIcon.svelte';
 	import RobotIcon from '../Icons/RobotIcon.svelte';
@@ -38,7 +39,7 @@
 				<div
 					class="rounded-md bg-[#E67070] flex justify-center items-center font-bold text-xl w-20 h-12"
 				>
-					640 cal
+					{calculateCalories(23.5, 70.5)} cal
 				</div>
 			</div>
 		</div>
