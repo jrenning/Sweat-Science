@@ -8,12 +8,12 @@ import {
 	pgEnum,
 	PgArray,
 	real,
-	boolean
+	boolean,
+	time
 } from 'drizzle-orm/pg-core';
 import type { AdapterAccount } from '@auth/core/adapters';
 import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
-import { float } from 'drizzle-orm/mysql-core';
 
 /* TYPES */
 
@@ -79,10 +79,18 @@ export const users = pgTable('user', {
 	created_at: timestamp('created_at').defaultNow()
 });
 
-export const favorites = pgTable("favorites", {
-	user_id: text("user_id").references(()=> users.id).primaryKey()
+export const user_settings = pgTable('user_settings', {
+	id: text('id').notNull().primaryKey(),
+	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+	weight: real('weight')
+});
 
-})
+export const favorites = pgTable('favorites', {
+	user_id: text('user_id')
+		.references(() => users.id)
+		.primaryKey(),
+
+});
 
 export const PRTypes = pgEnum("pr_types", [
 	"Max Weight",
@@ -90,13 +98,6 @@ export const PRTypes = pgEnum("pr_types", [
 	"Time"
 ])
 
-// export const personal_records = pgTable("personal_records", {
-// 	user_id: text("user_id").references(()=> users.id, {onDelete: "cascade"}).notNull(),
-// 	exercise_id: integer("id").references(()=> exercises.id, {onDelete: "cascade"}).notNull(),
-// 	type: PRTypes("pr_types"),
-// 	value: float
-
-// })
 
 
 
@@ -215,16 +216,43 @@ export const workout_routine = pgTable('workout_routine', {
 	workout_plan_id: integer('workout_plan_id').references(() => workout_plans.id, {onDelete: "set null"}),
 	created_at: timestamp('created_at').defaultNow(),
 	status: Status('status').default('Pending'),
-	favorite: boolean("favorite")
+	favorite: boolean("favorite"),
+	folder_id: integer("folder_id").references(()=> workout_folders.id, {onDelete: "set null"})
 });
+
 
 export const workoutsRelations = relations(workout_routine, ({ one, many }) => ({
 	workout_plan: one(workout_plans, {
 		fields: [workout_routine.workout_plan_id],
 		references: [workout_plans.id]
 	}),
-	exercises: many(exercise_routine)
+	exercises: many(exercise_routine),
+	folder: one(workout_folders, {
+		fields: [workout_routine.folder_id],
+		references: [workout_folders.id]
+	})
 }));
+
+export const workout_folders = pgTable('folders', {
+	user_id: text('user_id')
+		.references(() => users.id, { onDelete: 'cascade' })
+		.notNull(),
+	id: serial('id').primaryKey(),
+	name: text('name').notNull().unique(),
+	parent_folder_id: integer("parent_folder_id")
+});
+
+export const workoutFolderRelations = relations(workout_folders, ({one, many})=> ({
+	user: one(users, {
+		fields: [workout_folders.user_id],
+		references: [users.id]
+	}),
+	workouts: many(workout_routine),
+	parent_folder: one(workout_folders, {
+		fields: [workout_folders.parent_folder_id],
+		references: [workout_folders.id]
+	})
+}))
 
 export const WeightUnits = pgEnum('weight_units', ['kg', 'lb']);
 export const DistanceUnits = pgEnum('distance_units', [
@@ -320,6 +348,7 @@ export const workoutLog = pgTable('workout_log', {
 	name: text("name"),
 	user_id: text('user_id').references(() => users.id),
 	created_at: timestamp('created_at').defaultNow().notNull(),
+	time: time("time"),
 	notes: text("notes")
 });
 

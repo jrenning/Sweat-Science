@@ -18,6 +18,7 @@
 			<div class="w-[80%]">
 				<LastWorkout last_workout={data.data.last_workout && data.data.last_workout} />
 				<SectionHeader name="Start Workout" />
+				<a href="/workout_folder"><button class="font-semibold text-gray-400">My Folders</button></a>
 				<WorkoutAdd workouts={data.data.all_workouts} />
 				<SectionHeader name="My Activity" />
 			</div>
