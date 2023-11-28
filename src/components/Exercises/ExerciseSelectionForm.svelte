@@ -6,8 +6,9 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import ExerciseSelector from '../UI/ExerciseSelector.svelte';
 	import SetInput from './SetInput.svelte';
-	import FormButton from '../UI/FormButton.svelte';
+	import FormButton from '../UI/Buttons/FormButton.svelte';
 	import type { insertExerciseRoutineSchema } from '$lib/db/schema';
+	import AddButton from '../UI/Buttons/AddButton.svelte';
 
 	export let data: SuperValidated<typeof insertExerciseRoutineSchema>;
 	const _form = superForm(data, {
@@ -158,9 +159,6 @@
 				{/if}
 			{/each}
 		</div>
-		<button
-			class="btn-md variant-outline-secondary flex w-full mt-6 justify-center items-center rounded-md shadow-md"
-			>Add</button
-		>
+		<AddButton />
 	</form>
 </div>

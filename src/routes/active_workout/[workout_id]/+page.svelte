@@ -7,7 +7,7 @@
 	import BackStep from '../../../components/Icons/BackStep.svelte';
 	import CheckIcon from '../../../components/Icons/CheckIcon.svelte';
 	import PlayIcon from '../../../components/Icons/PlayIcon.svelte';
-	import BackButton from '../../../components/UI/BackButton.svelte';
+	import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
 	import { writable } from 'svelte/store';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	export let data: PageData;

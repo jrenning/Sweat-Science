@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
-	import BackButton from '../../components/UI/BackButton.svelte';
+	import BackButton from '../../components/UI/Buttons/BackButton.svelte';
 	import ExerciseSelectionForm from '../../components/Exercises/ExerciseSelectionForm.svelte';
 	import AddExerciseCard from '../../components/AddWorkout/AddExerciseCard.svelte';
 	export let data: PageData;

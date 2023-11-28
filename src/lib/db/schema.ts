@@ -43,6 +43,8 @@ export type WorkoutLogWithExercises = InferSelectModel<typeof workoutLog> & {
 	exercise_routines: ExerciseLogWithExercises[]
 }
 
+export type WorkoutFolder = InferSelectModel<typeof workout_folders>
+
 /* INSERT TYPES */
 
 export type InsertEquipment = InferInsertModel<typeof equipment>;

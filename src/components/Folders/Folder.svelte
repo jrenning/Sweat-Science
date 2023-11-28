@@ -5,9 +5,9 @@
 </script>
 
 <div>
-    <div class="rounded-md bg-red-300 shadow-md h-[200px] w-full">
+    <a href={`/workout_folder/${id}`}><div class="rounded-md bg-red-300 shadow-md h-[150px] w-full">
 
-    </div>
+    </div></a>
     <div class="flex items-center w-full font-semibold text-xl">{name}</div>
 
 </div>

@@ -17,6 +17,16 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 		Number(params.workout_id) ? Number(params.workout_id) : 0
 	);
 
+
+	// sort workout 
+	workout?.exercises.sort((a, b)=> {
+		if (a.position > b.position) {
+			return 1
+		}
+		return -1
+	})
+
+
 	const workoutExercises = workout?.exercises
 
 	const workoutForm = await superValidate(

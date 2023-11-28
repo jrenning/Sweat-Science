@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Tab, TabGroup } from '@skeletonlabs/skeleton';
 	import ExerciseLogEntry from '../../../components/Progress/Log/ExerciseLogEntry.svelte';
-	import BackButton from '../../../components/UI/BackButton.svelte';
+	import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
 	import type { PageData } from './$types';
 	import InfoIcon from '../../../components/Icons/InfoIcon.svelte';
 	import TableIcon from '../../../components/Icons/TableIcon.svelte';
