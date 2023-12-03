@@ -8,7 +8,7 @@ export const insertExerciseRoutineWithExercisesSchema = insertExerciseRoutineSch
 
 
 export const newWorkoutRoutineSchema = z.object({
-	name: z.string(),
+	name: z.string().min(1),
 });
 
 export type newWorkoutRoutine = typeof newWorkoutRoutineSchema

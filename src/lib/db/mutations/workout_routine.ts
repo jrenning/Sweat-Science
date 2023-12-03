@@ -120,3 +120,9 @@ export async function deleteExerciseFromWorkout(exercise_id: number, workout_id:
 		}
 	});
 }
+
+export async function deleteWorkoutsInFolder(user_id: string, folder_id: number) {
+
+	
+
+}

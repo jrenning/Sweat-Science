@@ -1,14 +1,16 @@
 <script lang="ts">
 	export let type: 'Weight' | 'Distance' | 'Duration';
 
-	export let weight = 0
+	export let weight = 0;
 	export let reps = 0;
 
-	export let distance = 0
+	export let distance = 0;
 
-	export let duration = 0
+	export let duration = 0;
 
 	export let hidden = false;
+
+	export let percent = false;
 
 	let visible = hidden ? 'none' : 'flex';
 
@@ -19,6 +21,8 @@
 	};
 
 	let extra = false;
+
+	
 </script>
 
 <div style={`display: ${visible}`} class="flex-col space-y-4">
@@ -29,7 +33,15 @@
 				class="w-16 input outline-secondary-500 outline-2"
 				name="type"
 				type="number"
-				disabled={extra}
+				disabled={percent}
+				bind:value={weight}
+			/>
+			<label class="text-sm" for="extra">{extra_options[type]}</label>
+			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
+			<input
+				type="number"
+				class="w-10 input outline-secondary-500 outline-2"
+				disabled={!percent}
 				bind:value={weight}
 			/>
 		{:else if type == 'Duration'}
@@ -37,7 +49,15 @@
 				class="w-16 input outline-secondary-500 outline-2"
 				name="type"
 				type="number"
-				disabled={extra}
+				disabled={percent}
+				bind:value={duration}
+			/>
+			<label class="text-sm" for="extra">{extra_options[type]}</label>
+			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
+			<input
+				type="number"
+				class="w-10 input outline-secondary-500 outline-2"
+				disabled={!percent}
 				bind:value={duration}
 			/>
 		{:else if type == 'Distance'}
@@ -45,13 +65,18 @@
 				class="w-16 input outline-secondary-500 outline-2"
 				name="type"
 				type="number"
-				disabled={extra}
+				disabled={percent}
 				bind:value={distance}
 			/>
+			<label class="text-sm" for="extra">{extra_options[type]}</label>
+			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
+			<input
+				type="number"
+				class="w-10 input outline-secondary-500 outline-2"
+				disabled={!percent}
+				bind:value={duration}
+			/>
 		{/if}
-		<label class="text-sm" for="extra">{extra_options[type]}</label>
-		<input type="checkbox" name="extra" class="checkbox" on:click={() => (extra = !extra)} />
-		<input type="number" class="w-10 input outline-secondary-500 outline-2" disabled={!extra} />
 	</div>
 	{#if type == 'Weight'}
 		<div class="flex flex-row space-x-11">

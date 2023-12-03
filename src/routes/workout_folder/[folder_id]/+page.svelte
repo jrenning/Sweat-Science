@@ -6,4 +6,4 @@
 </script>
 
 
-<FolderGrid folders={data.folders} folder_id={data.folder_id} />
+<FolderGrid folders={data.folders} folder_id={data.folder_id} workouts={data.workouts} />

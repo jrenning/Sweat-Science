@@ -46,7 +46,7 @@
 	<form class="space-y-4 flex flex-col" use:enhance method="POST" action="?/add_workout">
 		<label for="name">Name</label>
 		<input type="text" class="text-2xl" id="name" name="name" bind:value={$form.name} />
-
+		{#if $errors.name}<span class="text-red-400">{$errors.name}</span>{/if}
 		<button
 			type="button"
 			class="btn-sm rounded-md variant-outline-surface text-md"

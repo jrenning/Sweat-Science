@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 	const log = await getUserExerciseLogById(user_id, exercise_id)
     const exercise = await getExerciseById(exercise_id, user_id)
 	const weight_data = await getExerciseWeightsByName(exercise ? exercise.name : "")
-	const rep_max = await getEstimatedOneRepMax(exercise_id)
+	const rep_max = await getEstimatedOneRepMax(user_id, exercise_id)
 
 	console.log(rep_max)
 	return {

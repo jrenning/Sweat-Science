@@ -5,4 +5,4 @@
 	export let data: PageData;
 </script>
 
-<FolderGrid folders={data.folders} folder_id={null}/>
+<FolderGrid folders={data.folders} folder_id={null} workouts={data.workouts}/>

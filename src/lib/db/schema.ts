@@ -273,24 +273,29 @@ export const ExerciseGoalTypes = pgEnum("exercise_goal_types", ["Duration", "Wei
 // TODO figure out how to remove not null on everything without typescript throwing a hissy fit
 export const exercise_routine = pgTable('exercise_routine', {
 	id: serial('id').primaryKey(),
-	user_id: text('user_id').references(() => users.id, {onDelete: "cascade"}),
+	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
 	exercise_id: integer('exercise_id')
 		.notNull()
-		.references(() => exercises.id, {onDelete: "set null"}),
-	workout_routine_id: integer("workout_routine_id").references(()=> workout_routine.id, {onDelete: "cascade"}),
-	type: ExerciseGoalTypes("exercise_goal_types"),
+		.references(() => exercises.id, { onDelete: 'set null' }),
+	workout_routine_id: integer('workout_routine_id').references(() => workout_routine.id, {
+		onDelete: 'cascade'
+	}),
+	type: ExerciseGoalTypes('exercise_goal_types'),
 	sets: integer('sets').notNull(),
 	reps: integer('reps').array().notNull(),
-	rest: integer("rest").notNull(),
-	rest_units: DurationUnits("rest_units").default("second"),
+	rest: integer('rest').notNull(),
+	rest_units: DurationUnits('rest_units').default('second'),
 	weight: integer('weight').array().notNull(),
+	percent_max: boolean('percent_max')
+		.array()
+		.notNull(),
 	weight_units: WeightUnits('weight_units'),
 	duration: real('duration').array().notNull(),
 	duration_units: DurationUnits('duration_units'),
 	distance: integer('distance').array().notNull(),
 	distance_units: DistanceUnits('distance_units'),
 	created_at: timestamp('created_at').defaultNow().notNull(),
-	position: integer("position").notNull()
+	position: integer('position').notNull()
 });
 
 export const exerciseRoutineRelations = relations(exercise_routine, ({ one, many }) => ({

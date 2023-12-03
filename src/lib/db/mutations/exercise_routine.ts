@@ -42,7 +42,8 @@ export async function addExerciseRoutineToWorkout(
 				distance_units: input.distance_units,
 				duration: input.duration,
 				duration_units: input.duration_units,
-				position: position
+				position: position,
+				percent_max: input.percent_max
 			})
 			.returning({ id: exercise_routine.id });
 
@@ -73,7 +74,8 @@ export async function insertExerciseRoutinetoWorkout(
 				distance_units: input.distance_units,
 				duration: input.duration,
 				duration_units: input.duration_units,
-				position: position
+				position: position,
+				percent_max: input.percent_max
 			})
 			.returning({ id: exercise_routine.id });
 

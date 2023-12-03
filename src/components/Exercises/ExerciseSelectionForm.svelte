@@ -46,15 +46,18 @@
 		if ($form.type == 'Weight') {
 			for (let i = 1; i < $form.sets; i++) {
 				$form.weight[i] = $form.weight[0];
+				$form.percent_max[i] = $form.percent_max[0];
 				$form.reps[i] = $form.reps[0];
 			}
 		} else if ($form.type == 'Distance') {
 			for (let i = 1; i < $form.sets; i++) {
+				$form.percent_max[i] = $form.percent_max[0];
 				$form.distance[i] = $form.distance[0];
 			}
 		} else {
 			for (let i = 1; i < $form.sets; i++) {
 				$form.duration[i] = $form.duration[0];
+				$form.percent_max[i] = $form.percent_max[0];
 			}
 		}
 	}
@@ -135,13 +138,27 @@
 				{actual_sets}
 				<FormButton text="-" action={() => removeSet()} />
 			</div>
+			<input type="checkbox" bind:checked={$form.percent_max[0]} />
 			{#each { length: sets } as set, i}
 				{#if $form.type == 'Weight'}
-					<SetInput type="Weight" bind:weight={$form.weight[i]} bind:reps={$form.reps[i]} />
+					<SetInput
+						type="Weight"
+						bind:weight={$form.weight[i]}
+						bind:reps={$form.reps[i]}
+						bind:percent={$form.percent_max[i]}
+					/>
 				{:else if $form.type == 'Distance'}
-					<SetInput type="Distance" bind:distance={$form.distance[i]} />
+					<SetInput
+						type="Distance"
+						bind:distance={$form.distance[i]}
+						bind:percent={$form.percent_max[i]}
+					/>
 				{:else if $form.type == 'Duration'}
-					<SetInput type="Duration" bind:duration={$form.duration[i]} />
+					<SetInput
+						type="Duration"
+						bind:duration={$form.duration[i]}
+						bind:percent={$form.percent_max[i]}
+					/>
 				{/if}
 			{/each}
 			{#each { length: actual_sets - sets } as set, i}
@@ -149,13 +166,24 @@
 					<SetInput
 						type="Weight"
 						bind:weight={$form.weight[i + sets]}
+						bind:percent={$form.percent_max[i]}
 						bind:reps={$form.reps[i + sets]}
 						hidden={true}
 					/>
 				{:else if $form.type == 'Distance'}
-					<SetInput type="Distance" bind:distance={$form.distance[i + sets]} hidden={true} />
+					<SetInput
+						type="Distance"
+						bind:distance={$form.distance[i + sets]}
+						hidden={true}
+						bind:percent={$form.percent_max[i]}
+					/>
 				{:else if $form.type == 'Duration'}
-					<SetInput type="Duration" bind:duration={$form.duration[i + sets]} hidden={true} />
+					<SetInput
+						type="Duration"
+						bind:duration={$form.duration[i + sets]}
+						hidden={true}
+						bind:percent={$form.percent_max[i]}
+					/>
 				{/if}
 			{/each}
 		</div>

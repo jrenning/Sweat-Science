@@ -38,6 +38,7 @@ export const load: PageServerLoad = async (event) => {
 	// super forms
 	const form = await superValidate(event, newWorkoutRoutineSchema);
 	const exerciseForm = await superValidate(insertExerciseRoutineSchema);
+
 	return { form, workout_routine, exercise_choices, exerciseForm, equipment_choices };
 };
 

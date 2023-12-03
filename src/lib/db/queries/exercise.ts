@@ -48,19 +48,19 @@ export async function getExerciseWeightsByName(name: string) {
 	return data;
 }
 
-export async function getEstimatedOneRepMax(exercise_id: number) {
+export async function getEstimatedOneRepMax(user_id: string, exercise_id: number) {
 	const data = await db
 		.select({
 			weight: exerciseLog.weight,
 			reps: exerciseLog.reps
 		})
 		.from(exerciseLog)
-		.where(eq(exerciseLog.exercise_id, exercise_id))
+		.where(and(eq(exerciseLog.exercise_id, exercise_id), eq(exerciseLog.user_id, user_id)))
 		.orderBy(desc(exerciseLog.weight))
-		.limit(1);
+		.limit(1).catch((err)=> console.log(err));
 
 	// GET MAX INDEX
-	if (data.length > 0 && data[0].weight) {
+	if (data && data[0].weight) {
 		let weights = data[0].weight;
 		let i = weights.indexOf(Math.max(...weights));
 

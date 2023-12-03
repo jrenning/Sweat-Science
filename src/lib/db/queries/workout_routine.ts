@@ -1,10 +1,12 @@
 import { and, asc, desc, eq, ne } from 'drizzle-orm';
 import { db } from '../db';
-import { exercise_routine, workout_routine } from '../schema';
+import { exercise_routine, workout_routine, type WorkoutRoutineWithExercises } from '../schema';
+import { getEstimatedOneRepMax } from './exercise';
+import { roundtoNearestFive } from '../../../helpers/weight';
 
 export async function getAllUserWorkouts(user_id: string) {
 	return await db.query.workout_routine.findMany({
-		where: and(eq(workout_routine.user_id, user_id), ne(workout_routine.status, "Pending")),
+		where: and(eq(workout_routine.user_id, user_id), ne(workout_routine.status, 'Pending')),
 		orderBy: desc(workout_routine.created_at),
 		with: {
 			exercises: {
@@ -38,5 +40,42 @@ export async function getPendingWorkouts(user_id: string) {
 	return data;
 }
 
-
-
+export async function convertWorkoutFromPercent(
+	workout: WorkoutRoutineWithExercises,
+	user_id: string
+) {
+	for (let i = 0; i < workout.exercises.length; i++) {
+		const rep_max = await getEstimatedOneRepMax(user_id, workout.exercises[i].exercise_id);
+		let exercise = workout.exercises[i];
+		console.log(1);
+		if (exercise.type == 'Weight') {
+			console.log(2);
+			for (let k = 0; k < exercise.weight.length; k++) {
+				if (exercise.percent_max[k] && rep_max) {
+					workout.exercises[i].weight[k] = roundtoNearestFive((workout.exercises[i].weight[k] / 100) * rep_max);
+					console.log(3);
+				} else if (exercise.percent_max[k]) {
+					workout.exercises[i].weight[k] = 0;
+				}
+			}
+		} else if (exercise.type == 'Distance') {
+			for (let k = 0; k < exercise.distance.length; k++) {
+				if (exercise.percent_max[k] && rep_max) {
+					workout.exercises[i].distance[k] = roundtoNearestFive((workout.exercises[i].distance[k] / 100) * rep_max);
+				} else if (exercise.percent_max[k]) {
+					workout.exercises[i].distance[k] = 0;
+				}
+			}
+		} else if (exercise.type == 'Duration') {
+			for (let k = 0; k < exercise.duration.length; k++) {
+				if (exercise.percent_max[k] && rep_max) {
+					workout.exercises[i].duration[k] = roundtoNearestFive((workout.exercises[i].duration[k] / 100) * rep_max);
+				} else if (exercise.percent_max[k]) {
+					workout.exercises[i].duration[k] = 0;
+				}
+			}
+		}
+	}
+	console.log(4);
+	return workout;
+}

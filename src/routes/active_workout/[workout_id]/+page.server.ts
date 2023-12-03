@@ -1,5 +1,5 @@
 import { createLogFromWorkout } from '$lib/db/mutations/logs';
-import { getWorkoutById } from '$lib/db/queries/workout_routine';
+import { convertWorkoutFromPercent, getWorkoutById } from '$lib/db/queries/workout_routine';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { superValidate } from 'sveltekit-superforms/client';
@@ -12,32 +12,37 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 	// TODO pass in param for id
 	const user_id = session?.user.id ? session.user.id : '';
 
-	const workout = await getWorkoutById(
+	let workout = await getWorkoutById(
 		user_id,
 		Number(params.workout_id) ? Number(params.workout_id) : 0
 	);
+	if (workout) {
+		// sort workout
+		workout.exercises.sort((a, b) => {
+			if (a.position > b.position) {
+				return 1;
+			}
+			return -1;
+		});
 
+		// adjust for percents
+		workout = await convertWorkoutFromPercent(workout, user_id);
 
-	// sort workout 
-	workout?.exercises.sort((a, b)=> {
-		if (a.position > b.position) {
-			return 1
-		}
-		return -1
-	})
+		console.log(workout)
 
+		const workoutExercises = workout.exercises;
 
-	const workoutExercises = workout?.exercises
+		const workoutForm = await superValidate(
+			{ name: workout.name, exercises: workoutExercises },
+			addWorkoutLogSchema
+		);
 
-	const workoutForm = await superValidate(
-		{ name: workout?.name, exercises: workoutExercises },
-		addWorkoutLogSchema
-	);	
-
-	return {
-		workout,
-		workoutForm
-	};
+		return {
+			workout,
+			workoutForm
+		};
+	}
+	return redirect(300, "/")
 };
 
 export const actions: Actions = {
@@ -50,7 +55,7 @@ export const actions: Actions = {
 		const session = await locals.getSession();
 		const user_id = session?.user.id ? session.user.id : '';
 
-		await createLogFromWorkout({user_id: user_id, ...workoutForm.data});
+		await createLogFromWorkout({ user_id: user_id, ...workoutForm.data });
 
 		throw redirect(303, '/');
 	}
