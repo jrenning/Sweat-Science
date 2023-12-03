@@ -9,7 +9,6 @@
 	import ExerciseTable from '../../components/Exercises/ExerciseTable.svelte';
 	import type { PageData } from './$types';
 	import EquipmentTable from '../../components/Equipment/EquipmentTable.svelte';
-	import AddButton from '../../components/UI/AddButton.svelte';
 	import ExerciseForm from '../../components/Exercises/ExerciseForm.svelte';
 	import EquipmentForm from '../../components/Equipment/EquipmentForm.svelte';
 

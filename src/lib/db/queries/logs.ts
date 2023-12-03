@@ -14,6 +14,20 @@ export async function getUserWorkoutLogs(user_id: string) {
     )
 }
 
+export async function getWorkoutLogById(user_id: string, id: number) {
+        return await db.query.workoutLog.findFirst({
+        with: {
+            exercise_routines: {
+                with: {
+                    exercise: true
+                }
+            }
+        },
+        where: and(eq(workoutLog.user_id, user_id), eq(workoutLog.id, id)),
+    }
+    )
+}
+
 export async function  getUserExerciseLogById(user_id: string, exercise_id: number) {
     return await db.query.exerciseLog.findMany({
         where: and(eq(exerciseLog.exercise_id, exercise_id), eq(exerciseLog.user_id, user_id)),

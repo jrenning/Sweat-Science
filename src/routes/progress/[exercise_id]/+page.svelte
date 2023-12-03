@@ -74,7 +74,7 @@
 						</table>
 					</div>
 				{:else if tabSet == 3}
-				<ExerciseLogs logs={data.log}/>
+				<ExerciseLogs logs={data.log} type="Date"/>
 
 				{/if}
 			</svelte:fragment>

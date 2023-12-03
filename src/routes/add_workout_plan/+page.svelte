@@ -4,7 +4,6 @@
 	import type { PageData } from './$types';
 
 	import { page } from '$app/stores';
-	import FormStepChange from '../../components/AddWorkout/FormStepChange.svelte';
 	import AdjustableCalender from '../../components/AddWorkout/AdjustableCalender.svelte';
 	import { current_day, current_plan_id } from '../../stores/workout_plan';
 	import { getDateInputFormatString } from '../../helpers/datetime';
@@ -83,7 +82,6 @@
 	};
 </script>
 
-<FormStepChange bind:pg names={['General', 'Workouts']} />
 <form
 	method="POST"
 	action="/add_workout_plan?/workout_plan"

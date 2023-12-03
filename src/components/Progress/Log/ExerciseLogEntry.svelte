@@ -7,7 +7,7 @@
 
 	console.log(log_entry)
 </script>
-<div class=" mx-2 text-xl font-bold">{prettifyDate(log_entry.created_at)}</div>
+
 	{#if log_entry.type == 'Weight'}
 		<table class=" bg-surface-200 mx-2 p-2 border-solid rounded-xl shadow-md border-2 border-secondary-300">
 			<tr>
