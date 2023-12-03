@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Exercise, InsertExerciseRoutine } from '$lib/db/schema';
-	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import { getModalStore, getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
@@ -11,6 +11,7 @@
 	import AddButton from '../UI/Buttons/AddButton.svelte';
 
 	export let data: SuperValidated<typeof insertExerciseRoutineSchema>;
+	export let post_link: string;
 	const _form = superForm(data, {
 		dataType: 'json',
 		onResult: ({ result }) => {
@@ -22,11 +23,11 @@
 		}
 	});
 	const { form, enhance, errors } = _form;
-	export let index: number;
 
 	export let exercise_options: Exercise[];
 
 	const toastStore = getToastStore();
+	const modalStore = getModalStore();
 
 	const success: ToastSettings = {
 		message: 'Exercise Added'
@@ -107,7 +108,7 @@
 	<form
 		class="resize-y flex flex-col space-y-6 justify-center items-center"
 		method="POST"
-		action="/add_workout?/add_exercise"
+		action={post_link}
 		use:enhance
 	>
 		<ExerciseSelector exercises={exercise_options} callback={updateExerciseId} />
@@ -138,7 +139,6 @@
 				{actual_sets}
 				<FormButton text="-" action={() => removeSet()} />
 			</div>
-			<input type="checkbox" bind:checked={$form.percent_max[0]} />
 			{#each { length: sets } as set, i}
 				{#if $form.type == 'Weight'}
 					<SetInput
@@ -187,6 +187,6 @@
 				{/if}
 			{/each}
 		</div>
-		<AddButton />
+		<AddButton action={() => modalStore.close()} />
 	</form>
 </div>

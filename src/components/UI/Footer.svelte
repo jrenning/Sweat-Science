@@ -17,7 +17,7 @@
 	class=" w-full bottom-0 fixed left-0 flex flex-col justify-center items-center bg-surface-50 dark:bg-surface-900 rounded-md py-2"
 >
 	<div
-		class="rounded-md flex-col flex justify-center items-center font-semibold space-y-4 shadow-md absolute p-2 bg-red-50"
+		class="rounded-md flex-col flex justify-center hidden items-center font-semibold space-y-4 shadow-md absolute p-2 bg-red-50"
 		data-popup="addPopup"
 	>
 		<a href="/add_workout_plan"><div class="mb-4 flex justify-center">New Workout Plan</div></a>
