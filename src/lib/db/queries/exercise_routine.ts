@@ -27,3 +27,14 @@ export async function getLastExerciseRoutinePosition(workout_id: number) {
 
 	return data;
 }
+
+export async function getExerciseRoutineById(exercise_routine_id: number, user_id: string) {
+	const data = await db
+		.select()
+		.from(exercise_routine)
+		.where(
+			and(eq(exercise_routine.id, exercise_routine_id), eq(exercise_routine.user_id, user_id))
+		);
+
+	return data
+}

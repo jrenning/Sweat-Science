@@ -34,7 +34,7 @@
     <div class="flex justify-between items-center">
     <div class="text-2xl font-semibold">{exercise.exercise.name}</div>
     <div class="flex flex-row space-x-6">
-        <button type="button" class="w-4 h-4"><EditIcon /></button>
+        <a href={`/edit_exercise_routine/${exercise.id}`} class="w-4 h-4"><EditIcon /></a>
         <button type="button" class="w-4 h-4" on:click={()=> deleteExercise()}><DeleteIcon /></button>
     </div>
     </div>

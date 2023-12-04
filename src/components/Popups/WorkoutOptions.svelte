@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	export let name: string;
 	export let id: number;
 	import {
@@ -12,7 +13,7 @@
 	async function deleteWorkout() {
 		const data = {
 			action: 'delete',
-			workout_routine_id: workout.id
+			workout_routine_id: id
 		};
 
 		await fetch('/api/workout_routine', {
