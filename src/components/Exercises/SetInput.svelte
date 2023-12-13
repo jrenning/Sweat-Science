@@ -21,8 +21,6 @@
 	};
 
 	let extra = false;
-
-	
 </script>
 
 <div style={`display: ${visible}`} class="flex-col space-y-4">
@@ -33,6 +31,7 @@
 				class="w-16 input outline-secondary-500 outline-2"
 				name="type"
 				type="number"
+				inputmode="numeric"
 				disabled={percent}
 				bind:value={weight}
 			/>
@@ -40,6 +39,7 @@
 			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
 			<input
 				type="number"
+				inputmode="numeric"
 				class="w-10 input outline-secondary-500 outline-2"
 				disabled={!percent}
 				bind:value={weight}
@@ -48,6 +48,7 @@
 			<input
 				class="w-16 input outline-secondary-500 outline-2"
 				name="type"
+				inputmode="numeric"
 				type="number"
 				disabled={percent}
 				bind:value={duration}
@@ -56,6 +57,7 @@
 			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
 			<input
 				type="number"
+				inputmode="numeric"
 				class="w-10 input outline-secondary-500 outline-2"
 				disabled={!percent}
 				bind:value={duration}
@@ -64,6 +66,7 @@
 			<input
 				class="w-16 input outline-secondary-500 outline-2"
 				name="type"
+				inputmode="numeric"
 				type="number"
 				disabled={percent}
 				bind:value={distance}
@@ -72,6 +75,7 @@
 			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
 			<input
 				type="number"
+				inputmode="numeric"
 				class="w-10 input outline-secondary-500 outline-2"
 				disabled={!percent}
 				bind:value={duration}
@@ -81,7 +85,7 @@
 	{#if type == 'Weight'}
 		<div class="flex flex-row space-x-11">
 			<label class="font-semibold" for="reps">Reps</label>
-			<input class="input w-16" type="number" name="reps" bind:value={reps} />
+			<input class="input w-16" type="number" inputmode="numeric" name="reps" bind:value={reps} />
 		</div>
 	{/if}
 </div>

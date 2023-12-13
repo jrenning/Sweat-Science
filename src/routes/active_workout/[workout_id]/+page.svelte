@@ -116,6 +116,7 @@
 							<input
 								class="text-6xl w-28 bg-transparent font-bold text-center"
 								type="number"
+								inputmode='numeric'
 								bind:value={$form.exercises[exercise].weight[set - 1]}
 							/>
 							<div class="text-lg">Weight</div>
@@ -124,6 +125,7 @@
 							<input
 								class="text-6xl w-28 bg-transparent font-bold text-center"
 								type="number"
+								inputmode="numeric"
 								bind:value={$form.exercises[exercise].reps[set - 1]}
 							/>
 							<div class="text-lg">Reps</div>
