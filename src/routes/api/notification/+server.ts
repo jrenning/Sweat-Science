@@ -8,7 +8,6 @@ webPush.setVapidDetails(
 	PUBLIC_WEB_PUSH_PUBLIC_KEY,
 	WEB_PUSH_PRIVATE_KEY
 );
-
 export const POST: RequestHandler = async (event) => {
 	const subscription = await event.request.json();
     console.log(subscription)
