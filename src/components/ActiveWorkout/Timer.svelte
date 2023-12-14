@@ -20,9 +20,12 @@
 	let STATE: States = 'Running';
 
 	let interval: NodeJS.Timeout;
-	const start = () => {
+	const start = async () => {
 		startTime = Date.now();
-		interval = setInterval( async () => {
+		await fetch('/api/notification', {
+			method: 'POST'
+		});
+		interval = setInterval(() => {
 			if (STATE == 'Running') {
 				const endTime = Date.now();
 				$elapsedTime = (endTime - startTime) / 1000 + oldElapsedTime;
@@ -31,13 +34,7 @@
 				STATE = 'Completed';
 				$elapsedTime = 0;
 
-
-				await fetch("/api/notification", {
-					method: "POST"
-				})
-
-
-				finished.set(false)
+				finished.set(false);
 			}
 		});
 	};

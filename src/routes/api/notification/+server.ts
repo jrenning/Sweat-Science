@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import  webPush from "web-push"
+import webPush from 'web-push';
 import { WEB_PUSH_EMAIL, WEB_PUSH_PRIVATE_KEY } from '$env/static/private';
 import { PUBLIC_WEB_PUSH_PUBLIC_KEY } from '$env/static/public';
 import { getUserSubsscription } from '$lib/db/queries/users';
@@ -9,14 +9,19 @@ webPush.setVapidDetails(
 	PUBLIC_WEB_PUSH_PUBLIC_KEY,
 	WEB_PUSH_PRIVATE_KEY
 );
+
+const sleep = (delayInms: number) => {
+	return new Promise((resolve) => setTimeout(resolve, delayInms));
+};
 export const POST: RequestHandler = async (event) => {
 	const session = await event.locals.getSession();
 	const user_id = session?.user.id ? session.user.id : '';
+	const delay = 15 * 1000;
 
 	const res = await getUserSubsscription(user_id);
 	//@ts-ignore
 	const subscription = res[0].subscription;
-    console.log(subscription)
+	await sleep(delay);
 	const data = await webPush
 		.sendNotification(
 			subscription,
