@@ -66,7 +66,6 @@ export const actions: Actions = {
 
 		const workout_id = Number(params.workout_id) ? Number(params.workout_id) : 0;
 
-		console.log(workout_id);
 
 		const exerciseForm = await superValidate(request, insertExerciseRoutineSchema);
 

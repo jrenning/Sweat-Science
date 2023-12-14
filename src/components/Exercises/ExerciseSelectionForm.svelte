@@ -18,7 +18,6 @@
 			if (result.type == 'success') {
 				toastStore.trigger(success);
 			} else {
-				console.log('Help');
 			}
 		}
 	});
@@ -85,8 +84,6 @@
 		if (sets_same) {
 			updateSetsToSame();
 		}
-
-		console.log($form);
 	}
 
 	function addSet() {
@@ -99,7 +96,6 @@
 			updateSetsToSame();
 		}
 
-		console.log($form);
 	}
 </script>
 

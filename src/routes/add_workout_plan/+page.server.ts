@@ -29,7 +29,6 @@ export const actions = {
 	workout_plan: async ({ request }) => {
 		const planForm = await superValidate(request, fullWorkoutPlanSchema);
 
-		console.log(planForm);
 
 		if (!planForm.valid) return fail(400, { planForm });
 

@@ -47,13 +47,10 @@ export async function convertWorkoutFromPercent(
 	for (let i = 0; i < workout.exercises.length; i++) {
 		const rep_max = await getEstimatedOneRepMax(user_id, workout.exercises[i].exercise_id);
 		let exercise = workout.exercises[i];
-		console.log(1);
 		if (exercise.type == 'Weight') {
-			console.log(2);
 			for (let k = 0; k < exercise.weight.length; k++) {
 				if (exercise.percent_max[k] && rep_max) {
 					workout.exercises[i].weight[k] = roundtoNearestFive((workout.exercises[i].weight[k] / 100) * rep_max);
-					console.log(3);
 				} else if (exercise.percent_max[k]) {
 					workout.exercises[i].weight[k] = 0;
 				}
@@ -76,6 +73,5 @@ export async function convertWorkoutFromPercent(
 			}
 		}
 	}
-	console.log(4);
 	return workout;
 }

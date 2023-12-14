@@ -26,7 +26,6 @@
 		if (selected_value) {
 			const exercise_names = data.workout?.exercises.map((exercise) => exercise.exercise.name);
 			const idx = exercise_names?.indexOf(selected_value);
-			console.log(idx)
 			if (idx !== undefined) {
 				exercise = idx;
 			}
@@ -38,7 +37,6 @@
 	});
 
 	function handleComplete() {
-		console.log(current_exercise?.rest);
 		if (!current_exercise) return;
 
 		if (!$rest) {

@@ -5,8 +5,6 @@ import WorkoutForm from '../../../components/AddWorkout/Form/WorkoutForm.svelte'
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-
-    console.log(data.workout_routine)
 </script>
 
 {#if data.workout_routine}

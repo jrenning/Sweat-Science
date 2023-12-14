@@ -28,16 +28,13 @@
 				reg.pushManager
 					.subscribe(options)
 					.then( async (pushSubscription) => {
-                        const data = JSON.stringify({ pushSubscription })
-                        console.log(data)
-						const result = await fetch('/api/notification', {
+						const result = await fetch('/api/subscribe', {
 							method: 'POST',
 							headers: {
 								'Content-type': 'application/json'
 							},
-							body: data
+							body: JSON.stringify(pushSubscription)
 						});
-                        console.log(result)
 					})
 					.catch((err) => {
 						console.error(err);

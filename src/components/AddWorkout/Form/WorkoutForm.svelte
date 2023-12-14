@@ -25,7 +25,6 @@
 		return { name: equip.name, id: equip.id };
 	});
 
-    console.log("Hello")
 
 	const _form = superForm(workoutForm, {
 		dataType: 'json'

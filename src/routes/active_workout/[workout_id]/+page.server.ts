@@ -28,7 +28,6 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 		// adjust for percents
 		workout = await convertWorkoutFromPercent(workout, user_id);
 
-		console.log(workout)
 
 		const workoutExercises = workout.exercises;
 
@@ -42,14 +41,12 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 			workoutForm
 		};
 	}
-	return redirect(300, "/")
+	redirect(300, "/")
 };
 
 export const actions: Actions = {
 	default: async ({ request, locals, url, params }) => {
 		const workoutForm = await superValidate(request, addWorkoutLogSchema);
-
-		console.log(workoutForm.data);
 		if (!workoutForm.valid) return fail(400, { workoutForm });
 
 		const session = await locals.getSession();

@@ -11,7 +11,6 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 	const weight_data = await getExerciseWeightsByName(exercise ? exercise.name : "")
 	const rep_max = await getEstimatedOneRepMax(user_id, exercise_id)
 
-	console.log(rep_max)
 	return {
 		log,
         exercise,

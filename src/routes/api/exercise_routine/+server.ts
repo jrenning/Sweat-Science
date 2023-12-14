@@ -4,7 +4,6 @@ import { json, type RequestHandler } from "@sveltejs/kit";
 
 export const POST: RequestHandler = async({request}) => {
 
-    console.log("Started")
     const {action, exercise_routine_id, workout_routine_id} = await request.json()
 
 

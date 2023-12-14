@@ -47,14 +47,12 @@ export const actions: Actions = {
 		return { exerciseForm };
 	},
 	equipment_form: async ({ request, locals, url }) => {
-		console.log('Here');
 		const equipmentForm = await superValidate(request, insertEquipmentSchema);
 		const session = await locals.getSession();
 		// pass in workout plan id
 		// TODO pass in param for id
 		const user_id = session?.user.id ? session.user.id : '';
 
-		console.log(equipmentForm);
 
 		if (!equipmentForm.valid) return fail(400, { equipmentForm });
 
@@ -62,7 +60,6 @@ export const actions: Actions = {
 
 		if (equipmentForm.data.name.length < 1) {
 			const err = setError(equipmentForm, 'Name is too short');
-			console.log(equipmentForm.errors);
 			return err;
 		}
 

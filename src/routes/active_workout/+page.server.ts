@@ -27,7 +27,6 @@ export const actions: Actions = {
 	default: async ({ request, locals, url, params }) => {
 		const workoutForm = await superValidate(request, addWorkoutLogSchema);
 
-		console.log(workoutForm.data);
 		if (!workoutForm.valid) return fail(400, { workoutForm });
 
 		const session = await locals.getSession();

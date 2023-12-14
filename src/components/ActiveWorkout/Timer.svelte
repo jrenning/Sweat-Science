@@ -22,7 +22,7 @@
 	let interval: NodeJS.Timeout;
 	const start = () => {
 		startTime = Date.now();
-		interval = setInterval(() => {
+		interval = setInterval( async () => {
 			if (STATE == 'Running') {
 				const endTime = Date.now();
 				$elapsedTime = (endTime - startTime) / 1000 + oldElapsedTime;
@@ -30,6 +30,13 @@
 			if ($elapsedTime > duration) {
 				STATE = 'Completed';
 				$elapsedTime = 0;
+
+
+				await fetch("/api/notification", {
+					method: "POST"
+				})
+
+
 				finished.set(false)
 			}
 		});
@@ -60,7 +67,6 @@
 	};
 
 	onMount(() => {
-		console.log('here');
 		start();
 	});
 

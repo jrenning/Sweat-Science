@@ -11,10 +11,8 @@ import {Status} from "../schema"
 
 export async function addWorkoutPlanBasic(input: InsertWorkoutPlan) {
 	if (input.id) {
-		console.log("here")
 		return await db.update(workout_plans).set({...input, status: "Pending"}).where(eq(workout_plans.id, input.id)).returning({id: workout_plans.id});
 	} else {
-		console.log("else")
 		const data =  await db
 			.insert(workout_plans)
 			.values({
@@ -22,7 +20,6 @@ export async function addWorkoutPlanBasic(input: InsertWorkoutPlan) {
 				status: 'Pending'
 			}).returning({id: workout_plans.id})
 			.onConflictDoUpdate({target: workout_plans.name, set: input})
-		console.log(data)
 		return data
 			
 	}

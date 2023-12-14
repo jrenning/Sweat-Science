@@ -5,7 +5,6 @@
 
 	export let log_entry: ExerciseLogWithExercises;
 
-	console.log(log_entry)
 </script>
 
 	{#if log_entry.type == 'Weight'}

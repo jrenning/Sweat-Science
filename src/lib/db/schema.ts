@@ -9,7 +9,8 @@ import {
 	PgArray,
 	real,
 	boolean,
-	time
+	time,
+	jsonb
 } from 'drizzle-orm/pg-core';
 import type { AdapterAccount } from '@auth/core/adapters';
 import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
@@ -78,7 +79,8 @@ export const users = pgTable('user', {
 	email: text('email').notNull(),
 	emailVerified: timestamp('emailVerified', { mode: 'date' }),
 	image: text('image'),
-	created_at: timestamp('created_at').defaultNow()
+	created_at: timestamp('created_at').defaultNow(),
+	pushSubscription: jsonb("pushSubscription")
 });
 
 export const user_settings = pgTable('user_settings', {
