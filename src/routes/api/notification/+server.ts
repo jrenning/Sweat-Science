@@ -10,9 +10,6 @@ webPush.setVapidDetails(
 	WEB_PUSH_PRIVATE_KEY
 );
 
-const sleep = (delayInms: number) => {
-	return new Promise((resolve) => setTimeout(resolve, delayInms));
-};
 export const POST: RequestHandler = async (event) => {
 	const session = await event.locals.getSession();
 	const user_id = session?.user.id ? session.user.id : '';
@@ -21,24 +18,26 @@ export const POST: RequestHandler = async (event) => {
 	const res = await getUserSubsscription(user_id);
 	//@ts-ignore
 	const subscription = res[0].subscription;
-	await sleep(delay);
-	const data = await webPush
-		.sendNotification(
-			subscription,
-			JSON.stringify({
-				title: 'Hey Jack!',
-				message: 'How are your workouts going today?'
-			})
-		)
-		.then((response: any) => {
-			return new Response(JSON.stringify({ success: true }), {
-				status: 200
-			});
-		})
-		.catch((err: any) => {
-			return new Response(JSON.stringify({ error: err }), {
-				status: 500
-			});
-		});
+    const data = await fetch('https://notification-hub-pearl.vercel.app/api', {
+        method: "POST"
+    });
+	// const data = await webPush
+	// 	.sendNotification(
+	// 		subscription,
+	// 		JSON.stringify({
+	// 			title: 'Hey Jack!',
+	// 			message: 'How are your workouts going today?'
+	// 		})
+	// 	)
+	// 	.then((response: any) => {
+	// 		return new Response(JSON.stringify({ success: true }), {
+	// 			status: 200
+	// 		});
+	// 	})
+	// 	.catch((err: any) => {
+	// 		return new Response(JSON.stringify({ error: err }), {
+	// 			status: 500
+	// 		});
+	// 	});
 	return data;
 };
