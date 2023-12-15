@@ -2,15 +2,9 @@
 	import { goto, invalidateAll } from '$app/navigation';
 	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
 
-
 	export let workout: WorkoutRoutineWithExercises;
-	import {
-		popup,
-		type PopupSettings,
-	} from '@skeletonlabs/skeleton';
-	import WorkoutOptions from "../Popups/WorkoutOptions.svelte"
-
-
+	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
+	import WorkoutOptions from '../Popups/WorkoutOptions.svelte';
 
 	const exercisePopup: PopupSettings = {
 		event: 'click',
@@ -23,17 +17,19 @@
 >
 	<div class="flex justify-end items-center mr-2 mt-2 space-x-1">
 		<div
-			class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"
+			class="flex space-x-1"
 			use:popup={{
 				event: 'click',
 				target: `exerciseOptions${workout.name}`,
 				placement: 'bottom'
 			}}
-		/>
-		<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
-		<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
+		>
+			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
+			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
+			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
+		</div>
 	</div>
-	<WorkoutOptions name={workout.name} id={workout.id}/>
+	<WorkoutOptions name={workout.name} id={workout.id} />
 
 	<div class="h-[50%]" />
 	<div class="flex text-black ml-4">

@@ -71,6 +71,8 @@ export type AddWorkoutLog = InsertWorkoutLog & {
 	exercises: InsertExerciseLog[]
 }
 
+export type InsertWorkoutFolder = InferInsertModel<typeof workout_folders>
+
 /* USER */
 
 export const users = pgTable('user', {
@@ -421,3 +423,4 @@ export const insertWorkoutRoutine = createInsertSchema(workout_routine);
 export const insertWorkoutPlanSchema = createInsertSchema(workout_plans);
 export const insertWorkoutLogSchema = createInsertSchema(workoutLog)
 export const insertExerciseLogSchema = createInsertSchema(exerciseLog)
+export const insertWorkoutFolderSchema = createInsertSchema(workout_folders)

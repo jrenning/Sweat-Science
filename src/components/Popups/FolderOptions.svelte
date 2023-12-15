@@ -10,15 +10,15 @@
 		type ModalComponent
 	} from '@skeletonlabs/skeleton';
 	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
+	import FolderForm from '../Folders/FolderForm.svelte';
 	const modal = getModalStore();
 
-	async function deleteWorkout() {
+	async function deleteFolder() {
 		const data = {
-			action: 'delete',
-			workout_routine_id: id
+			folder_id: id
 		};
 
-		await fetch('/api/workout_routine', {
+		await fetch('/api/folders', {
 			method: 'POST',
 			body: JSON.stringify(data),
 			headers: {
@@ -31,28 +31,27 @@
 
 	const deleteModal: ModalSettings = {
 		type: 'confirm',
-		title: 'Delete Workout?',
+		title: 'Delete Folder?',
 		response: async (r) => {
 			if (r) {
-				await deleteWorkout();
+				await deleteFolder();
 			}
 		}
 	};
 
 
 	const modalComponentFolder: ModalComponent = {
-		ref: ChangeFolderForm,
-		props: {workout_id: id}
+		ref: FolderForm,
+		props: {parent_id: id, type: "edit"}
 	};
-	const changeFolderModal: ModalSettings = {
+	const editFolderModal: ModalSettings = {
 		type: 'component',
-		title: 'Add Exercise',
+		title: 'Edit Folder',
 		component: modalComponentFolder
 	};
 </script>
 
-<div class="card flex flex-col space-y-4 p-4 hidden" data-popup={`exerciseOptions${name}`}>
+<div class="card flex flex-col space-y-4 p-4 hidden" data-popup={`folderOptions${id}`}>
 	<button on:click={() => modal.trigger(deleteModal)}>Delete</button>
-	<a class="flex flex-col space-y-1" href={`/edit_workout/${id}`}>Edit</a>
-	<button on:click={()=> modal.trigger(changeFolderModal)}>Change Folder</button>
+	<button class="flex flex-col space-y-1" on:click={()=> modal.trigger(editFolderModal)}>Edit</button>
 </div>

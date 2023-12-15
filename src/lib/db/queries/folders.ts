@@ -2,6 +2,10 @@ import { and, eq, isNull } from 'drizzle-orm';
 import { db } from '../db';
 import { workout_folders, workout_routine } from '../schema';
 
+export async function getAllFolders(user_id: string) {
+	return await db.select().from(workout_folders).where(eq(workout_folders.user_id, user_id));
+}
+
 export async function getParentFolders(user_id: string) {
 	return await db
 		.select()
