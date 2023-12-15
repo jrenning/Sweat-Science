@@ -22,7 +22,7 @@
 	let interval: NodeJS.Timeout;
 	const start = async () => {
 		startTime = Date.now();
-		await fetch('/api/notification', {
+		fetch('/api/notification', {
 			method: 'POST'
 		});
 		interval = setInterval(() => {
