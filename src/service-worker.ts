@@ -107,15 +107,10 @@ worker.addEventListener('fetch', (event) => {
 	}
 });
 
-const sleep = (delayInms: number) => {
-	console.log("In sleep")
-	return new Promise((resolve) => setTimeout(resolve, delayInms));
-};
+
 
 worker.addEventListener('push', async function (event) {
 	const data = JSON.parse(event.data.text());
-	console.log(data)
-	await sleep(60*1000)
 	event.waitUntil(
 		registration.showNotification(data.title, {
 			body: data.message

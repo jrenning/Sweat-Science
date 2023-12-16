@@ -19,12 +19,26 @@
 
 	let STATE: States = 'Running';
 
+	const sleep = (delayInms: number) => {
+		console.log('In sleep');
+		return new Promise((resolve) => setTimeout(resolve, delayInms));
+	};
+
+	async function sendNotificationWithDelay() {
+		console.log("start notify")
+		await sleep(duration * 1000);
+		console.log("sleep over")
+		await fetch('/api/notification', {
+			method: 'POST'
+		});
+		console.log("notify sent")
+
+	}
+
 	let interval: NodeJS.Timeout;
 	const start = async () => {
 		startTime = Date.now();
-		fetch('/api/notification', {
-			method: 'POST'
-		});
+		sendNotificationWithDelay()
 		interval = setInterval(() => {
 			if (STATE == 'Running') {
 				const endTime = Date.now();
