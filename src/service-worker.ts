@@ -111,7 +111,7 @@ const sleep = (delayInms: number) => {
 	return new Promise((resolve) => setTimeout(resolve, delayInms));
 };
 
-worker.addEventListener('push', function (event) {
+worker.addEventListener('push', async function (event) {
 	const data = JSON.parse(event.data.text());
 	await sleep(60*1000)
 	event.waitUntil(
