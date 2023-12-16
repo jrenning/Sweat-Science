@@ -13,7 +13,6 @@ webPush.setVapidDetails(
 export const POST: RequestHandler = async (event) => {
 	const session = await event.locals.getSession();
 	const user_id = session?.user.id ? session.user.id : '';
-	const delay = 15 * 1000;
 
 	const res = await getUserSubsscription(user_id);
 	//@ts-ignore
