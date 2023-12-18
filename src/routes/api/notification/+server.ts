@@ -18,10 +18,10 @@ export const POST: RequestHandler = async (event) => {
 	//@ts-ignore
 	const subscription = res[0].subscription;
 	console.log('notify sent');
-    const data = await fetch('https://notification-hub-pearl.vercel.app/api/notification', {
-        method: "POST",
-		body: JSON.stringify(subscription)
-    });
+    const data = await fetch('https://notifyserver-production.up.railway.app/api/notification', {
+			method: 'POST',
+			body: JSON.stringify(subscription)
+		});
 	// const data = await webPush
 	// 	.sendNotification(
 	// 		subscription,
