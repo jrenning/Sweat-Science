@@ -18,27 +18,13 @@ export const POST: RequestHandler = async (event) => {
 	//@ts-ignore
 	const subscription = res[0].subscription;
 	console.log('notify sent');
+	console.log(subscription)
     const data = await fetch('https://notifyserver-production.up.railway.app/api/notification', {
 			method: 'POST',
-			body: JSON.stringify(subscription)
+			body: JSON.stringify(subscription),
+			headers: {
+				"Content-Type": "application/json"
+			}
 		});
-	// const data = await webPush
-	// 	.sendNotification(
-	// 		subscription,
-	// 		JSON.stringify({
-	// 			title: 'Hey Jack!',
-	// 			message: 'How are your workouts going today?'
-	// 		})
-	// 	)
-	// 	.then((response: any) => {
-	// 		return new Response(JSON.stringify({ success: true }), {
-	// 			status: 200
-	// 		});
-	// 	})
-	// 	.catch((err: any) => {
-	// 		return new Response(JSON.stringify({ error: err }), {
-	// 			status: 500
-	// 		});
-	// 	});
 	return data;
 };
