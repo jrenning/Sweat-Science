@@ -60,7 +60,7 @@ export async function getEstimatedOneRepMax(user_id: string, exercise_id: number
 		.limit(1).catch((err)=> console.log(err));
 
 	// GET MAX INDEX
-	if (data && data[0].weight) {
+	if (data && data.length > 0) {
 		let weights = data[0].weight;
 		let i = weights.indexOf(Math.max(...weights));
 

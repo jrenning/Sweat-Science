@@ -336,7 +336,9 @@ export const exerciseLog = pgTable('exercise_log', {
 	distance: integer('distance').array().notNull(),
 	distance_units: DistanceUnits('distance_units'),
 	created_at: timestamp('created_at').defaultNow().notNull(),
-	workout_log_id: integer('workout_log_id').references(() => workoutLog.id)
+	workout_log_id: integer('workout_log_id').references(() => workoutLog.id),
+	// this only really applies to weighted exercises
+	estimated_max: real("estimated_max")
 });
 
 export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({

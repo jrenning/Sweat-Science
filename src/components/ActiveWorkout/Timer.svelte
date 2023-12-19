@@ -23,7 +23,8 @@
 	const start = async () => {
 		startTime = Date.now();
 		fetch('/api/notification', {
-			method: 'POST'
+			method: 'POST',
+			body: JSON.stringify({delay: duration})
 		});
 		interval = setInterval(() => {
 			if (STATE == 'Running') {
