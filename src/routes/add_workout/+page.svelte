@@ -42,7 +42,8 @@
 	/>
 
 
-	<form class="space-y-4 flex flex-col" use:enhance method="POST" action="?/add_workout">
+	<form class="flex flex-col" use:enhance method="POST" action="?/add_workout">
+		<div class="flex flex-col space-y-8">
 		<label for="name">Name</label>
 		<input type="text" class="text-2xl" id="name" name="name" bind:value={$form.name} />
 		{#if $errors.name}<span class="text-red-400">{$errors.name}</span>{/if}
@@ -58,6 +59,7 @@
 				<AddExerciseCard {exercise} />
 			{/each}
 		{/if}
-		<button class="btn variant-outline-surface">Add Workout</button>
+		</div>
+			<button class="btn mt-20 variant-outline-secondary ">Add Workout</button>
 	</form>
 </div>

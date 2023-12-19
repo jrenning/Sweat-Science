@@ -8,11 +8,8 @@
 		import ClipboardIcon from '../../../components/Icons/ClipboardIcon.svelte';
 	import ChartIcon from '../../../components/Icons/ChartIcon.svelte';
 	import InfoSection from '../../../components/Progress/InfoSection.svelte';
-	import DataSection from '../../../components/Progress/DataSection.svelte';
-	import WorkoutLogs from '../../../components/Progress/Log/WorkoutLogs.svelte';
 	import ExerciseLogs from '../../../components/Progress/Log/ExerciseLogs.svelte';
-	import ChartContainer from '../../../components/Progress/Charts/ChartContainer.svelte';
-
+	import ScatterPlot from '../../../components/Progress/Charts/RepMaxPlot.svelte';
 	export let data: PageData;
 	let tabSet: number = 0;
 
@@ -49,7 +46,7 @@
 				{#if tabSet === 0}
 					<InfoSection exercise={data.exercise} rep_max={data.rep_max} times_performed={data.log.length}/>
 				{:else if tabSet === 1}
-					<ChartContainer exerciseLogs={data.log}/>
+				<ScatterPlot exercise_data={data.log}/>
 				{:else if tabSet === 2}
 					<div class="table-container">
 						<table class="table table-hover">

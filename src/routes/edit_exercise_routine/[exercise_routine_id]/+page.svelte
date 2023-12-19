@@ -10,7 +10,7 @@
 
 	const modalComponentExercise: ModalComponent = {
 		ref: ExerciseSelectionForm,
-		props: { exercise_options: data.exercise_choices, data: data.exerciseForm, post_link: "/add_workout?/add_exercise" }
+		props: { exercise_options: data.exercise_choices, data: data.exerciseForm, post_link: `/edit_exercise_routine/${data.exerciseForm?.data.id}` }
 	};
 	const exerciseModal: ModalSettings = {
 		type: 'component',

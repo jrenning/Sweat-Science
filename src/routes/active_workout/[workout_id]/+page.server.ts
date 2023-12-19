@@ -28,7 +28,6 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 		// adjust for percents
 		workout = await convertWorkoutFromPercent(workout, user_id);
 
-
 		const workoutExercises = workout.exercises;
 
 		const workoutForm = await superValidate(

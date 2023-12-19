@@ -1,4 +1,4 @@
-import { and, eq, isNull } from 'drizzle-orm';
+import { and, eq, isNull, ne } from 'drizzle-orm';
 import { db } from '../db';
 import { workout_folders, workout_routine } from '../schema';
 
@@ -26,7 +26,7 @@ export async function getParentWorkouts(user_id: string) {
 	return await db
 		.select()
 		.from(workout_routine)
-		.where(and(eq(workout_routine.user_id, user_id), isNull(workout_routine.folder_id)));
+		.where(and(eq(workout_routine.user_id, user_id), isNull(workout_routine.folder_id), ne(workout_routine.status, "Pending")));
 }
 
 export async function getWorkoutsinFolder(user_id: string, folder_id: number) {

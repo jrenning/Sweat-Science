@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	import type { WorkoutFolder } from '$lib/db/schema';
 	import { Autocomplete, getModalStore, type AutocompleteOption } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
@@ -34,6 +35,8 @@
             method: "POST",
             body: JSON.stringify(data)
         })
+
+		await invalidateAll()
 
 
         // close the modal
