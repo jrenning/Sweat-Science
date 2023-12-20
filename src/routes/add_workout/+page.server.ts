@@ -13,15 +13,18 @@ import {
 } from '$lib/db/mutations/workout_routine';
 import { newWorkoutRoutineSchema } from './schemas';
 import { getAllEquipment } from '$lib/db/queries/equipment';
-import { insertEquipmentSchema, insertExerciseRoutineSchema } from '$lib/db/schema';
+import { insertEquipmentSchema, insertExerciseRoutineSchema, insertWorkoutRoutine } from '$lib/db/schema';
 import { getPendingWorkouts, getWorkoutById } from '$lib/db/queries/workout_routine';
 import { appendExerciseRoutinetoWorkout } from '$lib/db/mutations/exercise_routine';
 
-export const load: PageServerLoad = async (event) => {
-	const session = await event.locals.getSession();
+export const load: PageServerLoad = async ({url, locals}) => {
+	const session = await locals.getSession();
 	// pass in workout plan id
 	// TODO pass in param for id
 	const user_id = session?.user.id ? session.user.id : '';
+
+	const plan_id = Number(url.searchParams.get('plan_id'));
+	const day = Number(url.searchParams.get('day'));
 
 	// get pending workouts
 	let pending_id = await getPendingWorkouts(user_id);
@@ -35,21 +38,25 @@ export const load: PageServerLoad = async (event) => {
 
 	const exercise_choices = await getPossibleExercises(user_id, '');
 	const equipment_choices = await getAllEquipment();
+
+
+	const formData = {
+		plan_id: plan_id,
+		days: [day],
+		...workout_routine
+	}
 	// super forms
-	const form = await superValidate(event, newWorkoutRoutineSchema);
+	let form = await superValidate(formData, insertWorkoutRoutine);
+
 	const exerciseForm = await superValidate(insertExerciseRoutineSchema);
 
-	return { form, workout_routine, exercise_choices, exerciseForm, equipment_choices };
+	return { form, plan_id, day,  workout_routine, exercise_choices, exerciseForm, equipment_choices };
 };
 
 export const actions: Actions = {
 	add_workout: async ({ request, locals, url }) => {
-		const workoutForm = await superValidate(request, newWorkoutRoutineSchema);
-		const plan_id = Number(url.searchParams.get('plan_id'));
-		const day = Number(url.searchParams.get('day'));
+		const workoutForm = await superValidate(request, insertWorkoutRoutine);
 		const session = await locals.getSession();
-		// pass in workout plan id
-		// TODO pass in param for id
 		const user_id = session?.user.id ? session.user.id : '';
 		if (!workoutForm.valid) return fail(400, { workoutForm });
 
@@ -59,9 +66,13 @@ export const actions: Actions = {
 		const workout_id = pending_id[0].id;
 
 		// update workout
-		await completeWorkoutRoutineForm(workoutForm.data.name, workout_id);
-
+		await completeWorkoutRoutineForm(workoutForm.data.name, workoutForm.data.workout_plan_id, workoutForm.data.days, workout_id);
+		if (workoutForm.data.workout_plan_id) {
+			throw redirect(303, "/add_workout_plan")
+		}
+		else {
 		throw redirect(303, '/');
+		}
 	},
 	add_exercise: async ({ request, locals, url }) => {
 		const session = await locals.getSession();
@@ -74,10 +85,10 @@ export const actions: Actions = {
 
 		if (!exerciseForm.valid) return fail(400, { exerciseForm });
 
-		const input =  {
+		const input = {
 			...exerciseForm.data,
 			user_id: user_id
-		}
+		};
 
 		await appendExerciseRoutinetoWorkout(workout_id, input);
 	}

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { number } from "zod";
-import Day from "./Day.svelte";
+	import { number } from "zod"
+	import Day from "./Day.svelte";
 
 
     export let dates: number[]

@@ -68,10 +68,15 @@ export async function addWorkout(input: InsertWorkoutRoutineWithExercises) {
 	});
 }
 
-export async function completeWorkoutRoutineForm(name: string, workout_id: number) {
+export async function completeWorkoutRoutineForm(
+	name: string,
+	plan_id: number | undefined | null,
+	days: number[] | undefined | null,
+	workout_id: number
+) {
 	const data = await db
 		.update(workout_routine)
-		.set({ name: name, status: 'Completed' })
+		.set({ name: name, status: 'Completed', workout_plan_id: plan_id, days: days })
 		.where(eq(workout_routine.id, workout_id))
 		.then(() => 'success')
 		.catch((err) => err);
@@ -115,14 +120,10 @@ export async function deleteExerciseFromWorkout(exercise_id: number, workout_id:
 		for (let i = 0; i < data.length; i++) {
 			await tx
 				.update(exercise_routine)
-				.set({ position: data[i].position+1 })
+				.set({ position: data[i].position + 1 })
 				.where(eq(exercise_routine.id, data[i].id));
 		}
 	});
 }
 
-export async function deleteWorkoutsInFolder(user_id: string, folder_id: number) {
-
-	
-
-}
+export async function deleteWorkoutsInFolder(user_id: string, folder_id: number) {}

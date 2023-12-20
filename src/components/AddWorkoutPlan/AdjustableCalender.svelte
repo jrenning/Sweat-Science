@@ -1,5 +1,6 @@
 <script lang="ts">
-	import MiniCalender from './MiniCalender.svelte';
+	import MiniCalender from "./MiniCalender.svelte";
+
 
 	export let start_date: Date;
 	export let end_date: Date;

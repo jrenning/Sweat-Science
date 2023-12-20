@@ -7,21 +7,25 @@ import {
 	type InsertFullWorkoutPlan,
 	type InsertWorkoutPlan
 } from '../schema';
-import {Status} from "../schema"
+import { Status } from '../schema';
 
 export async function addWorkoutPlanBasic(input: InsertWorkoutPlan) {
 	if (input.id) {
-		return await db.update(workout_plans).set({...input, status: "Pending"}).where(eq(workout_plans.id, input.id)).returning({id: workout_plans.id});
+		return await db
+			.update(workout_plans)
+			.set({ ...input, status: 'Pending' })
+			.where(eq(workout_plans.id, input.id))
+			.returning({ id: workout_plans.id });
 	} else {
-		const data =  await db
+		const data = await db
 			.insert(workout_plans)
 			.values({
 				...input,
 				status: 'Pending'
-			}).returning({id: workout_plans.id})
-			.onConflictDoUpdate({target: workout_plans.name, set: input})
-		return data
-			
+			})
+			.returning({ id: workout_plans.id })
+			.onConflictDoUpdate({ target: workout_plans.name, set: input });
+		return data;
 	}
 }
 
@@ -32,6 +36,17 @@ export async function updatePlanDays(plan_id: number, days: number) {
 		.where(eq(workout_plans.id, plan_id));
 }
 
-export async function updatePlanStaus(plan_id: number, status: "Pending" | "Completed" | "Current") {
-	return await db.update(workout_plans).set({status: status}).where(eq(workout_plans.id, plan_id))
+export async function updatePlanStatus(
+	plan_id: number,
+	status: 'Pending' | 'Completed' | 'Current'
+) {
+	return await db
+		.update(workout_plans)
+		.set({ status: status })
+		.where(eq(workout_plans.id, plan_id));
+}
+
+export async function createPendingWorkoutPlan(user_id: string) {
+	console.log('hello');
+	return await db.insert(workout_plans).values({ user_id: user_id, name: '', status: 'Pending' }).returning({id: workout_plans.id})
 }
