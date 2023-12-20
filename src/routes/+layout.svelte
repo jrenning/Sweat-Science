@@ -6,6 +6,8 @@
 	import { LightSwitch, Modal, Toast, initializeStores } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
+	import { currentTheme } from '../stores/theme';
+	import { browser } from '$app/environment';
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
 	// init skeleton
@@ -17,6 +19,11 @@
 	var yyyy = today.getFullYear();
 
 	let todayString = mm + '/' + dd + '/' + yyyy;
+
+
+	$: {if (browser) {
+		document.body.setAttribute("data-theme", $currentTheme)
+	}}
 </script>
 
 <Modal />

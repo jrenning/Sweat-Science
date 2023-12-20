@@ -12,7 +12,7 @@
 			<tr>
 				<th class="font-semibold p-2">Weight</th>
 				{#each log_entry.weight as weight}
-					<td class="p-2">{weight} {log_entry.weight_units ? log_entry.weight_units : "lb"}</td>
+					<td class="p-2">{weight} {"lb"}</td>
 				{/each}
 			</tr>
 			<tr>

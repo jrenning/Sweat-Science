@@ -22,7 +22,7 @@ const config = {
 	plugins: [
 		// 4. Append the Skeleton plugin (after other plugins)
 		skeleton({
-			themes: {preset: ["sahara"]}
+			themes: {preset: ["sahara", "crimson", "gold-nouveau", "hamlindigo", "vintage", "seafoam", "rocket", "modern", "wintry", "skeleton"]}
 		})
 	]
 } satisfies Config;

@@ -13,7 +13,7 @@
 </script>
 
 <div
-	class="flex-grow-0 flex-shrink-0 flex-auto rounded-md bg-[#C65F5F] border border-black shadow-md md:w-[300px] w-[250px] h-[250px] md:h-[300px]"
+	class="flex-grow-0 flex-shrink-0 flex-auto rounded-md bg-[#C65F5F] bg-surface-500 border border-black shadow-md md:w-[300px] w-[250px] h-[250px] md:h-[300px]"
 >
 	<div class="flex justify-end items-center mr-2 mt-2 space-x-1">
 		<div

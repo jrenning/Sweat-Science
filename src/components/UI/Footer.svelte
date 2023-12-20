@@ -42,7 +42,7 @@
 			<a href="/calender"><div class="w-6 h-6 dark:fill-white"><CalenderIcon /></div></a>
 		</div>
 		<div>
-			<a href="/"><div class="w-6 h-6 dark:fill-white"><SettingsIcon /></div></a>
+			<a href="/settings"><div class="w-6 h-6 dark:fill-white"><SettingsIcon /></div></a>
 		</div>
 	</div>
 </footer>

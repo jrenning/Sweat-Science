@@ -38,11 +38,8 @@ export async function addExerciseRoutineToWorkout(
 				user_id: input.user_id,
 				reps: input.reps,
 				weight: input.weight,
-				weight_units: input.weight_units,
 				distance: input.distance,
-				distance_units: input.distance_units,
 				duration: input.duration,
-				duration_units: input.duration_units,
 				position: position,
 				percent_max: input.percent_max
 			})
@@ -70,11 +67,8 @@ export async function insertExerciseRoutinetoWorkout(
 				user_id: input.user_id,
 				reps: input.reps,
 				weight: input.weight,
-				weight_units: input.weight_units,
 				distance: input.distance,
-				distance_units: input.distance_units,
 				duration: input.duration,
-				duration_units: input.duration_units,
 				position: position,
 				percent_max: input.percent_max
 			})
