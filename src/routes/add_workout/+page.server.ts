@@ -31,7 +31,7 @@ export const load: PageServerLoad = async ({url, locals}) => {
 
 	if (pending_id.length == 0) {
 		// create new workout routine
-		pending_id = await createPendingWorkout(user_id);
+		pending_id = await createPendingWorkout(user_id, plan_id, [day]);
 	}
 	// get pending data
 	const workout_routine = await getWorkoutById(user_id, pending_id[0].id);

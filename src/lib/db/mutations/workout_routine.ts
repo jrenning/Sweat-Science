@@ -84,13 +84,19 @@ export async function completeWorkoutRoutineForm(
 	return data;
 }
 
-export async function createPendingWorkout(user_id: string) {
+export async function createPendingWorkout(
+	user_id: string,
+	plan_id: number | undefined = undefined,
+	days: number[] | undefined = undefined
+) {
 	const data = db
 		.insert(workout_routine)
 		.values({
 			name: '',
 			status: 'Pending',
-			user_id: user_id
+			user_id: user_id,
+			workout_plan_id: plan_id,
+			days: days
 		})
 		.returning({ id: workout_routine.id });
 
