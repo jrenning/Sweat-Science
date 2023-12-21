@@ -8,6 +8,8 @@ import {
 	type InsertWorkoutPlan
 } from '../schema';
 import { Status } from '../schema';
+import { getWorkoutById } from '../queries/workout_routine';
+import { addWorkoutToPlan, updateWorkoutDays } from './workout_routine';
 
 export async function addWorkoutPlanBasic(input: InsertWorkoutPlan) {
 	if (input.id) {
@@ -48,5 +50,43 @@ export async function updatePlanStatus(
 
 export async function createPendingWorkoutPlan(user_id: string) {
 	console.log('hello');
-	return await db.insert(workout_plans).values({ user_id: user_id, name: '', status: 'Pending' }).returning({id: workout_plans.id})
+	return await db
+		.insert(workout_plans)
+		.values({ user_id: user_id, name: '', status: 'Pending' })
+		.returning({ id: workout_plans.id });
+}
+
+export async function addExistingWorkoutToPlan(
+	user_id: string,
+	plan_id: number,
+	workout_id: number,
+	day: number
+) {
+	// get data to copy
+	const data = await getWorkoutById(user_id, workout_id);
+	// make new copy with plan id and day
+	if (data) {
+		if (data.workout_plan_id == plan_id) {
+			if (data.days?.includes(day)) {
+				throw Error("Can't add the same workout to the same day");
+			} else {
+				await updateWorkoutDays(data.id, day);
+			}
+		} else {
+			const copyData = {
+				...data,
+				exercises: data.exercises.map((exercise) => {
+					return { ...exercise, id: undefined };
+				}),
+				copy_id: data.id,
+				id: undefined,
+				folder_id: null,
+				days: [day]
+			};
+
+			return await addWorkoutToPlan(plan_id, copyData);
+		}
+	}
+
+	throw Error("workout wasn't found");
 }

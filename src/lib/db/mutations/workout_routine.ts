@@ -9,6 +9,7 @@ import { addExerciseRoutineToWorkout, setExercisePosition } from './exercise_rou
 import { getExerciseRoutinesAfterPosition } from '../queries/exercise_routine';
 
 export async function addWorkoutToPlan(plan_id: number, input: InsertWorkoutRoutineWithExercises) {
+	console.log(input);
 	return await db.transaction(async (tx) => {
 		// if input has an id just do an update
 		if (input.id) {
@@ -23,13 +24,16 @@ export async function addWorkoutToPlan(plan_id: number, input: InsertWorkoutRout
 					days: input.days
 				})
 				.returning({ id: workout_routine.id });
-
 			// add exercises
-			if (input.exercises) {
+			if (input.exercises && routine[0]) {
 				let position = 0;
 				// need for loop to maintain order
 				for (let i = 0; i < input.exercises.length; i++) {
-					await addExerciseRoutineToWorkout(routine[0].id, input.exercises[i], position);
+					await tx.insert(exercise_routine).values({
+						...input.exercises[i],
+						workout_routine_id: routine[0].id,
+						position: position
+					});
 					position += 1;
 				}
 			}
@@ -61,7 +65,11 @@ export async function addWorkout(input: InsertWorkoutRoutineWithExercises) {
 			let position = 0;
 			// for loop to maintain order
 			for (let i = 0; i < input.exercises.length; i++) {
-				await addExerciseRoutineToWorkout(routine[0].id, input.exercises[i], position);
+				await await tx.insert(exercise_routine).values({
+					...input.exercises[i],
+					workout_routine_id: routine[0].id,
+					position: position
+				});
 				position += 1;
 			}
 		}
@@ -131,5 +139,23 @@ export async function deleteExerciseFromWorkout(exercise_id: number, workout_id:
 		}
 	});
 }
+
+export async function getWorkoutDays(workout_id: number) {
+	return await db
+		.select({ days: workout_routine.days })
+		.from(workout_routine)
+		.where(eq(workout_routine.id, workout_id));
+}
+
+export async function updateWorkoutDays(workout_id: number, day: number) {
+	// get previous days
+	let days = await getWorkoutDays(workout_id);
+
+	if (days[0].days) {
+		return await db.update(workout_routine).set({ days: [...days[0].days, day] });
+	}
+}
+
+
 
 export async function deleteWorkoutsInFolder(user_id: string, folder_id: number) {}

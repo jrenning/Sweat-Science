@@ -5,6 +5,7 @@
 	import BackButton from '../../components/UI/Buttons/BackButton.svelte';
 	import ExerciseSelectionForm from '../../components/Exercises/ExerciseSelectionForm.svelte';
 	import AddExerciseCard from '../../components/AddWorkout/AddExerciseCard.svelte';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	export let data: PageData;
 	const modalStore = getModalStore();
 	const equipment_names = data.equipment_choices.map((equip) => {
@@ -40,7 +41,6 @@
 		placeholder="Workout Name"
 		bind:value={$form.name}
 	/>
-
 
 	<form class="flex flex-col" use:enhance method="POST" action="?/add_workout">
 		<div class="flex flex-col space-y-8">

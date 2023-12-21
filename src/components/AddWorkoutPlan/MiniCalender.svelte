@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { number } from "zod"
 	import Day from "./Day.svelte";
+	import type { WorkoutRoutineWithExercises } from "$lib/db/schema";
 
 
     export let dates: number[]
@@ -13,6 +14,8 @@
 
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 const days_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+
 
 
 </script>

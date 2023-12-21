@@ -225,7 +225,7 @@ export const workout_routine = pgTable('workout_routine', {
 		.references(() => users.id, { onDelete: 'cascade' })
 		.notNull(),
 	id: serial('id').primaryKey(),
-	name: text('name').notNull().unique(),
+	name: text('name').notNull(),
 	days: integer('days').array(),
 	workout_plan_id: integer('workout_plan_id').references(() => workout_plans.id, {
 		onDelete: 'set null'
@@ -233,7 +233,8 @@ export const workout_routine = pgTable('workout_routine', {
 	created_at: timestamp('created_at').defaultNow(),
 	status: Status('status').default('Pending'),
 	favorite: boolean('favorite'),
-	folder_id: integer('folder_id').references(() => workout_folders.id, { onDelete: 'set null' })
+	folder_id: integer('folder_id').references(() => workout_folders.id, { onDelete: 'set null' }),
+	copy_id: integer("copy_id")
 });
 
 export const workoutsRelations = relations(workout_routine, ({ one, many }) => ({
