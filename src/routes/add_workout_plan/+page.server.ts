@@ -15,6 +15,9 @@ export async function load(event) {
 	// pass in workout plan id
 	// TODO pass in param for id
 	const user_id = session?.user.id ? session.user.id : '';
+
+
+
 	// get pending workouts
 	let pending_id = await getPendingPlans(user_id);
 	if (pending_id.length == 0) {

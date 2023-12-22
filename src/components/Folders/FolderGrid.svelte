@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { WorkoutFolder, WorkoutRoutineWithExercises } from '$lib/db/schema';
+	import type { WorkoutFolder, WorkoutRoutine } from '$lib/db/schema';
 	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import Folder from './Folder.svelte';
 	import AddFolderForm from './FolderForm.svelte';
@@ -8,15 +8,15 @@
 	import { afterNavigate } from '$app/navigation';
 
 	export let folders: WorkoutFolder[];
-    export let workouts: WorkoutRoutineWithExercises[]
+	export let workouts: WorkoutRoutine[]
 
-    export let folder_id: number | null
+	export let folder_id: number | null;
 
 	const modalStore = getModalStore();
 
 	const modalComponentFolder: ModalComponent = {
 		ref: AddFolderForm,
-		props: { parent_id: folder_id, type: "add" }
+		props: { parent_id: folder_id, type: 'add' }
 	};
 	const folderModal: ModalSettings = {
 		type: 'component',
@@ -24,29 +24,25 @@
 		component: modalComponentFolder
 	};
 
-	let previousPage: string = "/"
+	let previousPage: string = '/';
 
-	afterNavigate(({from})=> {
-		previousPage = from?.url.pathname || previousPage
-	})
-
-
-
-
+	afterNavigate(({ from }) => {
+		previousPage = from?.url.pathname || previousPage;
+	});
 </script>
-<div>
-<BackButton link={previousPage}/>
-<button
-	class="btn-md variant-outline-secondary flex w-full mt-6 justify-center items-center rounded-md shadow-md"
-    on:click={()=> modalStore.trigger(folderModal)}
-	>Add</button
->
+
+<div class="mx-4">
+	<BackButton link={previousPage} />
 </div>
+<button
+	class="btn-md mx-10 hover:variant-filled-secondary variant-outline-secondary flex mt-6 justify-center items-center rounded-md shadow-md"
+	on:click={() => modalStore.trigger(folderModal)}>Add</button
+>
 <div class="grid grid-cols-1 gap-4 mx-4 mt-4">
 	{#each folders as folder}
 		<Folder name={folder.name} id={folder.id} />
 	{/each}
-    {#each workouts as workout}
-    <WorkoutInFolder workout={workout} />
-    {/each}
+	{#each workouts as workout}
+		<WorkoutInFolder {workout} />
+	{/each}
 </div>

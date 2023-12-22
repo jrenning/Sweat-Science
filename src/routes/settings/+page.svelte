@@ -3,7 +3,7 @@
 
 
 
-const settings = ["Account", "Defaults", "Customization"]
+const settings = ["Account", "Defaults", "Customization", "Upload"]
 
 </script>
 

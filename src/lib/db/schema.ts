@@ -25,6 +25,8 @@ export type ExerciseRoutineWithExercise = InferSelectModel<typeof exercise_routi
 	exercise: InferSelectModel<typeof exercises>;
 };
 
+export type WorkoutRoutine = InferSelectModel<typeof workout_routine>
+
 export type WorkoutRoutineWithExercises = InferSelectModel<typeof workout_routine> & {
 	exercises: ExerciseRoutineWithExercise[];
 };

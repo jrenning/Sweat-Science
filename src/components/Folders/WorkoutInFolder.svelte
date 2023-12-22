@@ -1,13 +1,12 @@
 <script lang="ts">
-	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
+	import type { WorkoutRoutine } from '$lib/db/schema';
 	import { getModalStore, popup, type ModalSettings } from '@skeletonlabs/skeleton';
 	import DumbbellIcon from '../Icons/DumbbellIcon.svelte';
-	import EditIcon from '../Icons/EditIcon.svelte';
 	import { goto, invalidateAll } from '$app/navigation';
 
 	import WorkoutOptions from '../Popups/WorkoutOptions.svelte';
 
-	export let workout: WorkoutRoutineWithExercises;
+	export let workout: WorkoutRoutine;
 </script>
 
 <div

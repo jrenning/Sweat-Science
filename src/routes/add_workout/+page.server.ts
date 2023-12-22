@@ -66,6 +66,7 @@ export const actions: Actions = {
 		const workout_id = pending_id[0].id;
 
 		// update workout
+		//@ts-ignore
 		await completeWorkoutRoutineForm(workoutForm.data.name, workoutForm.data.workout_plan_id, workoutForm.data.days, workout_id);
 		if (workoutForm.data.workout_plan_id) {
 			throw redirect(303, "/add_workout_plan")

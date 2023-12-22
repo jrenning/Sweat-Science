@@ -20,7 +20,9 @@
 		enhance: planEnhance,
 		capture,
 		restore
-	} = superForm(data.formWorkoutPlan);
+	} = superForm(data.formWorkoutPlan, {
+		taintedMessage: false
+	});
 
 	$current_plan_id = $planForm.id ? $planForm.id : 0;
 
@@ -37,7 +39,11 @@
 
 
 	function getWorkoutsOnDay(day: number) {
-		return data.workouts.filter((item) => item.days && item.days.includes(day)).length;
+		if (data.workouts) {
+			return data.workouts.filter((item) => item.days && item.days.includes(day)).length;
+		}
+		return 0
+		
 	}
 
 	setContext('workout_plan_page', {

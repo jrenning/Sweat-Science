@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { LightSwitch } from '@skeletonlabs/skeleton';
-import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
-
 	import { hexToRgb, rgbStringToHex } from '../../../helpers/colors';
 	import { currentTheme } from '../../../stores/theme';
 	import FormButton from '../../../components/UI/Buttons/FormButton.svelte';
+	import type { PageData } from './$types';
+	import SettingsHeader from '../../../components/Settings/SettingsHeader.svelte';
+
+
+	export let data: PageData
+
 
 	const themes = [
 		'skeleton',
@@ -43,16 +47,12 @@ import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
 </script>
 
 <div>
-	<div class="flex justify-evenly">
-		<BackButton link="/settings" />
-
-		<h1 class="mx-4 font-semibold text-4xl mb-10">Defaults</h1>
-		<div />
-	</div>
+	<SettingsHeader name="Defaults" />
+	<div class="flex flex-col space-y-6">
 	<div class="flex flex-col space-y-8 items-center">
-		<h3 class="font-semibold text-xl">Theme</h3>
+		<h3 class="font-semibold text-xl flex justify-start w-[90%]">Theme</h3>
         <div class="flex space-x-6">
-		<select class="select" id="theme" on:change={()=> updateTheme()}>
+		<select class="select" id="theme" on:change={()=> updateTheme()} value={data.default_settings.theme}>
 			{#each themes as theme}
 				<option>{theme}</option>
 			{/each}
@@ -60,5 +60,14 @@ import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
         <FormButton text="Set as Default" action={()=> setTheme()}/>
         </div>
         <LightSwitch />
+	</div>
+
+	<div class="flex flex-col space-y-8 items-center">
+		<h3 class="font-semibold text-xl lex justify-start w-[90%]">Notifications</h3>
+		<div class="flex w-full space-x-10 justify-center">
+			<div>Notify after rest</div>
+			<input type="checkbox" class="checkbox" value={data.default_settings.notify_after_set} />
+		</div>
+	</div>
 	</div>
 </div>

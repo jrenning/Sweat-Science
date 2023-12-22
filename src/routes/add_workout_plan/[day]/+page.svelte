@@ -13,16 +13,18 @@
 
 <div>
 	<div class="flex justify-evenly">
-		<BackButton link="/add_workout_plan" />
+		<BackButton link="/add_workout_plan?page=2" />
 		<div class="italic font-semibold text-2xl">Day {data.day}</div>
 		<div />
 	</div>
+	{#if data.workouts}
 	<div class="space-y-6">
 		<h2 class="font-semibold text-2xl mx-4">Workouts</h2>
 		{#each data.workouts as workout}
 			<AddWorkoutCard {workout} />
 		{/each}
 	</div>
+	{/if}
 	<div class="flex justify-center mt-10">
 		<button
 			use:popup={{
