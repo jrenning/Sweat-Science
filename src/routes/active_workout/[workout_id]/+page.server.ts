@@ -28,7 +28,7 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 		// adjust for percents
 		workout = await convertWorkoutFromPercent(workout, user_id);
 
-		const workoutExercises = workout.exercises;
+		const workoutExercises = workout.exercises
 
 		const workoutForm = await superValidate(
 			{ name: workout.name, exercises: workoutExercises },
@@ -40,7 +40,7 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 			workoutForm
 		};
 	}
-	redirect(300, "/")
+	throw redirect(300, "/")
 };
 
 export const actions: Actions = {

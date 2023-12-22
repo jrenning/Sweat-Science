@@ -1,9 +1,8 @@
 import { backInOut } from 'svelte/easing';
 import { db } from '../db';
-import { exercise_routine, type InsertExerciseRoutine } from '../schema';
+import { exercise_routine, workoutToExerciseRoutines, type InsertExerciseRoutine } from '../schema';
 import { eq } from 'drizzle-orm';
 import {
-	getExerciseRoutinesAfterPosition,
 	getLastExerciseRoutinePosition
 } from '../queries/exercise_routine';
 
@@ -13,8 +12,8 @@ export async function appendExerciseRoutinetoWorkout(
 ) {
 	// get max position
 	const position = await getLastExerciseRoutinePosition(workout_routine_id);
-	if (position.length > 0) {
-		return await addExerciseRoutineToWorkout(workout_routine_id, input, position[0].position + 1);
+	if (position > 0) {
+		return await addExerciseRoutineToWorkout(workout_routine_id, input, position + 1);
 	} else {
 		return await addExerciseRoutineToWorkout(workout_routine_id, input, 0);
 	}
@@ -30,7 +29,6 @@ export async function addExerciseRoutineToWorkout(
 			.insert(exercise_routine)
 			.values({
 				exercise_id: input.exercise_id,
-				workout_routine_id: workout_routine_id,
 				sets: input.sets,
 				type: input.type,
 				rest: input.rest,
@@ -44,6 +42,12 @@ export async function addExerciseRoutineToWorkout(
 				percent_max: input.percent_max
 			})
 			.returning({ id: exercise_routine.id });
+
+		// add to group table
+
+		await tx
+			.insert(workoutToExerciseRoutines)
+			.values({ workout_routine_id: workout_routine_id, exercise_routine_id: routine[0].id });
 
 		return routine[0].id;
 	});
@@ -59,7 +63,6 @@ export async function insertExerciseRoutinetoWorkout(
 			.insert(exercise_routine)
 			.values({
 				exercise_id: input.exercise_id,
-				workout_routine_id: workout_routine_id,
 				sets: input.sets,
 				type: input.type,
 				rest: input.rest,
@@ -74,12 +77,32 @@ export async function insertExerciseRoutinetoWorkout(
 			})
 			.returning({ id: exercise_routine.id });
 
+		await tx
+			.insert(workoutToExerciseRoutines)
+			.values({ workout_routine_id: workout_routine_id, exercise_routine_id: routine[0].id });
+
 		// get exercises that need to be changed
-		const data = await getExerciseRoutinesAfterPosition(workout_routine_id, position);
+		// get one entry of the exercise in group relation table to find siblings
+		const workout = await tx
+			.select({ workout_id: workoutToExerciseRoutines.workout_routine_id })
+			.from(workoutToExerciseRoutines)
+			.where(eq(workoutToExerciseRoutines.exercise_routine_id, routine[0].id));
+
+		// get all from the first result
+		let siblings = await tx.query.workoutToExerciseRoutines.findMany({
+			where: eq(workoutToExerciseRoutines.workout_routine_id, workout[0].workout_id),
+			with: {
+				exercise_routine: true
+			}
+		});
+
+		siblings = siblings.filter(
+			(sibling) => sibling.exercise_routine.position >= position
+		);
 
 		// set new positions
-		for (let i = 0; i < data.length; i++) {
-			await setExercisePosition(data[i].id, data[i].position + 1);
+		for (let i = 0; i < siblings.length; i++) {
+			await setExercisePosition(siblings[i].exercise_routine.id, siblings[i].exercise_routine.position + 1);
 		}
 
 		return routine[0].id;

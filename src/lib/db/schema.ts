@@ -105,11 +105,11 @@ export const user_settings = pgTable('user_settings', {
 	id: text('id').notNull().primaryKey(),
 	user_id: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
 	weight: real('weight'),
-	weight_units: WeightUnits("weight_units").default("lb"),
-	distance_units: DistanceUnits("distance_units").default("mile"),
-	notify_after_set: boolean("notify_after_set"),
-	height: real("height"),
-	theme: text("theme")
+	weight_units: WeightUnits('weight_units').default('lb'),
+	distance_units: DistanceUnits('distance_units').default('mile'),
+	notify_after_set: boolean('notify_after_set'),
+	height: real('height'),
+	theme: text('theme')
 });
 
 export const favorites = pgTable('favorites', {
@@ -234,7 +234,7 @@ export const workout_routine = pgTable('workout_routine', {
 	status: Status('status').default('Pending'),
 	favorite: boolean('favorite'),
 	folder_id: integer('folder_id').references(() => workout_folders.id, { onDelete: 'set null' }),
-	copy_id: integer("copy_id")
+	copy_id: integer('copy_id')
 });
 
 export const workoutsRelations = relations(workout_routine, ({ one, many }) => ({
@@ -242,7 +242,7 @@ export const workoutsRelations = relations(workout_routine, ({ one, many }) => (
 		fields: [workout_routine.workout_plan_id],
 		references: [workout_plans.id]
 	}),
-	exercises: many(exercise_routine),
+	exercises: many(workoutToExerciseRoutines),
 	folder: one(workout_folders, {
 		fields: [workout_routine.folder_id],
 		references: [workout_folders.id]
@@ -270,7 +270,6 @@ export const workoutFolderRelations = relations(workout_folders, ({ one, many })
 	})
 }));
 
-
 export const ExerciseGoalTypes = pgEnum('exercise_goal_types', ['Duration', 'Weight', 'Distance']);
 
 // TODO figure out how to remove not null on everything without typescript throwing a hissy fit
@@ -280,9 +279,6 @@ export const exercise_routine = pgTable('exercise_routine', {
 	exercise_id: integer('exercise_id')
 		.notNull()
 		.references(() => exercises.id, { onDelete: 'set null' }),
-	workout_routine_id: integer('workout_routine_id').references(() => workout_routine.id, {
-		onDelete: 'cascade'
-	}),
 	type: ExerciseGoalTypes('exercise_goal_types'),
 	sets: integer('sets').notNull(),
 	reps: integer('reps').array().notNull(),
@@ -301,11 +297,37 @@ export const exerciseRoutineRelations = relations(exercise_routine, ({ one, many
 		fields: [exercise_routine.exercise_id],
 		references: [exercises.id]
 	}),
-	workout_routine: one(workout_routine, {
-		fields: [exercise_routine.workout_routine_id],
-		references: [workout_routine.id]
-	})
+	workout_routines: many(workoutToExerciseRoutines)
 }));
+
+export const workoutToExerciseRoutines = pgTable(
+	'workout_routine_to_exercise_routine',
+	{
+		exercise_routine_id: integer('exercise_routine_id')
+			.notNull()
+			.references(() => exercise_routine.id, { onDelete: 'cascade' }),
+		workout_routine_id: integer('workout_routine_id')
+			.notNull()
+			.references(() => workout_routine.id, { onDelete: 'cascade' })
+	},
+	(t) => ({
+		pk: primaryKey(t.exercise_routine_id, t.workout_routine_id)
+	})
+);
+
+export const workoutToExerciseRoutineRelations = relations(
+	workoutToExerciseRoutines,
+	({ one }) => ({
+		exercise_routine: one(exercise_routine, {
+			fields: [workoutToExerciseRoutines.exercise_routine_id],
+			references: [exercise_routine.id]
+		}),
+		workout_routine: one(workout_routine, {
+			fields: [workoutToExerciseRoutines.workout_routine_id],
+			references: [workout_routine.id]
+		})
+	})
+);
 
 /* LOGS */
 

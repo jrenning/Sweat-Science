@@ -18,8 +18,8 @@
 
 	$: progress = exercise + 1;
 	$: exercise_total = data.workout?.exercises.length ? data.workout.exercises.length : 0;
-	$: current_exercise = data.workout?.exercises[exercise];
-	$: future_exercise = data.workout?.exercises[exercise + 1];
+	$: current_exercise = data.workout?.exercises[exercise]
+	$: future_exercise = data.workout?.exercises[exercise + 1]
 
 	let selected_value = current_exercise?.exercise.name;
 	function skipToExercise() {
@@ -62,7 +62,6 @@
 			set -= 1;
 		} else {
 			exercise -= 1;
-			//@ts-ignore
 			set = data.workout?.exercises[exercise - 1].sets;
 			selected_value = data.workout?.exercises[exercise].exercise.name;
 		}

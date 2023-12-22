@@ -75,9 +75,6 @@ export async function addExistingWorkoutToPlan(
 		} else {
 			const copyData = {
 				...data,
-				exercises: data.exercises.map((exercise) => {
-					return { ...exercise, id: undefined };
-				}),
 				copy_id: data.id,
 				id: undefined,
 				folder_id: null,
