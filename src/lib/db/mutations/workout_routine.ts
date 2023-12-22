@@ -11,48 +11,44 @@ import { addExerciseRoutineToWorkout, setExercisePosition } from './exercise_rou
 export async function addWorkoutToPlan(plan_id: number, input: InsertWorkoutRoutineWithExercises) {
 	console.log(input);
 	return await db.transaction(async (tx) => {
-		// if input has an id just do an update
-		if (input.id) {
-			await tx.update(workout_routine).set(input).where(eq(workout_routine.id, input.id));
-		} else {
-			const routine = await tx
-				.insert(workout_routine)
-				.values({
-					name: input.name,
-					user_id: input.user_id,
-					workout_plan_id: plan_id,
-					days: input.days
-				})
-				.returning({ id: workout_routine.id });
-			// add exercises
-			if (input.exercises && routine[0]) {
-				let position = 0;
-				// need for loop to maintain order
-				for (let i = 0; i < input.exercises.length; i++) {
-					// if it doesn't already exist make it
-					if (!input.exercises[i].id) {
-						const exercise = await tx
-							.insert(exercise_routine)
-							.values({
-								...input.exercises[i],
-								position: position
-							})
-							.returning({ id: exercise_routine.id });
+		const routine = await tx
+			.insert(workout_routine)
+			.values({
+				name: input.name,
+				user_id: input.user_id,
+				workout_plan_id: plan_id,
+				days: input.days,
+				copy_id: input.copy_id
+			})
+			.returning({ id: workout_routine.id });
+		// add exercises
+		if (input.exercises && routine[0]) {
+			let position = 0;
+			// need for loop to maintain order
+			for (let i = 0; i < input.exercises.length; i++) {
+				// if it doesn't already exist make it
+				if (!input.exercises[i].id) {
+					const exercise = await tx
+						.insert(exercise_routine)
+						.values({
+							...input.exercises[i],
+							position: position
+						})
+						.returning({ id: exercise_routine.id });
 
-						await tx.insert(workoutToExerciseRoutines).values({
-							workout_routine_id: routine[0].id,
-							exercise_routine_id: exercise[0].id
-						});
-					} else {
-						//@ts-ignore
-						await tx.insert(workoutToExerciseRoutines).values({
-							workout_routine_id: routine[0].id,
-							exercise_routine_id: input.exercises[i].id
-						});
-					}
-
-					position += 1;
+					await tx.insert(workoutToExerciseRoutines).values({
+						workout_routine_id: routine[0].id,
+						exercise_routine_id: exercise[0].id
+					});
+				} else {
+					//@ts-ignore
+					await tx.insert(workoutToExerciseRoutines).values({
+						workout_routine_id: routine[0].id,
+						exercise_routine_id: input.exercises[i].id
+					});
 				}
+
+				position += 1;
 			}
 		}
 	});
@@ -103,8 +99,7 @@ export async function completeWorkoutRoutineForm(
 	name: string,
 	workout_id: number,
 	plan_id: number | undefined | null = null,
-	days: number[] | undefined | null = null,
-
+	days: number[] | undefined | null = null
 ) {
 	const data = await db
 		.update(workout_routine)
@@ -186,4 +181,12 @@ export async function updateWorkoutDays(workout_id: number, day: number) {
 	}
 }
 
-export async function deleteWorkoutsInFolder(user_id: string, folder_id: number) {}
+export async function deleteWorkoutDay(workout_id: number, day: number) {
+	// get previous days
+	let days = await getWorkoutDays(workout_id);
+	if (days[0].days) {
+		let new_days = days[0].days.filter((d) => d != day);
+
+		return await db.update(workout_routine).set({ days: new_days }).where(eq(workout_routine.id, workout_id));
+	}
+}

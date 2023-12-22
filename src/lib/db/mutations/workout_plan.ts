@@ -10,6 +10,7 @@ import {
 import { Status } from '../schema';
 import { getWorkoutById } from '../queries/workout_routine';
 import { addWorkoutToPlan, updateWorkoutDays } from './workout_routine';
+import { getCopyIDInPlan } from '../queries/workout_plan';
 
 export async function addWorkoutPlanBasic(input: InsertWorkoutPlan) {
 	if (input.id) {
@@ -66,12 +67,16 @@ export async function addExistingWorkoutToPlan(
 	const data = await getWorkoutById(user_id, workout_id);
 	// make new copy with plan id and day
 	if (data) {
-		if (data.workout_plan_id == plan_id) {
-			if (data.days?.includes(day)) {
-				throw Error("Can't add the same workout to the same day");
-			} else {
-				await updateWorkoutDays(data.id, day);
-			}
+		// if its already been copied
+		const copied_ids = await getCopyIDInPlan(plan_id);
+		let ids = copied_ids.map((id)=> id.copy_id)
+		if (ids.includes(data.id)) {
+			copied_ids.forEach(async (id_pair)=> {
+				if (id_pair.copy_id == data.id) {
+					await updateWorkoutDays(id_pair.id, day);
+				}
+			})
+			
 		} else {
 			const copyData = {
 				...data,

@@ -9,6 +9,7 @@
 	import { setContext } from 'svelte';
 	import ChevronIcon from '../../components/Icons/ChevronIcon.svelte';
 	import AddButton from '../../components/UI/Buttons/AddButton.svelte';
+	import { onNavigate } from '$app/navigation';
 
 	let pg = $page.url.searchParams.get('page') ? Number($page.url.searchParams.get('page')) : 1;
 
@@ -59,6 +60,14 @@
 			$planForm.total_days = $planForm.total_days + change;
 		}
 	}
+
+	onNavigate(async ()=> {
+		// update plan days before navigation
+		await fetch("/api/workout_plan/days", {
+			method: "POST",
+			body: JSON.stringify({total_days: $planForm.total_days, plan_id: $current_plan_id})
+		})
+	})
 
 </script>
 

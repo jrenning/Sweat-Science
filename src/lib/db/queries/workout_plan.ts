@@ -1,4 +1,4 @@
-import { and, arrayContains, eq } from 'drizzle-orm';
+import { and, arrayContains, eq, isNotNull } from 'drizzle-orm';
 import { workout_plans, workout_routine } from '../schema';
 import { db } from '../db';
 
@@ -78,4 +78,11 @@ export async function getPendingPlans(user_id: string) {
 		.limit(1)
 		.where(and(eq(workout_plans.status, 'Pending'), eq(workout_plans.user_id, user_id)));
 	return data;
+}
+
+export async function getCopyIDInPlan(plan_id: number) {
+	let data = await db.select({copy_id: workout_routine.copy_id, id: workout_routine.id}).from(workout_routine).where(and(eq(workout_routine.workout_plan_id, plan_id), isNotNull(workout_routine.copy_id)))
+
+
+	return data
 }

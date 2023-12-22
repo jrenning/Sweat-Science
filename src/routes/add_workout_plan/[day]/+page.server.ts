@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 	let day = Number(params.day) ? Number(params.day) : 0;
 
 	let pending_id = await getPendingPlans(user_id);
-    let plan_id = pending_id[0].id
+    let plan_id = pending_id[0] ? pending_id[0].id : 0
 
 
 	let workouts = await getWorkoutsInPlanOnDay(plan_id, user_id, day);
