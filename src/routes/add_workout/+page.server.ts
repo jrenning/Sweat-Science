@@ -46,11 +46,11 @@ export const load: PageServerLoad = async ({url, locals}) => {
 		...workout_routine
 	}
 	// super forms
-	let form = await superValidate(formData, insertWorkoutRoutine);
+	let workoutForm = await superValidate(formData, insertWorkoutRoutine);
 
 	const exerciseForm = await superValidate(insertExerciseRoutineSchema);
 
-	return { form, plan_id, day,  workout_routine, exercise_choices, exerciseForm, equipment_choices };
+	return { workoutForm, plan_id, day,  workout_routine, exercise_choices, exerciseForm, equipment_choices };
 };
 
 export const actions: Actions = {

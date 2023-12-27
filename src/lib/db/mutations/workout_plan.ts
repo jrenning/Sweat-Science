@@ -9,7 +9,7 @@ import {
 } from '../schema';
 import { Status } from '../schema';
 import { getWorkoutById } from '../queries/workout_routine';
-import { addWorkoutToPlan, updateWorkoutDays } from './workout_routine';
+import { addWorkoutToPlan, deleteWorkoutByID, deleteWorkoutDay, updateWorkoutDays } from './workout_routine';
 import { getCopyIDInPlan } from '../queries/workout_plan';
 
 export async function addWorkoutPlanBasic(input: InsertWorkoutPlan) {
@@ -50,7 +50,7 @@ export async function updatePlanStatus(
 }
 
 export async function createPendingWorkoutPlan(user_id: string) {
-	console.log('hello');
+	//@ts-ignore
 	return await db
 		.insert(workout_plans)
 		.values({ user_id: user_id, name: '', status: 'Pending' })
@@ -91,4 +91,16 @@ export async function addExistingWorkoutToPlan(
 	}
 
 	throw Error("workout wasn't found");
+}
+
+export async function deleteWorkoutFromPlan(user_id: string, plan_id: number, workout_id: number, day: number) {
+	// get data 
+	const data = await getWorkoutById(user_id, workout_id)
+
+	if (data?.days?.length == 1) {
+		await deleteWorkoutByID(workout_id, user_id)
+	}
+	else {
+		await deleteWorkoutDay(workout_id, day)
+	}
 }

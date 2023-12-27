@@ -21,7 +21,7 @@
 	<div class="space-y-6">
 		<h2 class="font-semibold text-2xl mx-4">Workouts</h2>
 		{#each data.workouts as workout}
-			<AddWorkoutCard {workout} />
+			<AddWorkoutCard {workout} day={data.day} />
 		{/each}
 	</div>
 	{/if}

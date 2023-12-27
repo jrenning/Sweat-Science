@@ -6,30 +6,42 @@
 	import ExerciseSelectionForm from '../../components/Exercises/ExerciseSelectionForm.svelte';
 	import AddExerciseCard from '../../components/AddWorkout/AddExerciseCard.svelte';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	import WorkoutForm from '../../components/AddWorkout/Form/WorkoutForm.svelte';
 	export let data: PageData;
-	const modalStore = getModalStore();
-	const equipment_names = data.equipment_choices.map((equip) => {
-		return { name: equip.name, id: equip.id };
-	});
+	// const modalStore = getModalStore();
+	// const equipment_names = data.equipment_choices.map((equip) => {
+	// 	return { name: equip.name, id: equip.id };
+	// });
 
-	const _form = superForm(data.form, {
-		dataType: 'json'
-	});
-	const { form, enhance, errors } = _form;
+	// const _form = superForm(data.workoutForm, {
+	// 	dataType: 'json'
+	// });
+	// const { form, enhance, errors } = _form;
 
-	let exercises = 0;
-	const modalComponentExercise: ModalComponent = {
-		ref: ExerciseSelectionForm,
-		props: { exercise_options: data.exercise_choices, data: data.exerciseForm, post_link: "/add_workout?/add_exercise" }
-	};
-	const exerciseModal: ModalSettings = {
-		type: 'component',
-		title: 'Add Exercise',
-		component: modalComponentExercise
-	};
+	// let exercises = 0;
+	// const modalComponentExercise: ModalComponent = {
+	// 	ref: ExerciseSelectionForm,
+	// 	props: { exercise_options: data.exercise_choices, data: data.exerciseForm, post_link: "/add_workout?/add_exercise" }
+	// };
+	// const exerciseModal: ModalSettings = {
+	// 	type: 'component',
+	// 	title: 'Add Exercise',
+	// 	component: modalComponentExercise
+	// };
 </script>
 
-<div class="flex flex-col justify-center items-center">
+{#if data.workout_routine}
+	<WorkoutForm
+		exerciseForm={data.exerciseForm}
+		type="Update"
+		workoutForm={data.workoutForm}
+		workout_routine={data.workout_routine}
+		post_link={'?/add_workout'}
+        exercise_post_link={`/add_workout?/add_exercise`}
+	/>
+{/if}
+
+<!-- <div class="flex flex-col justify-center items-center">
 	<div class="flex flex-row w-[90%] justify-between mb-4">
 		<BackButton link="/" />
 	</div>
@@ -62,4 +74,4 @@
 		</div>
 			<button class="btn mt-20 variant-outline-secondary ">Add Workout</button>
 	</form>
-</div>
+</div> -->

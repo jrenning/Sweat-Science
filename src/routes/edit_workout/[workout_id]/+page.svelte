@@ -9,9 +9,7 @@ import WorkoutForm from '../../../components/AddWorkout/Form/WorkoutForm.svelte'
 
 {#if data.workout_routine}
 	<WorkoutForm
-		exercise_choices={data.exercise_choices}
 		exerciseForm={data.exerciseForm}
-		equipment_choices={data.equipment_choices}
 		type="Update"
 		workoutForm={data.workoutForm}
 		workout_routine={data.workout_routine}

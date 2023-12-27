@@ -118,6 +118,6 @@ export async function setExercisePosition(exercise_routine_id: number, position:
 
 export async function updateExerciseRoutine(input: InsertExerciseRoutine) {
 	if (input.id) {
-		await db.update(exercise_routine).set(input).where(eq(exercise_routine.id, input.id));
+		await db.update(exercise_routine).set(input).where(eq(exercise_routine.id, input.id)).returning({id: exercise_routine.id});
 	}
 }

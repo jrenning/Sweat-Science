@@ -12,18 +12,17 @@
 	import type { newWorkoutRoutineSchema } from '../../../routes/add_workout/schemas';
 	import AddExerciseCard from '../AddExerciseCard.svelte';
 	import BackButton from '../../UI/Buttons/BackButton.svelte';
-	export let equipment_choices: Equipment[];
-	export let exercise_choices: Exercise[];
+
+	/* EXPORTS */
 	export let exerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
 	export let workoutForm: SuperValidated<typeof newWorkoutRoutineSchema>;
 	export let workout_routine: WorkoutRoutineWithExercises;
     export let post_link: string
     export let exercise_post_link: string
     export let type: "Update" | "Add"
+	/*        */
+
 	const modalStore = getModalStore();
-	const equipment_names = equipment_choices.map((equip) => {
-		return { name: equip.name, id: equip.id };
-	});
 
 
 	const _form = superForm(workoutForm, {
@@ -34,18 +33,18 @@
 	let exercises = 0;
 	const modalComponentExercise: ModalComponent = {
 		ref: ExerciseSelectionForm,
-		props: { exercise_options: exercise_choices, data: exerciseForm, index: exercises, post_link: exercise_post_link }
+		props: { data: exerciseForm, index: exercises, post_link: exercise_post_link }
 	};
 	const exerciseModal: ModalSettings = {
 		type: 'component',
-		title: 'Add Exercise',
+		title: `${type} Exercise`,
 		component: modalComponentExercise
 	};
 </script>
 
 <div class="flex flex-col justify-center items-center">
 	<div class="flex flex-row w-[90%] justify-between mb-4">
-		<BackButton link="/" />
+		<BackButton />
 	</div>
 	<input
 		type="text"
@@ -69,7 +68,7 @@
 		>
 		{#if workout_routine}
 			{#each workout_routine.exercises as exercise}
-				<AddExerciseCard {exercise} />
+				<AddExerciseCard {exercise} workout_id={workout_routine.id} {exerciseForm} />
 			{/each}
 		{/if}
 		<button class="btn variant-outline-surface">{type} Workout</button>

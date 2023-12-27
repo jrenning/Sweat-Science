@@ -14,7 +14,7 @@
 	};
 	const exerciseModal: ModalSettings = {
 		type: 'component',
-		title: 'Add Exercise',
+		title: 'Edit Exercise',
 		component: modalComponentExercise
 	};
 

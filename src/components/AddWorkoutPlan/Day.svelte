@@ -5,7 +5,7 @@
 	export let number: number | undefined;
 	export let global_day: number | undefined = undefined;
 
-	let workout_number: number;
+	let workout_number: number = 0;
 
 	onMount(async () => {
 		if (number) {

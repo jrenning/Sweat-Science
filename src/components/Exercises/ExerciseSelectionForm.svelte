@@ -9,9 +9,13 @@
 	import FormButton from '../UI/Buttons/FormButton.svelte';
 	import type { insertExerciseRoutineSchema } from '$lib/db/schema';
 	import AddButton from '../UI/Buttons/AddButton.svelte';
+	import { onMount } from 'svelte';
 
+	/* EXPORTS */
 	export let data: SuperValidated<typeof insertExerciseRoutineSchema>;
 	export let post_link: string;
+	/*         */
+
 	const _form = superForm(data, {
 		dataType: 'json',
 		onResult: ({ result }) => {
@@ -23,7 +27,21 @@
 	});
 	const { form, enhance, errors } = _form;
 
-	export let exercise_options: Exercise[];
+	//@ts-ignore
+	let exercise_options: Promise<Exercise[]> = getExerciseOptions()
+
+	async function getExerciseOptions() {
+				const data = await fetch("/api/exercises", {
+			method: "GET"
+		})
+
+		const {exercises} = await data.json()
+
+		console.log(exercises)
+
+		return exercises
+	}
+
 
 	const toastStore = getToastStore();
 	const modalStore = getModalStore();
@@ -32,8 +50,8 @@
 		message: 'Exercise Added'
 	};
 
-	let sets = 1;
-	let actual_sets = 1;
+	let sets = $form.sets ? $form.sets : 1;
+	let actual_sets = $form.sets ? $form.sets : 1;
 	let sets_same = false;
 	$form.sets = actual_sets;
 
@@ -107,7 +125,11 @@
 		action={post_link}
 		use:enhance
 	>
+	{#await exercise_options}
+	Fetching exercises...
+	{:then exercise_options}
 		<ExerciseSelector exercises={exercise_options} callback={updateExerciseId} />
+	{/await}
 		<div class="flex flex-row space-x-6 mt-6">
 			<label class="label" for="weight">Weight</label>
 			<input type="radio" class="radio" name="type" value="Weight" bind:group={$form.type} />
@@ -183,6 +205,8 @@
 				{/if}
 			{/each}
 		</div>
-		<AddButton action={() => modalStore.close()} />
+		<AddButton action={() => {
+			modalStore.close()
+			}} />
 	</form>
 </div>

@@ -36,3 +36,9 @@ export async function getExerciseRoutineById(exercise_routine_id: number, user_i
 
 	return data;
 }
+
+export async function getWorkoutWithExercise(exercise_routine_id: number) {
+	const data = await db.select().from(workoutToExerciseRoutines).where(eq(workoutToExerciseRoutines.exercise_routine_id, exercise_routine_id)).limit(1)
+
+	return data[0].workout_routine_id
+}

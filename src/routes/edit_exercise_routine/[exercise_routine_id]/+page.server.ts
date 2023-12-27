@@ -1,6 +1,6 @@
 import { getAllEquipment } from '$lib/db/queries/equipment';
 import { getPossibleExercises } from '$lib/db/queries/exercise';
-import { getExerciseRoutineById } from '$lib/db/queries/exercise_routine';
+import { getExerciseRoutineById, getWorkoutWithExercise } from '$lib/db/queries/exercise_routine';
 import { insertExerciseRoutineSchema } from '$lib/db/schema';
 import { superValidate } from 'sveltekit-superforms/server';
 import type { PageServerLoad } from './$types';
@@ -35,12 +35,12 @@ export const actions: Actions = {
 		const exerciseForm = await superValidate(request, insertExerciseRoutineSchema);
 
 		if (!exerciseForm.valid) return fail(400, { exerciseForm });
+		if (exerciseForm.data.id) {
+			await updateExerciseRoutine(exerciseForm.data);
 
-		await updateExerciseRoutine(exerciseForm.data);
+			const id = await getWorkoutWithExercise(exerciseForm.data.id);
 
-		console.log(exerciseForm.data)
-
-
-		throw redirect(303, `/edit_workout/${exerciseForm.data.workout_routine_id}`)
+			throw redirect(303, `/edit_workout/${id}`)
+		}
 	}
 };

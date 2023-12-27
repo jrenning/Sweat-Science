@@ -6,15 +6,17 @@
 	import EditIcon from '../Icons/EditIcon.svelte';
 
 	export let workout: WorkoutRoutineWithExercises;
+	export let day: number
     const modal = getModalStore()
 
 	async function deleteWorkout() {
 		const data = {
-			action: 'delete',
-			workout_routine_id: workout.id
+			plan_id: workout.workout_plan_id,
+			workout_id: workout.id,
+			day: day
 		};
 
-		await fetch('/api/workout_routine', {
+		await fetch('/api/workout_plan/workouts/delete', {
 			method: 'POST',
 			body: JSON.stringify(data),
 			headers: {
@@ -40,7 +42,7 @@
 	<div class="flex justify-between items-center">
 		<div class="text-2xl font-semibold">{workout.name}</div>
 		<div class="flex flex-row space-x-6">
-			<a href={`/edit_exercise_routine/${workout.id}`} class="w-4 h-4"><EditIcon /></a>
+			<a href={`/edit_workout/${workout.id}`} class="w-4 h-4"><EditIcon /></a>
 			<button type="button" class="w-4 h-4" on:click={() => modal.trigger(deleteModal)}><DeleteIcon /></button>
 		</div>
 	</div>
