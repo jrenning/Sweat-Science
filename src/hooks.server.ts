@@ -10,7 +10,7 @@ import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 
 // export const trpcHandle: Handle = createTRPCHandle({ router, createContext });
-export const authHandle = SvelteKitAuth({
+export const handle = SvelteKitAuth({
 	adapter: DrizzleAdapter(db),
 	providers: [Google({ clientId: GOOGLE_ID, clientSecret: GOOGLE_SECRET })],
 	callbacks: {
@@ -23,6 +23,3 @@ export const authHandle = SvelteKitAuth({
 	}
 });
 
-
-
-export const handle = sequence( authHandle)

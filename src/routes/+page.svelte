@@ -7,6 +7,7 @@
 	import SubscribeButton from '../components/Notifications/SubscribeButton.svelte';
 
 	export let data: PageData;
+
 </script>
 
 <div>
