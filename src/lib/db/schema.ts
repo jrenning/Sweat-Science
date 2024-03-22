@@ -349,7 +349,7 @@ export const exerciseLog = pgTable('exercise_log', {
 	duration: real('duration').array().notNull(),
 	distance: integer('distance').array().notNull(),
 	created_at: timestamp('created_at').defaultNow().notNull(),
-	workout_log_id: integer('workout_log_id').references(() => workoutLog.id),
+	workout_log_id: integer('workout_log_id').references(() => workoutLog.id, {onDelete: "cascade"}),
 	// this only really applies to weighted exercises
 	estimated_max: real('estimated_max')
 });
@@ -374,7 +374,7 @@ export const workoutLog = pgTable('workout_log', {
 	name: text('name'),
 	user_id: text('user_id').references(() => users.id),
 	created_at: timestamp('created_at').defaultNow().notNull(),
-	time: time('time'),
+	workout_time_seconds: integer('workout_time_seconds'),
 	notes: text('notes')
 });
 

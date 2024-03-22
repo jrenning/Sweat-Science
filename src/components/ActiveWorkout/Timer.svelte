@@ -7,6 +7,7 @@
 	import PauseIcon from '../Icons/PauseIcon.svelte';
 	import PlayIcon from '../Icons/PlayIcon.svelte';
 	import type { Writable } from 'svelte/store';
+	import { formatTime } from '../../helpers/datetime';
 
 	export let duration = 60;
 	export let finished: Writable<boolean>;
@@ -69,26 +70,7 @@
 		start();
 	});
 
-	const formatTime = (time: number) => {
-		let minutes = Math.floor(time / 60);
-		let seconds = Math.floor(time - minutes * 60);
 
-		let minute_str = '';
-		let second_str = '';
-		if (minutes < 10) {
-			minute_str = `0${minutes}`;
-		} else {
-			minute_str = `${minutes}`;
-		}
-
-		if (seconds < 10) {
-			second_str = `0${seconds}`;
-		} else {
-			second_str = `${seconds}`;
-		}
-
-		return `${minute_str}:${second_str}`;
-	};
 </script>
 
 <div class="flex flex-col space-y-4 justify-center items-center">

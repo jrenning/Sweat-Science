@@ -31,7 +31,7 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 		const workoutExercises = workout.exercises
 
 		const workoutForm = await superValidate(
-			{ name: workout.name, exercises: workoutExercises },
+			{ name: workout.name, exercises: workoutExercises, workout_time_seconds: 0 },
 			addWorkoutLogSchema
 		);
 

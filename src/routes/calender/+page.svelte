@@ -1,5 +1,6 @@
 <script lang="ts">
 	import WorkoutLogs from '../../components/Progress/Log/WorkoutLogs.svelte';
+	import { calculateCalories } from '../../helpers/calories';
 	import { firstDayOfWeek } from '../../helpers/datetime';
 	import type { PageData } from './$types';
 
@@ -21,6 +22,19 @@
 		workouts_this_week.forEach((workout) => (total += workout.exercise_routines.length));
 
 		return total;
+	}
+
+
+	function getTimeTotal() {
+		let total = 0
+		workouts_this_week.forEach((workout)=> (total += workout.workout_time_seconds ? workout.workout_time_seconds/60 : 0))
+
+		return total
+	}
+
+	function getCalorieTotal() {
+		return calculateCalories(getTimeTotal(), 70.5)
+
 	}
 </script>
 
@@ -47,12 +61,12 @@
 		<div class="text-2xl mb-6 font-semibold mx-4">Summary</div>
 		<div class="flex text-lg mx-4 justify-evenly">
 			<div>{getExerciseTotal()} Exercise</div>
-			<div>640 cal</div>
-			<div>48 min</div>
+			<div>{getCalorieTotal()} cal</div>
+			<div>{getTimeTotal()}  min</div>
 		</div>
 	</div>
 
-	<div class="mx-4 rounded-md bg-surface-400 py-2 mt-8">
+	<!-- <div class="mx-4 rounded-md bg-surface-400 py-2 mt-8">
 		<div class="flex justify-center">3 New Achievements</div>
-	</div>
+	</div> -->
 </div>

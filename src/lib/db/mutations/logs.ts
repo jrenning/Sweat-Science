@@ -10,6 +10,7 @@ export async function createLogFromWorkout(input: AddWorkoutLog) {
 		.values({
 			name: input.name,
 			user_id: input.user_id,
+			workout_time_seconds: input.workout_time_seconds,
 			notes: input.notes
 		})
 		.returning({ id: workoutLog.id });

@@ -5,13 +5,16 @@ import { exerciseLog, exercise_routine, workoutLog } from "../schema";
 
 export async function getUserWorkoutLogs(user_id: string) {
     return await db.query.workoutLog.findMany({
-        with: {
-            exercise_routines: true
-        },
-        where: eq(workoutLog.user_id, user_id),
-        orderBy: desc(workoutLog.created_at)
-    }
-    )
+			with: {
+				exercise_routines: {
+					with: {
+						exercise: true
+					}
+				}
+			},
+			where: eq(workoutLog.user_id, user_id),
+			orderBy: desc(workoutLog.created_at)
+		});
 }
 
 export async function getWorkoutLogById(user_id: string, id: number) {

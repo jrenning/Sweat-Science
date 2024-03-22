@@ -1,15 +1,10 @@
 <script lang="ts">
-	import { ProgressBar, Step, Stepper } from '@skeletonlabs/skeleton';
-	import type { PageData } from './$types';
-	import Timer from '../../../components/ActiveWorkout/Timer.svelte';
-	import { current_day } from '../../../stores/workout_plan';
-	import { superForm } from 'sveltekit-superforms/client';
-	import BackStep from '../../../components/Icons/BackStep.svelte';
-	import CheckIcon from '../../../components/Icons/CheckIcon.svelte';
-	import PlayIcon from '../../../components/Icons/PlayIcon.svelte';
-	import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
+	import { ProgressBar } from '@skeletonlabs/skeleton';
 	import { writable } from 'svelte/store';
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	import { superForm } from 'sveltekit-superforms/client';
+	import Timer from '../../../components/ActiveWorkout/Timer.svelte';
+	import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
+	import type { PageData } from './$types';
 	export let data: PageData;
 
 	let exercise: number = 0;
@@ -66,6 +61,22 @@
 			selected_value = data.workout?.exercises[exercise].exercise.name;
 		}
 	}
+
+
+	// count up timer 
+    function pad ( val: any ) { return val > 9 ? val : "0" + val; }
+    const timer = setInterval( function(){
+		if (typeof $form.workout_time_seconds !== "undefined" && typeof document !== "undefined") {
+		//@ts-ignore
+		$form.workout_time_seconds = $form.workout_time_seconds + 1
+		//@ts-ignore
+        document.getElementById("seconds").innerHTML=pad($form.workout_time_seconds%60);
+		//@ts-ignore
+        document.getElementById("minutes").innerHTML=pad(Math.floor($form.workout_time_seconds/60));
+		}
+    }, 1000);
+
+
 </script>
 
 {#if data.workout}
@@ -155,7 +166,7 @@
 					</button>
 				</div>
 
-				<div class="text-4xl font-semibold text-gray-400">23:30</div>
+				<div class="text-4xl font-semibold text-gray-400"><span id="minutes"></span>:<span id="seconds"></span></div>
 
 				<div class="text-right italic font-semibold w-full mr-4">
 					Next: {future_exercise ? future_exercise.exercise.name : 'Finish'}
@@ -166,7 +177,7 @@
 					<textarea class="textarea" name="notes" bind:value={$form.notes} />
 				</div>
 				<button type="submit" class="btn-md rounded-md variant-filled-surface shadow-md"
-					>Log Workout</button
+					on:click={()=> clearInterval(timer)}>Log Workout</button
 				>
 			{/if}
 		</div>

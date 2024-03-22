@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { WorkoutLogWithExercises } from '$lib/db/schema';
 	import { calculateCalories } from '../../helpers/calories';
+	import { formatTime } from '../../helpers/datetime';
 	import ClockIcon from '../Icons/ClockIcon.svelte';
 	import DumbbellIcon from '../Icons/DumbbellIcon.svelte';
 	import RobotIcon from '../Icons/RobotIcon.svelte';
@@ -31,7 +32,7 @@
 				<div
 					class="rounded-md bg-[#E67070] bg-surface-200 flex justify-center items-center font-bold text-xl w-20 h-12"
 				>
-					23:30
+					{formatTime(last_workout.workout_time_seconds ? last_workout.workout_time_seconds : 0)}
 				</div>
 			</div>
 			<div class="flex flex-col justify-center items-center space-y-4">
@@ -39,7 +40,7 @@
 				<div
 					class="rounded-md bg-[#E67070] bg-surface-200 flex justify-center items-center font-bold text-xl w-20 h-12"
 				>
-					{calculateCalories(23.5, 70.5)} cal
+					{calculateCalories((last_workout.workout_time_seconds ? last_workout.workout_time_seconds : 0)/60, 70.5)} cal
 				</div>
 			</div>
 		</div>

@@ -4,7 +4,6 @@
 
 	export let exercises: Exercise[];
 
-	console.log(exercises)
     export let current_exercise: string = ""
     export let callback: (selected_value: unknown) => void = () => {}
 
