@@ -13,7 +13,7 @@
 </script>
 
 <div
-	class="flex-grow-0 flex-shrink-0 flex-auto rounded-md bg-[#C65F5F] bg-surface-500 border border-black shadow-md md:w-[300px] w-[250px] h-[250px] md:h-[300px]"
+	class="flex-grow-0 flex-shrink-0 flex-auto rounded-md  bg-surface-400 border border-black shadow-md md:w-[300px] w-[250px] h-[250px] md:h-[300px]"
 >
 	<div class="flex justify-end items-center mr-2 mt-2 space-x-1">
 		<div
@@ -38,7 +38,7 @@
 	<div class="flex mt-2 ml-4">
 		<div class="flex justify-between w-full">
 			<div class=" justify-start">
-				<button class="badge md:text-lg text-sm variant-filled-surface" use:popup={exercisePopup}>
+				<button class="badge md:text-lg text-sm bg-surface-300" use:popup={exercisePopup}>
 					{workout.exercises.length} Exercises
 				</button>
 			</div>

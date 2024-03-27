@@ -21,7 +21,6 @@
 				{#if data.data.all_workouts}
 					<WorkoutAdd workouts={data.data.all_workouts} />
 				{/if}
-				<SectionHeader name="My Activity" />
 			</div>
 		</div>
 	{:else}

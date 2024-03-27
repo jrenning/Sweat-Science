@@ -25,7 +25,7 @@
 </script>
 
 <div class="flex flex-col justify-center items-center">
-<input class="input" type="search" name="demo" bind:value={inputValue} placeholder="Search..." />
+<input class="input w-[50vw] mb-4" type="search" name="demo" bind:value={inputValue} placeholder="Search..." />
 <div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1">
 	<Autocomplete bind:input={inputValue} options={exerciseOptions} on:selection={onExerciseSelection} />
 </div>
