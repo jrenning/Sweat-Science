@@ -39,7 +39,6 @@
 
     exerciseForm.data = exercise
 
-    console.log(exerciseForm.data)
 
 	const modalComponentExercise: ModalComponent = {
 		ref: ExerciseSelectionForm,

@@ -37,7 +37,6 @@
 
 		const {exercises} = await data.json()
 
-		console.log(exercises)
 
 		return exercises
 	}

@@ -3,7 +3,7 @@
 	import type {  AutocompleteOption } from '@skeletonlabs/skeleton';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
-	import type { insertEquipmentSchema } from '../../routes/equipment/schemas';
+	import type { insertEquipmentSchema } from '../../routes/index/schemas';
 
 
 	export let data: SuperValidated<insertEquipmentSchema>;

@@ -44,7 +44,7 @@
 			<!-- Tab Panels --->
 			<svelte:fragment slot="panel">
 				{#if tabSet === 0}
-					<InfoSection exercise={data.exercise} rep_max={data.rep_max} times_performed={data.log.length}/>
+					<InfoSection exercise={data.exercise} rep_max={data.rep_max} current_max={data.current_max} times_performed={data.log.length}/>
 				{:else if tabSet === 1}
 				<ScatterPlot exercise_data={data.log}/>
 				{:else if tabSet === 2}

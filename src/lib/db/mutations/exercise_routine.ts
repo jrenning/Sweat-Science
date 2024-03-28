@@ -28,18 +28,8 @@ export async function addExerciseRoutineToWorkout(
 		const routine = await tx
 			.insert(exercise_routine)
 			.values({
-				exercise_id: input.exercise_id,
-				sets: input.sets,
-				type: input.type,
-				rest: input.rest,
-				rest_units: input.rest_units,
-				user_id: input.user_id,
-				reps: input.reps,
-				weight: input.weight,
-				distance: input.distance,
-				duration: input.duration,
-				position: position,
-				percent_max: input.percent_max
+				...input,
+				position
 			})
 			.returning({ id: exercise_routine.id });
 
@@ -62,18 +52,8 @@ export async function insertExerciseRoutinetoWorkout(
 		const routine = await tx
 			.insert(exercise_routine)
 			.values({
-				exercise_id: input.exercise_id,
-				sets: input.sets,
-				type: input.type,
-				rest: input.rest,
-				rest_units: input.rest_units,
-				user_id: input.user_id,
-				reps: input.reps,
-				weight: input.weight,
-				distance: input.distance,
-				duration: input.duration,
-				position: position,
-				percent_max: input.percent_max
+				...input,
+				position
 			})
 			.returning({ id: exercise_routine.id });
 

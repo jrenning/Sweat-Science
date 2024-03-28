@@ -27,8 +27,6 @@ export const load: PageServerLoad = async (event) => {
 	// get data
 	const workout_routine = await getWorkoutById(user_id, workout_id);
 	if (workout_routine) {
-		const exercise_choices = await getPossibleExercises(user_id, '');
-		const equipment_choices = await getAllEquipment();
 
 		// super forms
 		const workoutForm = await superValidate(
@@ -36,7 +34,8 @@ export const load: PageServerLoad = async (event) => {
 			newWorkoutRoutineSchema
 		);
 		const exerciseForm = await superValidate(insertExerciseRoutineSchema);
-		return { workoutForm, workout_routine, exercise_choices, exerciseForm, equipment_choices };
+		const editExerciseForm = await superValidate(insertExerciseRoutineSchema);
+		return { workoutForm, workout_routine, exerciseForm, editExerciseForm};
 	}
 	return {}
 };

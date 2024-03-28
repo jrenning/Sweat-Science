@@ -2,14 +2,6 @@
 	import type { WorkoutLogWithExercises } from '$lib/db/schema';
 	import { calculateCalories } from '../../helpers/calories';
 	import { formatTime } from '../../helpers/datetime';
-	import ClockIcon from '../Icons/ClockIcon.svelte';
-	import DumbbellIcon from '../Icons/DumbbellIcon.svelte';
-	import RobotIcon from '../Icons/RobotIcon.svelte';
-	import Card from '../UI/Card.svelte';
-	import HorizontalScrollBox from '../UI/HorizontalScrollBox.svelte';
-	import CardioCard from './Cards/CardioCard.svelte';
-	import FlexibilityCard from './Cards/FlexibilityCard.svelte';
-	import StrengthCard from './Cards/StrengthCard.svelte';
 
 	export let last_workout: WorkoutLogWithExercises | undefined;
 </script>

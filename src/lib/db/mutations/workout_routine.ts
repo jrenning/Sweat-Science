@@ -9,7 +9,6 @@ import {
 import { addExerciseRoutineToWorkout, setExercisePosition } from './exercise_routine';
 
 export async function addWorkoutToPlan(plan_id: number, input: InsertWorkoutRoutineWithExercises) {
-	console.log(input);
 	return await db.transaction(async (tx) => {
 		const routine = await tx
 			.insert(workout_routine)

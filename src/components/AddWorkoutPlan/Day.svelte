@@ -16,8 +16,6 @@
 
 			const { workouts } = await data.json();
 
-			console.log(workouts)
-
 			workout_number = workouts;
 		}
 	});

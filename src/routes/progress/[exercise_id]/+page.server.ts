@@ -1,5 +1,5 @@
 import { addSearch } from "$lib/db/mutations/searches";
-import { getEstimatedOneRepMax, getExerciseById, getExerciseWeightsByName } from "$lib/db/queries/exercise";
+import { getCurrentOneRepMax, getEstimatedOneRepMax, getExerciseById, getExerciseWeightsByName } from "$lib/db/queries/exercise";
 import { getUserExerciseLogById } from "$lib/db/queries/logs";
 import type { PageServerLoad } from "./$types";
 
@@ -11,6 +11,7 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
     const exercise = await getExerciseById(exercise_id, user_id)
 	const weight_data = await getExerciseWeightsByName(exercise ? exercise.name : "")
 	const rep_max = await getEstimatedOneRepMax(user_id, exercise_id)
+	const current_max = await getCurrentOneRepMax(user_id, exercise_id)
 
 
 
@@ -24,6 +25,7 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 		log,
         exercise,
 		weight_data,
-		rep_max
+		rep_max,
+		current_max
 	};
 };

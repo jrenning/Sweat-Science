@@ -1,23 +1,19 @@
 import type { Actions } from '../$types';
 import type { PageServerLoad } from './$types';
 
-import { setError, superValidate } from 'sveltekit-superforms/server';
-import { getPendingPlans, getWorkoutsInPlan } from '$lib/db/queries/workout_plan';
-import { getPossibleExercises } from '$lib/db/queries/exercise';
-import { fail, redirect } from '@sveltejs/kit';
+import { appendExerciseRoutinetoWorkout } from '$lib/db/mutations/exercise_routine';
 import {
-	addWorkout,
-	addWorkoutToPlan,
 	completeWorkoutRoutineForm,
 	createPendingWorkout
 } from '$lib/db/mutations/workout_routine';
-import { newWorkoutRoutineSchema } from './schemas';
 import { getAllEquipment } from '$lib/db/queries/equipment';
-import { insertEquipmentSchema, insertExerciseRoutineSchema, insertWorkoutRoutine } from '$lib/db/schema';
+import { getPossibleExercises } from '$lib/db/queries/exercise';
 import { getPendingWorkouts, getWorkoutById } from '$lib/db/queries/workout_routine';
-import { appendExerciseRoutinetoWorkout } from '$lib/db/mutations/exercise_routine';
+import { insertExerciseRoutineSchema, insertWorkoutRoutine } from '$lib/db/schema';
+import { fail, redirect } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms/server';
 
-export const load: PageServerLoad = async ({url, locals}) => {
+export const load: PageServerLoad = async ({ url, locals }) => {
 	const session = await locals.getSession();
 	// pass in workout plan id
 	// TODO pass in param for id
@@ -26,9 +22,8 @@ export const load: PageServerLoad = async ({url, locals}) => {
 	let plan_id_url = url.searchParams.get('plan_id');
 	let day_url = url.searchParams.get('day');
 
-	const plan_id = plan_id_url ? Number(plan_id_url) : undefined
-	const day = day_url ? Number(day_url) : undefined
-	
+	const plan_id = plan_id_url ? Number(plan_id_url) : undefined;
+	const day = day_url ? Number(day_url) : undefined;
 
 	// get pending workouts
 	let pending_id = await getPendingWorkouts(user_id);
@@ -41,10 +36,6 @@ export const load: PageServerLoad = async ({url, locals}) => {
 	// get pending data
 	const workout_routine = await getWorkoutById(user_id, pending_id[0].id);
 
-	const exercise_choices = await getPossibleExercises(user_id, '');
-	const equipment_choices = await getAllEquipment();
-
-
 	const formData = {
 		plan_id: plan_id,
 		days: day ? [day] : undefined,
@@ -54,8 +45,8 @@ export const load: PageServerLoad = async ({url, locals}) => {
 	let workoutForm = await superValidate(formData, insertWorkoutRoutine);
 
 	const exerciseForm = await superValidate(insertExerciseRoutineSchema);
-
-	return { workoutForm, plan_id, day,  workout_routine, exercise_choices, exerciseForm, equipment_choices };
+	const editExerciseForm = await superValidate(insertExerciseRoutineSchema);
+	return { workoutForm, plan_id, day, workout_routine, exerciseForm, editExerciseForm };
 };
 
 export const actions: Actions = {
@@ -71,13 +62,17 @@ export const actions: Actions = {
 		const workout_id = pending_id[0].id;
 
 		// update workout
-		//@ts-ignore
-		await completeWorkoutRoutineForm(workoutForm.data.name, workoutForm.data.workout_plan_id, workoutForm.data.days, workout_id);
+		await completeWorkoutRoutineForm(
+			workoutForm.data.name,
+			//@ts-ignore
+			workoutForm.data.workout_plan_id,
+			workoutForm.data.days,
+			workout_id
+		);
 		if (workoutForm.data.workout_plan_id) {
-			throw redirect(303, "/add_workout_plan")
-		}
-		else {
-		throw redirect(303, '/');
+			throw redirect(303, '/add_workout_plan');
+		} else {
+			throw redirect(303, '/');
 		}
 	},
 	add_exercise: async ({ request, locals, url }) => {

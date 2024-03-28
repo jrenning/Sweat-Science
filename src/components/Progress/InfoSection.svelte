@@ -3,13 +3,15 @@
 	import { prettifyDate } from '../../helpers/datetime';
 
 	export let exercise: Exercise;
-	export let rep_max: number | undefined;
-	export let times_performed: number
+	export let rep_max: number | undefined | null;
+	export let current_max: number | undefined | null;
+	export let times_performed: number;
 </script>
 
 <div class="space-y-6">
 	<div>
-		<span class="font-semibold">Created At:</span> {prettifyDate(exercise.created_at)}
+		<span class="font-semibold">Created At:</span>
+		{prettifyDate(exercise.created_at)}
 	</div>
 
 	<div><span class="font-semibold">Times Performed:</span> {times_performed}</div>
@@ -26,7 +28,16 @@
 	{/if}
 
 	<div class="space-y-4">
-		<div class="font-semibold">Estimated 1RM</div>
+		<div class="font-semibold">Current 1RM</div>
+		{#if current_max}
+			<div class="text-3xl flex justify-center">{current_max ? current_max : 'Unknown'} lb</div>
+		{:else}
+			<div class="text-3xl flex justify-center">Unknown</div>
+		{/if}
+	</div>
+
+	<div class="space-y-4">
+		<div class="font-semibold">All Time 1RM</div>
 		{#if rep_max}
 			<div class="text-3xl flex justify-center">{rep_max ? rep_max : 'Unknown'} lb</div>
 		{:else}

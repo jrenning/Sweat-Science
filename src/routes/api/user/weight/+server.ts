@@ -5,7 +5,6 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 	const session = await locals.getSession();
 	const user_id = session?.user.id ? session.user.id : '';
 	const { weight } = await request.json();
-    console.log(weight)
 	const res = await setUserWeight(user_id, weight)
 		.then(() => {
 			return { success: true };

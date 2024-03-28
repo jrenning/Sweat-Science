@@ -51,22 +51,41 @@ export async function getExerciseWeightsByName(name: string) {
 export async function getEstimatedOneRepMax(user_id: string, exercise_id: number) {
 	const data = await db
 		.select({
-			weight: exerciseLog.weight,
-			reps: exerciseLog.reps
+			estimated_max: exerciseLog.estimated_max
 		})
 		.from(exerciseLog)
 		.where(and(eq(exerciseLog.exercise_id, exercise_id), eq(exerciseLog.user_id, user_id)))
-		.orderBy(desc(exerciseLog.weight))
+		.orderBy(desc(exerciseLog.estimated_max))
 		.limit(1).catch((err)=> console.log(err));
 
-	// GET MAX INDEX
-	if (data && data.length > 0) {
-		let weights = data[0].weight;
-		let i = weights.indexOf(Math.max(...weights));
+	if (data) {
+		return data[0].estimated_max
+	}
+	else {
+		return undefined
+	}
+}
 
-		return calcOneRepMax(weights[i], data[0].reps[i]);
-	} else {
-		return undefined;
+export async function getCurrentOneRepMax(user_id: string, exercise_id: number) {
+	// gets the last three maxes on an exercise and returns the highest one 
+
+	const data = await db
+		.select({
+			estimated_max: exerciseLog.estimated_max
+		})
+		.from(exerciseLog)
+		.where(and(eq(exerciseLog.exercise_id, exercise_id), eq(exerciseLog.user_id, user_id)))
+		.orderBy(desc(exerciseLog.created_at))
+		.limit(3)
+		.catch((err) => console.log(err));
+
+	if (data) {
+		const maxes = data.map((max)=> max.estimated_max)
+		//@ts-ignore
+		return Math.max(maxes)
+	}
+	else {
+		return undefined
 	}
 }
 

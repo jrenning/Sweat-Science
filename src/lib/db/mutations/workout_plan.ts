@@ -1,16 +1,12 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db';
+import { getCopyIDInPlan } from '../queries/workout_plan';
+import { getWorkoutById } from '../queries/workout_routine';
 import {
-	exercise_routine,
 	workout_plans,
-	workout_routine,
-	type InsertFullWorkoutPlan,
 	type InsertWorkoutPlan
 } from '../schema';
-import { Status } from '../schema';
-import { getWorkoutById } from '../queries/workout_routine';
 import { addWorkoutToPlan, deleteWorkoutByID, deleteWorkoutDay, updateWorkoutDays } from './workout_routine';
-import { getCopyIDInPlan } from '../queries/workout_plan';
 
 export async function addWorkoutPlanBasic(input: InsertWorkoutPlan) {
 	if (input.id) {

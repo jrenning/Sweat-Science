@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
 	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
-	import ExerciseSelectionForm from '../../Exercises/ExerciseSelectionForm.svelte';
+	import ExerciseSelectionForm from '../Exercises/ExerciseSelectionForm.svelte';
 	import type {
 		Equipment,
 		Exercise,
@@ -9,32 +9,36 @@
 		WorkoutRoutineWithExercises
 	} from '$lib/db/schema';
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import type { newWorkoutRoutineSchema } from '../../../routes/add_workout/schemas';
-	import AddExerciseCard from '../AddExerciseCard.svelte';
-	import BackButton from '../../UI/Buttons/BackButton.svelte';
+	import type { newWorkoutRoutineSchema } from '../../routes/add_workout/schemas';
+	import AddExerciseCard from './AddExerciseCard.svelte';
+	import BackButton from '../UI/Buttons/BackButton.svelte';
 
 	/* EXPORTS */
 	export let exerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
+	export let editExerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
 	export let workoutForm: SuperValidated<typeof newWorkoutRoutineSchema>;
 	export let workout_routine: WorkoutRoutineWithExercises;
-    export let post_link: string
-    export let exercise_post_link: string
-    export let type: "Update" | "Add"
+	export let type: 'Update' | 'Add';
 	/*        */
 
+	const exercise_post_link =
+		type == 'Add'
+			? `/add_workout?/add_exercise`
+			: `/edit_workout/${workout_routine.id}?/add_exercise`;
+
+	const post_link = type == 'Add' ? '?/add_workout' : '?/edit_workout';
 
 	const modalStore = getModalStore();
-
 
 	const _form = superForm(workoutForm, {
 		dataType: 'json'
 	});
+
 	const { form, enhance, errors } = _form;
 
-	let exercises = 0;
 	const modalComponentExercise: ModalComponent = {
 		ref: ExerciseSelectionForm,
-		props: { data: exerciseForm, index: exercises, post_link: exercise_post_link }
+		props: { data: exerciseForm, post_link: exercise_post_link }
 	};
 	const exerciseModal: ModalSettings = {
 		type: 'component',
@@ -69,7 +73,11 @@
 		>
 		{#if workout_routine}
 			{#each workout_routine.exercises as exercise}
-				<AddExerciseCard {exercise} workout_id={workout_routine.id} {exerciseForm} />
+				<AddExerciseCard
+					{exercise}
+					workout_id={workout_routine.id}
+					exerciseForm={editExerciseForm}
+				/>
 			{/each}
 		{/if}
 		<button class="btn variant-outline-surface">{type} Workout</button>
