@@ -33,7 +33,7 @@
 {#if data.workout_routine}
 	<WorkoutForm
 		exerciseForm={data.exerciseForm}
-		type="Update"
+		type="Add"
 		workoutForm={data.workoutForm}
 		workout_routine={data.workout_routine}
 		post_link={'?/add_workout'}

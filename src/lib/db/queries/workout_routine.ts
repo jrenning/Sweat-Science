@@ -70,11 +70,15 @@ export async function getWorkoutById(user_id: string, id: number) {
 
 export async function getPendingWorkouts(user_id: string) {
 	const data = await db
-		.select({ id: workout_routine.id })
+		.select({ id: workout_routine.id, days: workout_routine.days })
 		.from(workout_routine)
 		.where(and(eq(workout_routine.user_id, user_id), eq(workout_routine.status, 'Pending')));
+	
+	// filter out ones present in a workout plan
+	// TODO: remove
+	const result = data.filter((workout)=> !workout.days)
 
-	return data;
+	return result;
 }
 
 export async function convertWorkoutFromPercent(

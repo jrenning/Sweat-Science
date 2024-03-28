@@ -132,16 +132,17 @@ export async function createPendingWorkout(
 
 export async function deleteExerciseFromWorkout(exercise_id: number, workout_id: number) {
 	return await db.transaction(async (tx) => {
-		const position = await tx
-			.delete(exercise_routine)
-			.where(eq(exercise_routine.id, exercise_id))
-			.returning({ position: exercise_routine.position });
-
 		// get one entry of the exercise in group relation table to find siblings
 		const workout = await tx
 			.select({ workout_id: workoutToExerciseRoutines.workout_routine_id })
 			.from(workoutToExerciseRoutines)
 			.where(eq(workoutToExerciseRoutines.exercise_routine_id, exercise_id));
+
+		// delete the exercise and get its position
+		const position = await tx
+			.delete(exercise_routine)
+			.where(eq(exercise_routine.id, exercise_id))
+			.returning({ position: exercise_routine.position });
 
 		// get all from the first result
 		let siblings = await tx.query.workoutToExerciseRoutines.findMany({
@@ -187,6 +188,9 @@ export async function deleteWorkoutDay(workout_id: number, day: number) {
 	if (days[0].days) {
 		let new_days = days[0].days.filter((d) => d != day);
 
-		return await db.update(workout_routine).set({ days: new_days }).where(eq(workout_routine.id, workout_id));
+		return await db
+			.update(workout_routine)
+			.set({ days: new_days })
+			.where(eq(workout_routine.id, workout_id));
 	}
 }

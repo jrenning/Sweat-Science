@@ -1,3 +1,4 @@
+import { addSearch } from "$lib/db/mutations/searches";
 import { getEstimatedOneRepMax, getExerciseById, getExerciseWeightsByName } from "$lib/db/queries/exercise";
 import { getUserExerciseLogById } from "$lib/db/queries/logs";
 import type { PageServerLoad } from "./$types";
@@ -11,6 +12,14 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 	const weight_data = await getExerciseWeightsByName(exercise ? exercise.name : "")
 	const rep_max = await getEstimatedOneRepMax(user_id, exercise_id)
 
+
+
+	// add search 
+	const search_data = {
+		user_id,
+		exercise_id
+	}
+	await addSearch(search_data)
 	return {
 		log,
         exercise,

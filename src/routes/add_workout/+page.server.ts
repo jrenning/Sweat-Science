@@ -23,15 +23,20 @@ export const load: PageServerLoad = async ({url, locals}) => {
 	// TODO pass in param for id
 	const user_id = session?.user.id ? session.user.id : '';
 
-	const plan_id = Number(url.searchParams.get('plan_id'));
-	const day = Number(url.searchParams.get('day'));
+	let plan_id_url = url.searchParams.get('plan_id');
+	let day_url = url.searchParams.get('day');
+
+	const plan_id = plan_id_url ? Number(plan_id_url) : undefined
+	const day = day_url ? Number(day_url) : undefined
+	
 
 	// get pending workouts
 	let pending_id = await getPendingWorkouts(user_id);
 
 	if (pending_id.length == 0) {
 		// create new workout routine
-		pending_id = await createPendingWorkout(user_id, plan_id, [day]);
+		//@ts-ignore
+		pending_id = await createPendingWorkout(user_id, plan_id, day ? [day] : undefined);
 	}
 	// get pending data
 	const workout_routine = await getWorkoutById(user_id, pending_id[0].id);
@@ -42,9 +47,9 @@ export const load: PageServerLoad = async ({url, locals}) => {
 
 	const formData = {
 		plan_id: plan_id,
-		days: [day],
+		days: day ? [day] : undefined,
 		...workout_routine
-	}
+	};
 	// super forms
 	let workoutForm = await superValidate(formData, insertWorkoutRoutine);
 

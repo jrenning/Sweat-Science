@@ -73,6 +73,8 @@ export type AddWorkoutLog = InsertWorkoutLog & {
 
 export type InsertWorkoutFolder = InferInsertModel<typeof workout_folders>;
 
+export type InsertSearch = InferInsertModel<typeof searches>;
+
 /* UNITS */
 
 // DEFAULT UNITS - ie ones that are stored in database
@@ -119,6 +121,27 @@ export const favorites = pgTable('favorites', {
 		.references(() => users.id)
 		.primaryKey()
 });
+
+
+export const searches = pgTable('searches', {
+	user_id: text('user_id')
+		.references(() => users.id),
+	created_at: timestamp('created_at').defaultNow(),
+	exercise_id: integer('exercise_id')
+		.notNull()
+		.references(() => exercises.id, { onDelete: 'cascade' }),
+});
+
+export const searchRelations = relations(searches, ({ one }) => ({
+	exercise: one(exercises, {
+		fields: [searches.exercise_id],
+		references: [exercises.id]
+	}),
+	user_id: one(users, {
+		fields: [searches.user_id],
+		references: [users.id]
+	})
+}));
 
 export const PRTypes = pgEnum('pr_types', ['Max Weight', 'Distance', 'Time']);
 

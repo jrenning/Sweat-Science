@@ -6,6 +6,7 @@
 	import WorkoutLogs from "../../components/Progress/Log/WorkoutLogs.svelte";
 	import ExerciseSelector from "../../components/UI/ExerciseSelector.svelte";
 	import { goto } from "$app/navigation";
+	import RecentSearches from "../../components/Progress/RecentSearches.svelte";
 
     let tabSet: number = 0
 
@@ -32,6 +33,8 @@
 			<WorkoutLogs workouts={data.workouts}/>
 		{:else if tabSet === 1}
 			<ExerciseSelector exercises={data.exercises} callback={goToProgress}/>
+
+			<RecentSearches exercises={data.searches}/>
         {/if}
 	</svelte:fragment>
 </TabGroup>

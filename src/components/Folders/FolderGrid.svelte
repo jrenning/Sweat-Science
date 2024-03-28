@@ -35,7 +35,7 @@
 	<BackButton link={previousPage} />
 </div>
 <button
-	class="btn-md mx-10 hover:variant-filled-secondary variant-outline-secondary flex mt-6 justify-center items-center rounded-md shadow-md"
+	class="btn-md mx-4 w-20 hover:variant-filled-secondary variant-outline-secondary flex mt-6 justify-center items-center rounded-md shadow-md"
 	on:click={() => modalStore.trigger(folderModal)}>Add</button
 >
 <div class="grid grid-cols-1 gap-4 mx-4 mt-4">
