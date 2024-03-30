@@ -8,7 +8,7 @@
 </script>
 
 	{#if log_entry.type == 'Weight'}
-		<table class=" bg-surface-200 mx-2 p-2 border-solid rounded-xl shadow-md border-2 border-secondary-300">
+		<table class=" bg-surface-200 mx-2 p-2 rounded-xl shadow-2xl ">
 			<tr>
 				<th class="font-semibold p-2">Weight</th>
 				{#each log_entry.weight as weight}
@@ -23,7 +23,7 @@
 			</tr>
 		</table>
 	{:else if log_entry.type == 'Distance'}
-		<div class="flex flex-col">
+		<div class="flex flex-col bg-surface-200 mx-2 p-2 rounded-xl shadow-2xl">
 			<div class="font-semibold">Distance</div>
 			<div>{log_entry.distance}</div>
 		</div>

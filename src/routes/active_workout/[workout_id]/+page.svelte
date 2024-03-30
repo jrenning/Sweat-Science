@@ -120,6 +120,7 @@
 					<div
 						class="rounded-md bg-surface-400 text-black shadow-md flex justify-evenly items-center w-[75%] h-[200px]"
 					>
+					{#if current_exercise.type == "Weight"}
 						<div class="flex flex-col space-y-4 justify-center items-center">
 							<input
 								class="text-6xl w-28 bg-transparent font-bold text-center"
@@ -138,6 +139,28 @@
 							/>
 							<div class="text-lg">Reps</div>
 						</div>
+					{:else if current_exercise.type == "Duration"}
+						<div class="flex flex-col space-y-4 justify-center items-center">
+							<input
+								class="text-6xl w-28 bg-transparent font-bold text-center"
+								type="number"
+								inputmode="numeric"
+								bind:value={$form.exercises[exercise].duration[set - 1]}
+							/>
+							<div class="text-lg">Duration</div>
+						</div>
+						{:else if current_exercise.type == "Distance"}
+						<div class="flex flex-col space-y-4 justify-center items-center">
+							<input
+								class="text-6xl w-28 bg-transparent font-bold text-center"
+								type="number"
+								inputmode="numeric"
+								bind:value={$form.exercises[exercise].distance[set - 1]}
+							/>
+							<div class="text-lg">Distance</div>
+						</div>
+
+					{/if}
 					</div>
 				{/if}
 				<div class="flex flex-row space-x-6">

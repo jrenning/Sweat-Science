@@ -1,3 +1,4 @@
+import { and, eq } from 'drizzle-orm';
 import { calculateOneRepFromArray } from '../../../helpers/rep_max';
 import { db } from '../db';
 import { getEstimatedOneRepMax } from '../queries/exercise';
@@ -32,4 +33,10 @@ export async function createExerciseLog(input: InsertExerciseLog) {
 	return await db
 		.insert(exerciseLog)
 		.values({ estimated_max: calculateOneRepFromArray(input.weight, input.reps), ...input });
+}
+
+export async function deleteLogByID(log_id: number, user_id: string) {
+	return await db
+		.delete(workoutLog)
+		.where(and(eq(workoutLog.user_id, user_id), eq(workoutLog.id, log_id)));
 }

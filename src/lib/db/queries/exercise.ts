@@ -56,18 +56,20 @@ export async function getEstimatedOneRepMax(user_id: string, exercise_id: number
 		.from(exerciseLog)
 		.where(and(eq(exerciseLog.exercise_id, exercise_id), eq(exerciseLog.user_id, user_id)))
 		.orderBy(desc(exerciseLog.estimated_max))
-		.limit(1).catch((err)=> console.log(err));
+		.limit(1)
+		.catch((err) => console.log(err));
 
-	if (data) {
-		return data[0].estimated_max
+	if (!data || !data[0]) {
+		return undefined;
 	}
-	else {
-		return undefined
+	if (!data[0].estimated_max) {
+		return undefined;
 	}
+	return data[0].estimated_max;
 }
 
 export async function getCurrentOneRepMax(user_id: string, exercise_id: number) {
-	// gets the last three maxes on an exercise and returns the highest one 
+	// gets the last three maxes on an exercise and returns the highest one
 
 	const data = await db
 		.select({
@@ -80,15 +82,10 @@ export async function getCurrentOneRepMax(user_id: string, exercise_id: number) 
 		.catch((err) => console.log(err));
 
 	if (data) {
-		const maxes = data.map((max)=> max.estimated_max)
+		const maxes = data.map((max) => max.estimated_max);
 		//@ts-ignore
-		return Math.max(maxes)
-	}
-	else {
-		return undefined
+		return Math.max(maxes);
+	} else {
+		return undefined;
 	}
 }
-
-
-
-
