@@ -36,7 +36,7 @@
 		</div>
 			<WorkoutLogs workouts={data.workouts}/>
 		{:else if tabSet === 1}
-			<ExerciseSelector exercises={data.exercises} callback={goToProgress}/>
+			<ExerciseSelector callback={goToProgress}/>
 
 			<RecentSearches exercises={data.searches}/>
         {/if}

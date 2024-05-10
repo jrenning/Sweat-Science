@@ -5,7 +5,6 @@ export const GET: RequestHandler = async ({ request, locals }) => {
 	const session = await locals.getSession();
 	const user_id = session?.user.id ? session.user.id : '';
 
-	const data = await getFavoriteWorkouts(user_id);
-
+	let data = await getFavoriteWorkouts(user_id);
 	return json(data);
 };

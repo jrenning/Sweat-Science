@@ -1,6 +1,11 @@
 import { and, asc, desc, eq, isNull, ne } from 'drizzle-orm';
 import { db } from '../db';
-import { exercise_routine, workout_routine, workoutToExerciseRoutines, type WorkoutRoutineWithExercises } from '../schema';
+import {
+	exercise_routine,
+	workout_routine,
+	workoutToExerciseRoutines,
+	type WorkoutRoutineWithExercises
+} from '../schema';
 import { getEstimatedOneRepMax } from './exercise';
 import { roundtoNearestFive } from '../../../helpers/weight';
 
@@ -120,12 +125,19 @@ export async function getRecentWorkouts(user_id: string) {
 		return p;
 	}, []);
 
-	return data;
+	// fix stupid column stuff
+	if (data) {
+		let new_data = [];
+		for (let i = 0; i < data.length; i++) {
+			let exercises = data[i].exercises.map((exercise) => exercise.exercise_routine);
+			new_data.push({ ...data[i], exercises: exercises });
+		}
+		return new_data;
+	}
 }
 
 export async function getFavoriteWorkouts(user_id: string) {
-
-	const data = await db.query.workout_routine.findMany({
+	let data = await db.query.workout_routine.findMany({
 		where: and(eq(workout_routine.user_id, user_id), eq(workout_routine.favorite, true)),
 		with: {
 			exercises: {
@@ -143,7 +155,17 @@ export async function getFavoriteWorkouts(user_id: string) {
 			}
 		}
 	});
-	return data;
+
+	// fix stupid column stuff
+	if (data) {
+		let new_data = [];
+		for (let i = 0; i < data.length; i++) {
+			let exercises = data[i].exercises.map((exercise) => exercise.exercise_routine);
+			new_data.push({ ...data[i], exercises: exercises });
+		}
+		return new_data;
+	}
+
 }
 
 export async function convertWorkoutFromPercent(

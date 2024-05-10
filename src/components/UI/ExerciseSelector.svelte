@@ -2,16 +2,16 @@
 	import type { Exercise } from '$lib/db/schema';
 	import { Autocomplete, type AutocompleteOption } from '@skeletonlabs/skeleton';
 
-	let exercises: Promise<Exercise[]> = getExercises();
-	let exerciseOptions: AutocompleteOption[];
+	let exerciseOptions: Promise<AutocompleteOption[]> = getExerciseOptions() 
 
-	async function getExercises() {
+	async function getExerciseOptions() {
 		const exercise_req = await fetch('/api/exercises');
 
-		const exercises: Exercise[] = await exercise_req.json();
+		const exercises: {exercises: Exercise[]} = await exercise_req.json();
+
 
 		// build autocomplete options
-		exerciseOptions = exercises.map((exercise) => {
+		let options = exercises.exercises.map((exercise) => {
 		const option: AutocompleteOption = {
 			label: exercise.name ? exercise.name : "Null",
 			value: exercise.id
@@ -19,7 +19,7 @@
         return option
 	})
 
-		return exercises;
+		return options;
 	}
 
 
@@ -39,6 +39,12 @@
 <div class="flex flex-col justify-center items-center">
 <input class="input w-[50vw] mb-4" type="search" name="demo" bind:value={inputValue} placeholder="Search..." />
 <div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1">
+	{#await exerciseOptions}
+	<div>Fetching exercises...</div>
+	{:then exerciseOptions}
 	<Autocomplete bind:input={inputValue} options={exerciseOptions} on:selection={onExerciseSelection} />
+	{:catch error}
+	<div>Getting exercises failed: {error}</div>
+	{/await}
 </div>
 </div>

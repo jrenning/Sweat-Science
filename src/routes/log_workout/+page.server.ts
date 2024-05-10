@@ -1,9 +1,11 @@
 import { getPossibleExercises } from '$lib/db/queries/exercise.js';
 import { getAllUserWorkouts } from '$lib/db/queries/workout_routine.js';
 import { insertWorkoutLogSchema } from '$lib/db/schema';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { addWorkoutLogSchema } from '../active_workout/schemas.js';
+import { createLogFromWorkout } from '$lib/db/mutations/logs.js';
+import { convertToUTC } from '../../helpers/datetime.js';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load(event) {
@@ -13,9 +15,7 @@ export async function load(event) {
 	const user_id = session?.user.id ? session.user.id : '';
 
 	// super forms
-	const workoutLogForm = await superValidate(
-		addWorkoutLogSchema
-	);
+	const workoutLogForm = await superValidate(addWorkoutLogSchema);
 
 	// get possible workouts to copy
 	const workouts = await getAllUserWorkouts(user_id);
@@ -27,11 +27,19 @@ export async function load(event) {
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	workout_plan: async ({ request }) => {
-		const logForm = await superValidate(request, insertWorkoutLogSchema);
+	log_workout: async ({ request, locals }) => {
+		const session = await locals.getSession();
+		const user_id = session?.user.id ? session.user.id : '';
 
+		const logForm = await superValidate(request, addWorkoutLogSchema);
+		console.log(logForm.errors);
 		if (!logForm.valid) return fail(400, { logForm });
 
-		return { logForm };
+		logForm.data.user_id = user_id
+		logForm.data.created_at = convertToUTC(logForm.data.created_at)
+
+
+		await createLogFromWorkout(logForm.data);
+		throw redirect(303, '/progress');
 	}
 };

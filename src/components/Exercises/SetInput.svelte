@@ -20,7 +20,7 @@
 		Duration: '% of Longest'
 	};
 
-	let extra = false;
+	export let extra = true;
 </script>
 
 <div style={`display: ${visible}`} class="flex-col space-y-4">
@@ -35,6 +35,7 @@
 				disabled={percent}
 				bind:value={weight}
 			/>
+			{#if extra}
 			<label class="text-sm" for="extra">{extra_options[type]}</label>
 			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
 			<input
@@ -44,6 +45,7 @@
 				disabled={!percent}
 				bind:value={weight}
 			/>
+			{/if}
 		{:else if type == 'Duration'}
 			<input
 				class="w-16 input outline-secondary-500 outline-2"
@@ -53,6 +55,7 @@
 				disabled={percent}
 				bind:value={duration}
 			/>
+			{#if extra}
 			<label class="text-sm" for="extra">{extra_options[type]}</label>
 			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
 			<input
@@ -62,6 +65,7 @@
 				disabled={!percent}
 				bind:value={duration}
 			/>
+			{/if}
 		{:else if type == 'Distance'}
 			<input
 				class="w-16 input outline-secondary-500 outline-2"
@@ -71,6 +75,7 @@
 				disabled={percent}
 				bind:value={distance}
 			/>
+			{#if extra}
 			<label class="text-sm" for="extra">{extra_options[type]}</label>
 			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
 			<input
@@ -80,6 +85,7 @@
 				disabled={!percent}
 				bind:value={duration}
 			/>
+			{/if}
 		{/if}
 	</div>
 	{#if type == 'Weight'}

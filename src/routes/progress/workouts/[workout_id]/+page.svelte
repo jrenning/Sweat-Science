@@ -7,6 +7,7 @@
 	import { prettifyDate } from '../../../../helpers/datetime';
 	import type { PageData } from './$types';
 	import { redirect } from '@sveltejs/kit';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 
@@ -26,7 +27,7 @@
 			}
 		});
 		// go back to home
-		throw redirect(303, "/")
+		goto("/progress")
 	}
 </script>
 
@@ -46,7 +47,7 @@
 		<div class="mx-4">{data.data?.notes}</div>
 	</div>
 	<div class="flex justify-center space-x-4">
-		<FormButton text="Remove" action={deleteLog}/>
+		<FormButton text="Remove" action={()=> deleteLog()}/>
 		<FormButton text="Edit" />
 	</div>
 

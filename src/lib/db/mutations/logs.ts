@@ -8,12 +8,7 @@ import { exerciseLog, workoutLog, type InsertExerciseLog, type AddWorkoutLog } f
 export async function createLogFromWorkout(input: AddWorkoutLog) {
 	const data = await db
 		.insert(workoutLog)
-		.values({
-			name: input.name,
-			user_id: input.user_id,
-			workout_time_seconds: input.workout_time_seconds,
-			notes: input.notes
-		})
+		.values(input)
 		.returning({ id: workoutLog.id });
 
 	// attach exercise logs
