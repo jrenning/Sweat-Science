@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import '../app.postcss';
 	import { signIn, signOut } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
@@ -22,6 +22,9 @@
 
 
 	$: {if (browser) {
+		if ($page.data.theme) {
+			$currentTheme = $page.data.theme
+		}
 		document.body.setAttribute("data-theme", $currentTheme)
 	}}
 </script>

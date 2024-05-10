@@ -462,3 +462,6 @@ export const insertWorkoutPlanSchema = createInsertSchema(workout_plans);
 export const insertWorkoutLogSchema = createInsertSchema(workoutLog);
 export const insertExerciseLogSchema = createInsertSchema(exerciseLog);
 export const insertWorkoutFolderSchema = createInsertSchema(workout_folders);
+
+
+

@@ -24,14 +24,14 @@
 
 
     export let current_exercise: string = ""
-    export let callback: (selected_value: unknown) => void = () => {}
+    export let callback: (selected_id: number) => void = () => {}
 
 
     let inputValue = ""
 
     function onExerciseSelection(event: CustomEvent<AutocompleteOption>) {
         inputValue = event.detail.label
-        callback(event.detail.value)
+        callback(event.detail.value as number)
         current_exercise = inputValue
     }
 </script>
