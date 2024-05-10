@@ -127,7 +127,7 @@
 	{#await exercise_options}
 	Fetching exercises...
 	{:then exercise_options}
-		<ExerciseSelector exercises={exercise_options} callback={updateExerciseId} />
+		<ExerciseSelector callback={updateExerciseId} />
 	{/await}
 		<div class="flex flex-row space-x-6 mt-6">
 			<label class="label" for="weight">Weight</label>

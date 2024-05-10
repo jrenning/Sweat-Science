@@ -7,6 +7,7 @@
 	import ExerciseSelector from "../../components/UI/ExerciseSelector.svelte";
 	import { goto } from "$app/navigation";
 	import RecentSearches from "../../components/Progress/RecentSearches.svelte";
+	import FormButton from "../../components/UI/Buttons/FormButton.svelte";
 
     let tabSet: number = 0
 
@@ -30,6 +31,9 @@
 	<!-- Tab Panels --->
 	<svelte:fragment slot="panel">
 		{#if tabSet === 0}
+		<div class="mx-4 mb-8">
+		<a href="/log_workout"><FormButton text="Log Workout"/></a>
+		</div>
 			<WorkoutLogs workouts={data.workouts}/>
 		{:else if tabSet === 1}
 			<ExerciseSelector exercises={data.exercises} callback={goToProgress}/>

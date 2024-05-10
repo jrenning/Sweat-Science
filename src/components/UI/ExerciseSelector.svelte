@@ -2,18 +2,30 @@
 	import type { Exercise } from '$lib/db/schema';
 	import { Autocomplete, type AutocompleteOption } from '@skeletonlabs/skeleton';
 
-	export let exercises: Exercise[];
+	let exercises: Promise<Exercise[]> = getExercises();
+	let exerciseOptions: AutocompleteOption[];
 
-    export let current_exercise: string = ""
-    export let callback: (selected_value: unknown) => void = () => {}
+	async function getExercises() {
+		const exercise_req = await fetch('/api/exercises');
 
-	const exerciseOptions: AutocompleteOption[] = exercises.map((exercise) => {
+		const exercises: Exercise[] = await exercise_req.json();
+
+		// build autocomplete options
+		exerciseOptions = exercises.map((exercise) => {
 		const option: AutocompleteOption = {
 			label: exercise.name ? exercise.name : "Null",
 			value: exercise.id
 		};
         return option
-	});
+	})
+
+		return exercises;
+	}
+
+
+    export let current_exercise: string = ""
+    export let callback: (selected_value: unknown) => void = () => {}
+
 
     let inputValue = ""
 

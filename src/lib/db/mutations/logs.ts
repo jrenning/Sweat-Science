@@ -28,6 +28,7 @@ export async function createLogFromWorkout(input: AddWorkoutLog) {
 	});
 }
 
+
 export async function createExerciseLog(input: InsertExerciseLog) {
 	// TODO make work with duration and distance if you want
 	return await db

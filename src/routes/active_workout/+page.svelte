@@ -10,7 +10,7 @@
 
 <div class="flex justify-center items-center flex-col space-y-6 mx-6">
 	<div>Choose an exercise:</div>
-	<ExerciseSelector exercises={data.exercises} bind:current_exercise />
+	<ExerciseSelector bind:current_exercise />
 	{#if current_exercise}
 		<div class="flex space-x-12">
 			<div>
