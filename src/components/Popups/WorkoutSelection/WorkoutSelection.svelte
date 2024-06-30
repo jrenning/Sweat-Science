@@ -44,7 +44,7 @@
 	}
 </script>
 
-<div class="card w-[50vw] h-[50vh] overflow-y-scroll">
+<div class="card w-[80vw] h-[50vh] overflow-y-scroll">
 	<TabGroup>
 		<Tab bind:group={tabSet} name="tab1" value={0}>
 			<span>Recent</span>

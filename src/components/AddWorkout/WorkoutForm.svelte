@@ -12,6 +12,7 @@
 	import type { newWorkoutRoutineSchema } from '../../routes/add_workout/schemas';
 	import AddExerciseCard from './AddExerciseCard.svelte';
 	import BackButton from '../UI/Buttons/BackButton.svelte';
+	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
 
 	/* EXPORTS */
 	export let exerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
@@ -31,6 +32,7 @@
 	const modalStore = getModalStore();
 
 	const _form = superForm(workoutForm, {
+		id: "add",
 		dataType: 'json'
 	});
 
@@ -40,7 +42,7 @@
 		ref: ExerciseSelectionForm,
 		props: { data: exerciseForm, post_link: exercise_post_link }
 	};
-	const exerciseModal: ModalSettings = {
+	const addExerciseModal: ModalSettings = {
 		type: 'component',
 		title: `${type} Exercise`,
 		component: modalComponentExercise
@@ -68,7 +70,7 @@
 			type="button"
 			class="btn-sm rounded-md variant-outline-surface text-md"
 			on:click={() => {
-				modalStore.trigger(exerciseModal);
+				modalStore.trigger(addExerciseModal);
 			}}>Add Exercise</button
 		>
 		{#if workout_routine}

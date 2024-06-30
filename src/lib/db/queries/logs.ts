@@ -1,6 +1,7 @@
 import { and, desc, eq } from "drizzle-orm";
 import { db } from "../db";
 import { exerciseLog, exercise_routine, workoutLog } from "../schema";
+import { convertToUTC } from "../../../helpers/datetime";
 
 
 export async function getUserWorkoutLogs(user_id: string) {
@@ -32,13 +33,18 @@ export async function getWorkoutLogById(user_id: string, id: number) {
 }
 
 export async function  getUserExerciseLogById(user_id: string, exercise_id: number) {
-    return await db.query.exerciseLog.findMany({
+    let data = await db.query.exerciseLog.findMany({
         where: and(eq(exerciseLog.exercise_id, exercise_id), eq(exerciseLog.user_id, user_id)),
         with: {
             exercise: true
         },
         orderBy: desc(exerciseLog.created_at)
     })
+
+    // fix the dates
+    data = data.map((d)=> d.created_at = convertToUTC(d.created_at))
+
+    return data
 }
 
 export async function getLastWorkout(user_id: string) {

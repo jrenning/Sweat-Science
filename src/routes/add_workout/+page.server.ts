@@ -86,6 +86,8 @@ export const actions: Actions = {
 
 		if (!exerciseForm.valid) return fail(400, { exerciseForm });
 
+		// temp fix for popup issue
+		exerciseForm.data.id = undefined
 		const input = {
 			...exerciseForm.data,
 			user_id: user_id

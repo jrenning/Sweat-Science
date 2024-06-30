@@ -81,10 +81,12 @@ export async function getCurrentOneRepMax(user_id: string, exercise_id: number) 
 		.limit(3)
 		.catch((err) => console.log(err));
 
+	console.log(data)
+
 	if (data) {
 		const maxes = data.map((max) => max.estimated_max);
 		//@ts-ignore
-		return Math.max(maxes);
+		return Math.max(...maxes);
 	} else {
 		return undefined;
 	}

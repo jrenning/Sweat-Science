@@ -36,7 +36,6 @@ export const actions = {
 		if (!logForm.valid) return fail(400, { logForm });
 
 		logForm.data.user_id = user_id
-		logForm.data.created_at = convertToUTC(logForm.data.created_at)
 
 
 		await createLogFromWorkout(logForm.data);

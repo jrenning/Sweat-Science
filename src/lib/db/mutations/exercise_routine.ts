@@ -24,6 +24,7 @@ export async function addExerciseRoutineToWorkout(
 	input: InsertExerciseRoutine,
 	position: number
 ) {
+	console.log(input)
 	return await db.transaction(async (tx) => {
 		const routine = await tx
 			.insert(exercise_routine)

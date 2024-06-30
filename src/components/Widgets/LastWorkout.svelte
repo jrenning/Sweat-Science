@@ -7,6 +7,7 @@
 </script>
 
 {#if last_workout}
+<a href={`/progress/workouts/${last_workout.id}`}>
 	<div class=" bg-surface-400 rounded-md shadow-md text-black p-1">
 		<div class="font-bold text-3xl italic mx-4 mt-2">{last_workout?.name}</div>
 		<div class="italic mx-4 mb-2">{last_workout?.created_at?.toDateString()}</div>
@@ -37,4 +38,5 @@
 			</div>
 		</div>
 	</div>
+	</a>
 {/if}

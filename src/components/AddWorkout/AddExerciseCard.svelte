@@ -12,6 +12,7 @@
 	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import ExerciseSelectionForm from '../Exercises/ExerciseSelectionForm.svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
+	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
 
 	export let exercise: InsertExerciceRoutineWithExercises;
 	export let workout_id: number;
@@ -37,17 +38,19 @@
 
 	const modal = getModalStore();
 
+
     exerciseForm.data = exercise
+	let editExerciseForm = exerciseForm
 
 
-	const modalComponentExercise: ModalComponent = {
+	const modalComponentEditExercise: ModalComponent = {
 		ref: ExerciseSelectionForm,
-		props: { data: exerciseForm, post_link: `/edit_exercise_routine/${exercise.id}` }
+		props: { data: editExerciseForm, exercise: exercise, post_link: `/edit_exercise_routine/${exercise.id}` }
 	};
 	const exerciseModal: ModalSettings = {
 		type: 'component',
 		title: 'Edit Exercise',
-		component: modalComponentExercise
+		component: modalComponentEditExercise
 	};
 </script>
 

@@ -109,8 +109,9 @@
 		{:else if page === 2}
 			{#if existing_workout}
 				{#each $form.exercises as exercise, i}
-					<div>
-						<div>{exercise.exercise.name}</div>
+					<div class="my-6">
+						<div class="my-6 font-semibold text-lg flex justify-center items-center">{exercise.exercise.name}</div>
+						<div class="grid grid-cols-2 gap-x-2 gap-y-16 row mx-8">
 						{#each { length: exercise.sets } as set, j}
 							{#if exercise.type == 'Weight'}
 								<SetInput
@@ -133,6 +134,7 @@
 								/>
 							{/if}
 						{/each}
+						</div>
 					</div>
 				{/each}
 			{:else}
