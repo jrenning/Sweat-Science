@@ -100,7 +100,7 @@ export async function completeWorkoutRoutineForm(
 	plan_id: number | undefined | null = undefined,
 	days: number[] | null = []
 ) {
-	console.log(days)
+
 	const data = await db
 		.update(workout_routine)
 		.set({ name: name, status: 'Completed', workout_plan_id: plan_id, days: days })

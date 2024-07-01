@@ -29,7 +29,7 @@
 		let total = 0
 		workouts_this_week.forEach((workout)=> (total += workout.workout_time_seconds ? workout.workout_time_seconds/60 : 0))
 
-		return total
+		return Math.round(total*100)/100
 	}
 
 	function getCalorieTotal() {
@@ -48,7 +48,7 @@
 	<div class="flex justify-evenly my-4 font-semibold text-white shadow-md rounded-md mx-2 bg-secondary-500 px-1">
 		{#each days as day}
 			{#if day == selected_day}
-				<button class="text-red-600">{day}</button>
+				<button class="text-surface-600">{day}</button>
 			{:else}
 				<button on:click={() => (selected_day = day)}>{day}</button>
 			{/if}

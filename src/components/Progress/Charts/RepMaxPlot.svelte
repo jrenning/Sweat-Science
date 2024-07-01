@@ -5,7 +5,6 @@
 	import { prettifyDate } from '../../../helpers/datetime';
 
 	export let exercise_data: ExerciseLogWithExercises[];
-
 	let data = exercise_data.map((exercise) => exercise.estimated_max).reverse();
 	let labels = exercise_data.map((exercise) => prettifyDate(exercise.created_at)).reverse();
 
@@ -25,6 +24,14 @@
 							data: data
 						}
 					]
+				},
+				options: {
+					scales: {
+						y: {
+							//@ts-ignore
+							min: Math.min(...data)-5
+						}
+					}
 				}
 			});
 		}
@@ -35,12 +42,13 @@
 	<div class="w-[365px] overflow-x-scroll">
 		<canvas bind:this={canvas} width={32} height={32} />
 	</div>
+	
 </div>
 
 <style>
 	canvas {
 		width: 100%;
 		height: 100%;
-		background-color: #ffffff;
+		background-color: transparent;
 	}
 </style>

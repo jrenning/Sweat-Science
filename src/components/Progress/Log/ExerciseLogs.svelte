@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { ExerciseLogWithExercises } from '$lib/db/schema';
 	import { prettifyDate } from '../../../helpers/datetime';
+	import ExerciseLogEntryChart from '../Charts/ExerciseLogEntryChart.svelte';
 	import ExerciseLogEntry from './ExerciseLogEntry.svelte';
 
 	export let logs: ExerciseLogWithExercises[];
@@ -16,5 +17,6 @@
 			<div class=" mx-2 text-xl font-bold">{log.exercise.name}</div>
 		{/if}
 		<ExerciseLogEntry log_entry={log} />
+		<ExerciseLogEntryChart log_data={log} />
 	{/each}
 </div>

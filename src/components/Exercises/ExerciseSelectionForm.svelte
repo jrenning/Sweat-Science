@@ -19,7 +19,6 @@
 	export let post_link: string;
 	export let exercise: InsertExerciceRoutineWithExercises;
 	/*         */
-	console.log(exercise)
 	// if editing
 	if (exercise) {
 		data.data = exercise

@@ -14,6 +14,7 @@
 	let tabSet: number = 0;
 
 	let categories = ['Wt', 'Begin', 'Nov', 'Int', 'Adv'];
+
 </script>
 
 {#if data.exercise}

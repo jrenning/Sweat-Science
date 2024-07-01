@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 	const current_max = await getCurrentOneRepMax(user_id, exercise_id)
 
 
-	console.log(current_max)
+
 	// add search 
 	const search_data = {
 		user_id,

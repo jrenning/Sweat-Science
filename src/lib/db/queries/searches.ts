@@ -14,9 +14,7 @@ export async function getRecentSearches(user_id: string) {
 		.orderBy( asc(searches.exercise_id), desc(searches.created_at))
 		.innerJoin(exercises, eq(searches.exercise_id, exercises.id))
 		.as('sq');
-	const unfiltered = await db.select().from(sq);
 
-	console.log(unfiltered);
 	const data = await db.select().from(sq).orderBy(desc(sq.created_at)).limit(5);
 
 

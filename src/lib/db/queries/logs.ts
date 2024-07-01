@@ -42,8 +42,6 @@ export async function  getUserExerciseLogById(user_id: string, exercise_id: numb
     })
 
     // fix the dates
-    data = data.map((d)=> d.created_at = convertToUTC(d.created_at))
-
     return data
 }
 

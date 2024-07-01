@@ -32,7 +32,7 @@ export const actions = {
 		const user_id = session?.user.id ? session.user.id : '';
 
 		const logForm = await superValidate(request, addWorkoutLogSchema);
-		console.log(logForm.errors);
+
 		if (!logForm.valid) return fail(400, { logForm });
 
 		logForm.data.user_id = user_id
