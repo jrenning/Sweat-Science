@@ -5,6 +5,7 @@
 	import Timer from '../../../components/ActiveWorkout/Timer.svelte';
 	import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
 	import type { PageData } from './$types';
+	import SetInput from '../../../components/Exercises/SetInput.svelte';
 	export let data: PageData;
 
 	let exercise: number = 0;
@@ -13,8 +14,8 @@
 
 	$: progress = exercise + 1;
 	$: exercise_total = data.workout?.exercises.length ? data.workout.exercises.length : 0;
-	$: current_exercise = data.workout?.exercises[exercise]
-	$: future_exercise = data.workout?.exercises[exercise + 1]
+	$: current_exercise = data.workout?.exercises[exercise];
+	$: future_exercise = data.workout?.exercises[exercise + 1];
 
 	let selected_value = current_exercise?.exercise.name;
 	function skipToExercise() {
@@ -62,21 +63,22 @@
 		}
 	}
 
-
-	// count up timer 
-    function pad ( val: any ) { return val > 9 ? val : "0" + val; }
-    const timer = setInterval( function(){
-		if (typeof $form.workout_time_seconds !== "undefined" && typeof document !== "undefined") {
-		//@ts-ignore
-		$form.workout_time_seconds = $form.workout_time_seconds + 1
-		//@ts-ignore
-        document.getElementById("seconds").innerHTML=pad($form.workout_time_seconds%60);
-		//@ts-ignore
-        document.getElementById("minutes").innerHTML=pad(Math.floor($form.workout_time_seconds/60));
+	// count up timer
+	function pad(val: any) {
+		return val > 9 ? val : '0' + val;
+	}
+	const timer = setInterval(function () {
+		if (typeof $form.workout_time_seconds !== 'undefined' && typeof document !== 'undefined') {
+			//@ts-ignore
+			$form.workout_time_seconds = $form.workout_time_seconds + 1;
+			//@ts-ignore
+			document.getElementById('seconds').innerHTML = pad($form.workout_time_seconds % 60);
+			//@ts-ignore
+			document.getElementById('minutes').innerHTML = pad(
+				Math.floor($form.workout_time_seconds / 60)
+			);
 		}
-    }, 1000);
-
-
+	}, 1000);
 </script>
 
 {#if data.workout}
@@ -105,7 +107,7 @@
 						on:change={() => skipToExercise()}
 					>
 						{#each data.workout.exercises as exercise}
-							<option class='text-lg'>{exercise.exercise.name}</option>
+							<option class="text-lg">{exercise.exercise.name}</option>
 						{/each}
 					</select>
 				</div>
@@ -120,47 +122,68 @@
 					<div
 						class="rounded-md bg-surface-400 text-black shadow-md flex justify-evenly items-center w-[75%] h-[200px]"
 					>
-					{#if current_exercise.type == "Weight"}
-						<div class="flex flex-col space-y-4 justify-center items-center">
-							<input
-								class="text-6xl w-28 bg-transparent font-bold text-center"
-								type="number"
-								inputmode='numeric'
-								bind:value={$form.exercises[exercise].weight[set - 1]}
-							/>
-							<div class="text-lg">Weight</div>
-						</div>
-						<div class="flex flex-col space-y-4 justify-center items-center">
-							<input
-								class="text-6xl w-28 bg-transparent font-bold text-center"
-								type="number"
-								inputmode="numeric"
-								bind:value={$form.exercises[exercise].reps[set - 1]}
-							/>
-							<div class="text-lg">Reps</div>
-						</div>
-					{:else if current_exercise.type == "Duration"}
-						<div class="flex flex-col space-y-4 justify-center items-center">
-							<input
-								class="text-6xl w-28 bg-transparent font-bold text-center"
-								type="number"
-								inputmode="numeric"
-								bind:value={$form.exercises[exercise].duration[set - 1]}
-							/>
-							<div class="text-lg">Duration</div>
-						</div>
-						{:else if current_exercise.type == "Distance"}
-						<div class="flex flex-col space-y-4 justify-center items-center">
-							<input
-								class="text-6xl w-28 bg-transparent font-bold text-center"
-								type="number"
-								inputmode="numeric"
-								bind:value={$form.exercises[exercise].distance[set - 1]}
-							/>
-							<div class="text-lg">Distance</div>
-						</div>
-
-					{/if}
+						{#if current_exercise.type == 'Weight'}
+							<div class="flex flex-col space-y-4 justify-center items-center">
+								<input
+									class="text-6xl w-28 bg-transparent font-bold text-center"
+									type="number"
+									inputmode="numeric"
+									bind:value={$form.exercises[exercise].weight[set - 1]}
+								/>
+								<div class="text-lg">Weight</div>
+							</div>
+							<div class="flex flex-col space-y-4 justify-center items-center">
+								<input
+									class="text-6xl w-28 bg-transparent font-bold text-center"
+									type="number"
+									inputmode="numeric"
+									bind:value={$form.exercises[exercise].reps[set - 1]}
+								/>
+								<div class="text-lg">Reps</div>
+							</div>
+						{:else if current_exercise.type == 'Duration'}
+							<div class="flex flex-col space-y-4 justify-center items-center">
+								<input
+									class="text-6xl w-28 bg-transparent font-bold text-center"
+									type="number"
+									inputmode="numeric"
+									bind:value={$form.exercises[exercise].duration[set - 1]}
+								/>
+								<div class="text-lg">Duration</div>
+							</div>
+							{#if current_exercise.exercise.category === 'Cardio'}
+								<div class="flex flex-col space-y-4 justify-center items-center">
+									<input
+										class="text-6xl w-28 bg-transparent font-bold text-center"
+										type="number"
+										inputmode="numeric"
+										bind:value={$form.exercises[exercise].overall_pace_seconds[set-1]}
+									/>
+									<div class="text-lg">Pace</div>
+								</div>
+							{/if}
+						{:else if current_exercise.type == 'Distance'}
+							<div class="flex flex-col space-y-4 justify-center items-center">
+								<input
+									class="text-6xl w-28 bg-transparent font-bold text-center"
+									type="number"
+									inputmode="numeric"
+									bind:value={$form.exercises[exercise].distance[set - 1]}
+								/>
+								<div class="text-lg">Distance</div>
+							</div>
+							{#if current_exercise.exercise.category === 'Cardio'}
+								<div class="flex flex-col space-y-4 justify-center items-center">
+									<input
+										class="text-6xl w-28 bg-transparent font-bold text-center"
+										type="number"
+										inputmode="numeric"
+										bind:value={$form.exercises[exercise].overall_pace_seconds[set-1]}
+									/>
+									<div class="text-lg">Pace</div>
+								</div>
+							{/if}
+						{/if}
 					</div>
 				{/if}
 				<div class="flex flex-row space-x-6">
@@ -189,7 +212,9 @@
 					</button>
 				</div>
 
-				<div class="text-4xl font-semibold text-gray-400"><span id="minutes"></span>:<span id="seconds"></span></div>
+				<div class="text-4xl font-semibold text-gray-400">
+					<span id="minutes" />:<span id="seconds" />
+				</div>
 
 				<div class="text-right italic font-semibold w-full mr-4">
 					Next: {future_exercise ? future_exercise.exercise.name : 'Finish'}
@@ -199,8 +224,10 @@
 					<label class="label" for="notes">Notes</label>
 					<textarea class="textarea" name="notes" bind:value={$form.notes} />
 				</div>
-				<button type="submit" class="btn-md rounded-md variant-filled-surface shadow-md"
-					on:click={()=> clearInterval(timer)}>Log Workout</button
+				<button
+					type="submit"
+					class="btn-md rounded-md variant-filled-surface shadow-md"
+					on:click={() => clearInterval(timer)}>Log Workout</button
 				>
 			{/if}
 		</div>

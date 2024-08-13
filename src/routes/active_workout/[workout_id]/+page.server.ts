@@ -28,10 +28,12 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 		// adjust for percents
 		workout = await convertWorkoutFromPercent(workout, user_id);
 
-		const workoutExercises = workout.exercises
+		let workoutExercises = workout.exercises
+
+		let logExercises = workoutExercises.map((w)=> ({...w, overall_pace_seconds: []}))
 
 		const workoutForm = await superValidate(
-			{ name: workout.name, exercises: workoutExercises, workout_time_seconds: 0 },
+			{ name: workout.name, exercises: logExercises, workout_time_seconds: 0},
 			addWorkoutLogSchema
 		);
 

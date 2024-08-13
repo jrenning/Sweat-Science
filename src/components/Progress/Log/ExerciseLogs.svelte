@@ -17,6 +17,8 @@
 			<div class=" mx-2 text-xl font-bold">{log.exercise.name}</div>
 		{/if}
 		<ExerciseLogEntry log_entry={log} />
+		{#if log.exercise.category === "Strength"}
 		<ExerciseLogEntryChart log_data={log} />
+		{/if}
 	{/each}
 </div>

@@ -17,8 +17,6 @@
 	import ExerciseSelector from '../../components/UI/ExerciseSelector.svelte';
 	import AddExerciseCard from '../../components/AddWorkout/AddExerciseCard.svelte';
 	import SetInput from '../../components/Exercises/SetInput.svelte';
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import DeleteIcon from '../../components/Icons/DeleteIcon.svelte';
 
 	export let data: PageData;
 	let selected_workout: WorkoutRoutineWithExercises | undefined;
@@ -159,9 +157,9 @@
 							</svelte:fragment>
 							<svelte:fragment slot="content">
 								<ExerciseSelector
-									callback={(exercise_id) =>
+									callback={(exercise) =>
 										($form.exercises[i] = {
-											exercise_id: exercise_id,
+											exercise_id: exercise.id,
 											sets: 1,
 											reps: [],
 											weight: [],

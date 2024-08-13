@@ -8,13 +8,14 @@
 	import { goto } from "$app/navigation";
 	import RecentSearches from "../../components/Progress/RecentSearches.svelte";
 	import FormButton from "../../components/UI/Buttons/FormButton.svelte";
+	import type { Exercise } from "$lib/db/schema";
 
     let tabSet: number = 0
 
 	export let data: PageData
 
-	function goToProgress(id: unknown) {
-		goto(`/progress/${id}`)
+	function goToProgress(exercise: Exercise) {
+		goto(`/progress/${exercise.id}`)
 	}
 
 </script>

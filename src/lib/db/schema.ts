@@ -25,7 +25,7 @@ export type ExerciseRoutineWithExercise = InferSelectModel<typeof exercise_routi
 	exercise: InferSelectModel<typeof exercises>;
 };
 
-export type WorkoutRoutine = InferSelectModel<typeof workout_routine>
+export type WorkoutRoutine = InferSelectModel<typeof workout_routine>;
 
 export type WorkoutRoutineWithExercises = InferSelectModel<typeof workout_routine> & {
 	exercises: ExerciseRoutineWithExercise[];
@@ -122,14 +122,12 @@ export const favorites = pgTable('favorites', {
 		.primaryKey()
 });
 
-
 export const searches = pgTable('searches', {
-	user_id: text('user_id')
-		.references(() => users.id),
+	user_id: text('user_id').references(() => users.id),
 	created_at: timestamp('created_at').defaultNow(),
 	exercise_id: integer('exercise_id')
 		.notNull()
-		.references(() => exercises.id, { onDelete: 'cascade' }),
+		.references(() => exercises.id, { onDelete: 'cascade' })
 });
 
 export const searchRelations = relations(searches, ({ one }) => ({
@@ -354,6 +352,8 @@ export const workoutToExerciseRoutineRelations = relations(
 	})
 );
 
+
+
 /* LOGS */
 
 export const exerciseLog = pgTable('exercise_log', {
@@ -372,9 +372,12 @@ export const exerciseLog = pgTable('exercise_log', {
 	duration: real('duration').array().notNull(),
 	distance: integer('distance').array().notNull(),
 	created_at: timestamp('created_at').defaultNow().notNull(),
-	workout_log_id: integer('workout_log_id').references(() => workoutLog.id, {onDelete: "cascade"}),
+	workout_log_id: integer('workout_log_id').references(() => workoutLog.id, {
+		onDelete: 'cascade'
+	}),
 	// this only really applies to weighted exercises
-	estimated_max: real('estimated_max')
+	estimated_max: real('estimated_max'),
+	overall_pace_seconds: integer("overall_pace_seconds").array()
 });
 
 export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({
@@ -392,6 +395,8 @@ export const exerciseLogRelations = relations(exerciseLog, ({ one }) => ({
 	})
 }));
 
+
+
 export const workoutLog = pgTable('workout_log', {
 	id: serial('id').primaryKey(),
 	name: text('name'),
@@ -408,6 +413,8 @@ export const workoutLogRelations = relations(workoutLog, ({ one, many }) => ({
 		references: [users.id]
 	})
 }));
+
+
 
 /* AUTH */
 export const accounts = pgTable(
@@ -462,6 +469,3 @@ export const insertWorkoutPlanSchema = createInsertSchema(workout_plans);
 export const insertWorkoutLogSchema = createInsertSchema(workoutLog);
 export const insertExerciseLogSchema = createInsertSchema(exerciseLog);
 export const insertWorkoutFolderSchema = createInsertSchema(workout_folders);
-
-
-

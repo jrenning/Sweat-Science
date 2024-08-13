@@ -8,6 +8,8 @@
 
 	export let duration = 0;
 
+	export let pace = 0;
+
 	export let hidden = false;
 
 	export let percent = false;
@@ -21,6 +23,8 @@
 	};
 
 	export let extra = true;
+
+	export let cardio = false;
 </script>
 
 <div style={`display: ${visible}`} class="flex-col space-y-4">
@@ -36,15 +40,15 @@
 				bind:value={weight}
 			/>
 			{#if extra}
-			<label class="text-sm" for="extra">{extra_options[type]}</label>
-			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
-			<input
-				type="number"
-				inputmode="numeric"
-				class="w-10 input outline-secondary-500 outline-2"
-				disabled={!percent}
-				bind:value={weight}
-			/>
+				<label class="text-sm" for="extra">{extra_options[type]}</label>
+				<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
+				<input
+					type="number"
+					inputmode="numeric"
+					class="w-10 input outline-secondary-500 outline-2"
+					disabled={!percent}
+					bind:value={weight}
+				/>
 			{/if}
 		{:else if type == 'Duration'}
 			<input
@@ -56,15 +60,25 @@
 				bind:value={duration}
 			/>
 			{#if extra}
-			<label class="text-sm" for="extra">{extra_options[type]}</label>
-			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
-			<input
-				type="number"
-				inputmode="numeric"
-				class="w-10 input outline-secondary-500 outline-2"
-				disabled={!percent}
-				bind:value={duration}
-			/>
+				<label class="text-sm" for="extra">{extra_options[type]}</label>
+				<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
+				<input
+					type="number"
+					inputmode="numeric"
+					class="w-10 input outline-secondary-500 outline-2"
+					disabled={!percent}
+					bind:value={duration}
+				/>
+			{/if}
+			{#if cardio}
+				<label class="text-sm" for="extra">Pace</label>
+				<input
+					type="number"
+					inputmode="numeric"
+					class="w-10 input outline-secondary-500 outline-2"
+					disabled={!percent}
+					bind:value={pace}
+				/>
 			{/if}
 		{:else if type == 'Distance'}
 			<input
@@ -76,15 +90,25 @@
 				bind:value={distance}
 			/>
 			{#if extra}
-			<label class="text-sm" for="extra">{extra_options[type]}</label>
-			<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
-			<input
-				type="number"
-				inputmode="numeric"
-				class="w-10 input outline-secondary-500 outline-2"
-				disabled={!percent}
-				bind:value={duration}
-			/>
+				<label class="text-sm" for="extra">{extra_options[type]}</label>
+				<input type="checkbox" name="extra" class="checkbox" bind:checked={percent} />
+				<input
+					type="number"
+					inputmode="numeric"
+					class="w-10 input outline-secondary-500 outline-2"
+					disabled={!percent}
+					bind:value={duration}
+				/>
+			{/if}
+			{#if cardio}
+				<label class="text-sm" for="extra">Pace</label>
+				<input
+					type="number"
+					inputmode="numeric"
+					class="w-10 input outline-secondary-500 outline-2"
+					disabled={!percent}
+					bind:value={pace}
+				/>
 			{/if}
 		{/if}
 	</div>

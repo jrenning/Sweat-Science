@@ -14,7 +14,7 @@
 		let options = exercises.exercises.map((exercise) => {
 		const option: AutocompleteOption = {
 			label: exercise.name ? exercise.name : "Null",
-			value: exercise.id
+			value: exercise
 		};
         return option
 	})
@@ -24,14 +24,14 @@
 
 
     export let current_exercise: string = ""
-    export let callback: (selected_id: number) => void = () => {}
+    export let callback: (exercise: Exercise) => void = () => {}
 
 
     let inputValue = ""
 
     function onExerciseSelection(event: CustomEvent<AutocompleteOption>) {
         inputValue = event.detail.label
-        callback(event.detail.value as number)
+        callback(event.detail.value as Exercise)
         current_exercise = inputValue
     }
 </script>

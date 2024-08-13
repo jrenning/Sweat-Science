@@ -49,9 +49,9 @@
 	let sets_same = false;
 	$form.sets = actual_sets;
 
-	//@ts-ignore
-	function updateExerciseId(value) {
-		$form.exercise_id = value;
+
+	function updateExerciseId(exercise: Exercise) {
+		$form.exercise_id = exercise.id;
 	}
 
 	function updateSetsToSame() {
