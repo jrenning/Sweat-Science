@@ -102,36 +102,42 @@
 				</div>
 			{/if}
 			<div class="flex justify-center mt-10">
-				<FormButton text="To Exercises" disabled={!($form.created_at && $form.name)} action={() => (page = 2)} />
+				<FormButton
+					text="To Exercises"
+					disabled={!($form.created_at && $form.name)}
+					action={() => (page = 2)}
+				/>
 			</div>
 		{:else if page === 2}
 			{#if existing_workout}
 				{#each $form.exercises as exercise, i}
 					<div class="my-6">
-						<div class="my-6 font-semibold text-lg flex justify-center items-center">{exercise.exercise.name}</div>
+						<div class="my-6 font-semibold text-lg flex justify-center items-center">
+							{exercise.exercise.name}
+						</div>
 						<div class="grid grid-cols-2 gap-x-2 gap-y-16 row mx-8">
-						{#each { length: exercise.sets } as set, j}
-							{#if exercise.type == 'Weight'}
-								<SetInput
-									type="Weight"
-									extra={false}
-									bind:weight={$form.exercises[i].weight[j]}
-									bind:reps={$form.exercises[i].reps[j]}
-								/>
-							{:else if exercise.type == 'Distance'}
-								<SetInput
-									type="Distance"
-									extra={false}
-									bind:distance={$form.exercises[i].distance[j]}
-								/>
-							{:else if exercise.type == 'Duration'}
-								<SetInput
-									type="Duration"
-									extra={false}
-									bind:duration={$form.exercises[i].duration[i]}
-								/>
-							{/if}
-						{/each}
+							{#each { length: exercise.sets } as set, j}
+								{#if exercise.type == 'Weight'}
+									<SetInput
+										type="Weight"
+										extra={false}
+										bind:weight={$form.exercises[i].weight[j]}
+										bind:reps={$form.exercises[i].reps[j]}
+									/>
+								{:else if exercise.type == 'Distance'}
+									<SetInput
+										type="Distance"
+										extra={false}
+										bind:distance={$form.exercises[i].distance[j]}
+									/>
+								{:else if exercise.type == 'Duration'}
+									<SetInput
+										type="Duration"
+										extra={false}
+										bind:duration={$form.exercises[i].duration[i]}
+									/>
+								{/if}
+							{/each}
 						</div>
 					</div>
 				{/each}
@@ -234,7 +240,19 @@
 				<div class="flex justify-center items-center">
 					<FormButton text="Back" action={() => (page = 1)} />
 				</div>
-				<FormButton text="Log Workout" disabled={$form.exercises.length < 1} type="submit" />
+				<FormButton text="Finish" disabled={$form.exercises.length < 1} action={() => (page = 3)} />
+			</div>
+		{:else if page == 3}
+			<div class="mx-4 my-6">
+				<label class="font-semibold mb-2" for="notes">Notes</label>
+				<textarea class="textarea" bind:value={$form.notes} />
+			</div>
+
+			<div class="flex justify-center items-center space-x-8">
+				<div class="flex justify-center items-center">
+					<FormButton text="Back" action={() => (page = 2)} />
+				</div>
+				<FormButton text="Log Workout" type="submit" />
 			</div>
 		{/if}
 	</form>
