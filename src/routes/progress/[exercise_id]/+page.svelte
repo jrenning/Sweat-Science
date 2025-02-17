@@ -11,6 +11,7 @@
 	import ExerciseLogs from '../../../components/Progress/Log/ExerciseLogs.svelte';
 	import RepMaxPlot from '../../../components/Progress/Charts/RepMaxPlot.svelte';
 	import MaxAveragePlot from '../../../components/Progress/Charts/MaxAveragePlot.svelte';
+	import PercentChangeInfo from '../../../components/Progress/PercentChangeInfo.svelte';
 	export let data: PageData;
 	let tabSet: number = 0;
 
@@ -48,6 +49,7 @@
 				{#if tabSet === 0}
 					<InfoSection exercise={data.exercise} rep_max={data.rep_max} current_max={data.current_max} times_performed={data.log.length}/>
 				{:else if tabSet === 1}
+				<PercentChangeInfo exercise_data={data.log}/>
 				<RepMaxPlot exercise_data={data.log}/>
 				{:else if tabSet === 2}
 					<div class="table-container">

@@ -17,6 +17,7 @@
 	import ExerciseSelector from '../../components/UI/ExerciseSelector.svelte';
 	import AddExerciseCard from '../../components/AddWorkout/AddExerciseCard.svelte';
 	import SetInput from '../../components/Exercises/SetInput.svelte';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
 	export let data: PageData;
 	let selected_workout: WorkoutRoutineWithExercises | undefined;

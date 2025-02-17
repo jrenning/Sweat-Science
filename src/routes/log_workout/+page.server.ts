@@ -1,5 +1,5 @@
 import { getPossibleExercises } from '$lib/db/queries/exercise.js';
-import { getAllUserWorkouts } from '$lib/db/queries/workout_routine.js';
+import { convertWorkoutFromPercent, getAllUserWorkouts } from '$lib/db/queries/workout_routine.js';
 import { insertWorkoutLogSchema } from '$lib/db/schema';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
@@ -18,11 +18,20 @@ export async function load(event) {
 	const workoutLogForm = await superValidate(addWorkoutLogSchema);
 
 	// get possible workouts to copy
-	const workouts = await getAllUserWorkouts(user_id);
+	let workouts = await getAllUserWorkouts(user_id);
+	let updated_workouts
+	if (workouts) {
+		// convert percentage to actual
+		updated_workouts = workouts.map(async (workout) => {
+			workout = await convertWorkoutFromPercent(workout, user_id);
+			console.log(workout.exercises[0].weight)
+			return workout
+		});
+	}
 
 	const exercise_choices = await getPossibleExercises(user_id, '');
 
-	return { workoutLogForm, exercise_choices, workouts };
+	return { workoutLogForm, exercise_choices, updated_workouts };
 }
 
 /** @type {import('./$types').Actions} */
@@ -35,8 +44,7 @@ export const actions = {
 
 		if (!logForm.valid) return fail(400, { logForm });
 
-		logForm.data.user_id = user_id
-
+		logForm.data.user_id = user_id;
 
 		await createLogFromWorkout(logForm.data);
 		throw redirect(303, '/progress');

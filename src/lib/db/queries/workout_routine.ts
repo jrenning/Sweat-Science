@@ -1,8 +1,9 @@
-import { and, asc, desc, eq, isNull, ne } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, isNull, ne } from 'drizzle-orm';
 import { db } from '../db';
 import {
 	exercise_routine,
 	workout_routine,
+	workoutLog,
 	workoutToExerciseRoutines,
 	type WorkoutRoutineWithExercises
 } from '../schema';
@@ -35,7 +36,7 @@ export async function getAllUserWorkouts(user_id: string) {
 	});
 
 	if (data) {
-		let new_data = [];
+		let new_data: WorkoutRoutineWithExercises[] = [];
 		for (let i = 0; i < data.length; i++) {
 			let exercises = data[i].exercises.map((exercise) => exercise.exercise_routine);
 			new_data.push({ ...data[i], exercises: exercises });
@@ -88,10 +89,25 @@ export async function getPendingWorkouts(user_id: string) {
 }
 
 export async function getRecentWorkouts(user_id: string) {
-	let data = await db.query.workout_routine.findMany({
-		where: eq(workout_routine.user_id, user_id),
+	let initial_data = await db.query.workoutLog.findMany({
+		where: eq(workoutLog.user_id, user_id),
 		limit: 10,
 		orderBy: desc(workout_routine.created_at),
+	});
+	let names = initial_data.map((i) => {
+		if (i.name) {
+			return i.name;
+		}
+		else {
+			return ""
+		}
+	});
+
+	// get the rest of the data (have to use name as the workout log doesn't store the workout id and I don't want to change it now)
+	let data = await db.query.workout_routine.findMany({
+		where: and(eq(workout_routine.user_id, user_id), inArray(workout_routine.name, names)),
+		limit: 10,
+		orderBy: asc(workout_routine.created_at),
 		with: {
 			exercises: {
 				columns: {
@@ -108,6 +124,8 @@ export async function getRecentWorkouts(user_id: string) {
 			}
 		}
 	});
+
+	console.log(data);
 
 	// filter out duplicate names (not in sql because it cause issues/complex queries)
 	// found: https://stackoverflow.com/questions/32634736/javascript-object-array-removing-objects-with-duplicate-properties
@@ -165,7 +183,6 @@ export async function getFavoriteWorkouts(user_id: string) {
 		}
 		return new_data;
 	}
-
 }
 
 export async function convertWorkoutFromPercent(

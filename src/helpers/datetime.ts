@@ -1,5 +1,34 @@
+type Scale = 'Year' | 'Quarter' | 'Month';
+export function getPercentChangeOverTime(data: number[], dates: Date[], time: Scale) {
+	let target = new Date();
 
+	if (time == 'Year') {
+		target.setFullYear(target.getFullYear() - 1);
+	}
+	if (time == 'Quarter') {
+		target.setMonth(target.getMonth() - 3);
+	}
+	if (time == 'Month') {
+		target.setMonth(target.getMonth() - 1);
+	}
 
+	// get date the closest to a year ago without going over
+	let distances = dates.map((date) => {
+		//@ts-ignore
+		return target - date;
+	});
+	// remove dates that are too old
+	let filtered_distances = distances.filter((d) => d < 0);
+	// find closest
+	let idx = distances.indexOf(Math.max(...filtered_distances));
+	let current = data.at(data.length - 1);
+	let old = data.at(idx);
+	if (current && old) {
+		return Math.round(((current - old) / old) * 10000) / 100;
+	} else {
+		return 0;
+	}
+}
 
 export function getLeadingZeroFormat(month_or_day: number) {
 	if (month_or_day < 10) {

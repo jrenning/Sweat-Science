@@ -41,3 +41,4 @@ export function calcAverageMax(weight: number[], reps: number[]) {
 
 	return maxes / length;
 }
+
