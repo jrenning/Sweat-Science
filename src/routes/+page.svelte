@@ -16,7 +16,7 @@
 		<div class="flex flex-col justify-center items-center">
 			<div class="w-[80%]">
 				<LastWorkout last_workout={data.data.last_workout && data.data.last_workout} />
-				<CurrentGoals />
+				<CurrentGoals goal_data={data.data.goal_data && data.data.goal_data}/>
 				<SectionHeader name="Start Workout" />
 				<a href="/workout_folder"><button class="font-semibold text-gray-400">My Folders</button></a
 				>

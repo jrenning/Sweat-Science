@@ -47,6 +47,13 @@ export type WorkoutLogWithExercises = InferSelectModel<typeof workoutLog> & {
 
 export type WorkoutFolder = InferSelectModel<typeof workout_folders>;
 
+export type Goal = InferSelectModel<typeof goals> & {
+	exercise: Exercise
+}
+export type GoalData = Goal & {
+	current_val: number | null
+}
+
 /* INSERT TYPES */
 
 export type InsertEquipment = InferInsertModel<typeof equipment>;
@@ -93,6 +100,9 @@ export const DistanceUnits = pgEnum('distance_units', [
 ]);
 export const DurationUnits = pgEnum('duration units', ['second', 'minute', 'hour', 'day']);
 
+
+
+
 /* USER */
 
 export const users = pgTable('user', {
@@ -137,6 +147,36 @@ export const searchRelations = relations(searches, ({ one }) => ({
 	}),
 	user_id: one(users, {
 		fields: [searches.user_id],
+		references: [users.id]
+	})
+}));
+
+export const GoalTypes = pgEnum("goal_types", ["1RM", "average_weight", "weekly_workout", "weekly_exercise"])
+
+export const goals = pgTable("goals", {
+	id: text('id').notNull().primaryKey(),
+	user_id: text('user_id').references(() => users.id),
+	created_at: timestamp('created_at').defaultNow(),
+	deadline: timestamp("deadline"),
+	goal_type: GoalTypes("goal_type").notNull(),
+	one_rep_max: integer("one_rep_max"),
+	average_weight: integer("average_weight"),
+	exercise_id: integer('exercise_id')
+	.references(() => exercises.id, { onDelete: 'cascade' }),
+	workouts_in_week: integer("workouts_in_week"),
+	exercises_in_week: integer("exercises_in_week")
+
+
+})
+
+
+export const goalRelations = relations(goals, ({ one }) => ({
+	exercise: one(exercises, {
+		fields: [goals.exercise_id],
+		references: [exercises.id]
+	}),
+	user_id: one(users, {
+		fields: [goals.user_id],
 		references: [users.id]
 	})
 }));
@@ -413,6 +453,9 @@ export const workoutLogRelations = relations(workoutLog, ({ one, many }) => ({
 		references: [users.id]
 	})
 }));
+
+
+
 
 
 

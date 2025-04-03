@@ -18,5 +18,5 @@ const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
 	connectionString: DATABASE_URL_BACKUP
 });
-export const db = drizzle(pool, {schema, logger: true});
+export const db = drizzle(pool, {schema, logger: false});
 

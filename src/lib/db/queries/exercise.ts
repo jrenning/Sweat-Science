@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gt, isNull, or } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, isNull, or, sql } from 'drizzle-orm';
 import { db } from '../db';
 import {
 	exercise_info,
@@ -9,6 +9,7 @@ import {
 } from '../schema';
 import { getEquipmentById } from './equipment';
 import { calcOneRepMax } from '../../../helpers/rep_max';
+import { avg } from '../../../helpers/weight';
 
 export async function getPossibleExercises(user_id: string, search_term: string) {
 	const data = await db
@@ -81,7 +82,6 @@ export async function getCurrentOneRepMax(user_id: string, exercise_id: number) 
 		.limit(3)
 		.catch((err) => console.log(err));
 
-	console.log(data)
 
 	if (data) {
 		const maxes = data.map((max) => max.estimated_max);
@@ -90,4 +90,20 @@ export async function getCurrentOneRepMax(user_id: string, exercise_id: number) 
 	} else {
 		return undefined;
 	}
+}
+
+export async function getCurrentAverageWeight(user_id: string, exercise_id: number) {
+	const data = await db
+	.select({
+		weight: exerciseLog.weight
+	})
+	.from(exerciseLog)
+	.where(and(eq(exerciseLog.exercise_id, exercise_id), eq(exerciseLog.user_id, user_id)))
+	.orderBy(desc(exerciseLog.created_at))
+	.limit(1)
+	if (data) {
+		console.log(data)
+		return avg(data[0].weight)
+	}
+	
 }
