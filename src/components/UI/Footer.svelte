@@ -22,6 +22,7 @@
 	>
 		<a href="/add_workout_plan"><div class="mb-4 flex justify-center">New Workout Plan</div></a>
 		<a href="/add_workout"><div class="mb-4 flex justify-center">New Workout</div></a>
+		<a href="/add_goal"><div class="mb-4 flex justify-center">New Goal</div></a>
 	</div>
 	<div class="flex justify-center items-center space-x-10 mb-6">
 		<div>

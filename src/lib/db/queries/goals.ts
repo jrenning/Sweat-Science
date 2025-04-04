@@ -14,7 +14,7 @@ export async function getUserGoals(user_id: string) {
 	});
 }
 
-export async function getCurrentGoalData(goal: Goal) {
+export async function getCurrentGoalData(goal: Goal) {        
 	if (goal.user_id && goal.exercise_id) {
 		if (goal.goal_type == '1RM') {
 			return await getCurrentOneRepMax(goal.user_id, goal.exercise_id);

@@ -1,38 +1,67 @@
 <script lang="ts">
-	import { prettifyDate } from "../../helpers/datetime";
+	import type { Goal } from '$lib/db/schema';
+	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { prettifyDate } from '../../helpers/datetime';
+	import DeleteIcon from '../Icons/DeleteIcon.svelte';
+	import { invalidateAll } from '$app/navigation';
 
-	export let goal: any;
+	export let goal: Goal & {
+		current_val: number;
+	};
 
-	let goal_val: number | null;
 	let goal_string: string;
 
 	if (goal.goal_type == '1RM') {
-		goal_val = goal.one_rep_max;
 		goal_string = '1RM';
 	} else if (goal.goal_type == 'average_weight') {
-		goal_val = goal.average_weight;
 		goal_string = 'Average Weight';
 	} else if (goal.goal_type == 'weekly_exercise') {
-		goal_val = goal.exercises_in_week;
 		goal_string = 'Weekly Exercises';
 	} else if (goal.goal_type == 'weekly_workout') {
-		goal_val = goal.workouts_in_week;
 		goal_string = 'Weekly Workouts';
+	}
+
+
+	async function handleDelete() {
+		if (confirm("Are you sure you want to delete this goal?")) {
+		const data = {
+			goal_id: goal.id
+		}
+		const response = await fetch("/api/goals", {
+			method: "DELETE",
+			body: JSON.stringify(data),
+			headers: {
+				'content-type': 'application/json'
+			}
+		})
+		// invalidate not working
+		location.reload()
+	}
 	}
 </script>
 
-<div class=" rounded-md p-2 flex items-center space-x-8">
-	<div>Get a {goal_val} {goal_string} in {goal.exercise.name}</div>
-	<div class="flex space-x-2 items-center">
-		<div class=" flex h-2 w-[100px] items-center rounded-md bg-gray-300 text-[0.7rem] md:text-lg">
-			<div
-				class="h-2 rounded-md bg-blue-300 w"
-				style={`width: calc(100%*${goal.current_val / goal_val}`}
-			/>
+<div class="flex items-center space-x-4">
+	<div class="flex flex-col">
+		<div class="md:text-lg text-sm">
+			Get a {goal.goal_value}
+			{goal_string} in {goal.exercise.name}
 		</div>
-		<div>{goal.current_val} / {goal_val}</div>
+		<div class="flex items-center space-x-4">
+			<div class=" flex h-2 w-[100px] items-center rounded-md bg-gray-300 text-[0.7rem] md:text-lg">
+				<div
+					class="h-2 rounded-md bg-blue-300 w"
+					style={`width: calc(100%*${goal.current_val / goal.goal_value}`}
+				/>
+			</div>
+			<div class="text-sm">{goal.current_val}/{goal.goal_value}</div>
+		</div>
 	</div>
-    <div class="italic text-sm">
-        {prettifyDate(goal.deadline)}
-    </div>
+	{#if goal.deadline}
+		<div class="italic text-sm">
+			{prettifyDate(goal.deadline)}
+		</div>
+	{/if}
+	<button class="h-4 w-4" on:click={handleDelete}>
+		<DeleteIcon />
+	</button>
 </div>

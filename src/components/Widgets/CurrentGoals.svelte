@@ -10,7 +10,7 @@
 
 <div>
 <SectionHeader name="Goals"/>
-<div class="flex flex-col justify-center">
+<div class="grid md:grid-cols-2 justify-center items-center">
 {#each goal_data as goal}
     <Goal goal={goal}/>
 

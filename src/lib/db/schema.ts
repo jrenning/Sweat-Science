@@ -82,6 +82,8 @@ export type InsertWorkoutFolder = InferInsertModel<typeof workout_folders>;
 
 export type InsertSearch = InferInsertModel<typeof searches>;
 
+export type InsertGoal = InferInsertModel<typeof goals>;
+
 /* UNITS */
 
 // DEFAULT UNITS - ie ones that are stored in database
@@ -154,19 +156,14 @@ export const searchRelations = relations(searches, ({ one }) => ({
 export const GoalTypes = pgEnum("goal_types", ["1RM", "average_weight", "weekly_workout", "weekly_exercise"])
 
 export const goals = pgTable("goals", {
-	id: text('id').notNull().primaryKey(),
+	id: serial("id").primaryKey(),
 	user_id: text('user_id').references(() => users.id),
 	created_at: timestamp('created_at').defaultNow(),
 	deadline: timestamp("deadline"),
 	goal_type: GoalTypes("goal_type").notNull(),
-	one_rep_max: integer("one_rep_max"),
-	average_weight: integer("average_weight"),
+	goal_value: integer("goal_value").notNull(),
 	exercise_id: integer('exercise_id')
 	.references(() => exercises.id, { onDelete: 'cascade' }),
-	workouts_in_week: integer("workouts_in_week"),
-	exercises_in_week: integer("exercises_in_week")
-
-
 })
 
 
@@ -512,3 +509,4 @@ export const insertWorkoutPlanSchema = createInsertSchema(workout_plans);
 export const insertWorkoutLogSchema = createInsertSchema(workoutLog);
 export const insertExerciseLogSchema = createInsertSchema(exerciseLog);
 export const insertWorkoutFolderSchema = createInsertSchema(workout_folders);
+export const insertGoalSchema = createInsertSchema(goals)
