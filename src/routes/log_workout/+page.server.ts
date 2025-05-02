@@ -24,7 +24,6 @@ export async function load(event) {
 		// convert percentage to actual
 		updated_workouts = workouts.map(async (workout) => {
 			workout = await convertWorkoutFromPercent(workout, user_id);
-			console.log(workout.exercises[0].weight)
 			return workout
 		});
 	}

@@ -27,7 +27,6 @@ export const GET: RequestHandler = async ({ request, locals }) => {
 		data = await Promise.all(
 			data.map(async (d) => {
 				let workout = await convertWorkoutFromPercent(d, user_id);
-				console.log(workout);
 				return workout;
 			})
 		);

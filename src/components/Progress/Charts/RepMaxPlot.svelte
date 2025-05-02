@@ -13,8 +13,6 @@
 	let ctx;
 	let canvas: HTMLCanvasElement;
 
-	console.log(data)
-	console.log(average_data)
 	onMount(() => {
 		ctx = canvas.getContext('2d');
 		if (ctx) {

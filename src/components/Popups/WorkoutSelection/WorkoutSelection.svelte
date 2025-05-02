@@ -31,7 +31,6 @@
 		});
 
 		const workouts = await recent_workout_data.json();
-		console.log(workouts)
 		return workouts;
 	}
 

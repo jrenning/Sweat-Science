@@ -102,7 +102,6 @@ export async function getCurrentAverageWeight(user_id: string, exercise_id: numb
 	.orderBy(desc(exerciseLog.created_at))
 	.limit(1)
 	if (data) {
-		console.log(data)
 		return avg(data[0].weight)
 	}
 	

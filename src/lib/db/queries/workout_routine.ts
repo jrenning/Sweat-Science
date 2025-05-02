@@ -125,7 +125,6 @@ export async function getRecentWorkouts(user_id: string) {
 		}
 	});
 
-	console.log(data);
 
 	// filter out duplicate names (not in sql because it cause issues/complex queries)
 	// found: https://stackoverflow.com/questions/32634736/javascript-object-array-removing-objects-with-duplicate-properties
@@ -224,3 +223,4 @@ export async function convertWorkoutFromPercent(
 	}
 	return workout;
 }
+

@@ -7,6 +7,8 @@
 	export let logs: ExerciseLogWithExercises[];
 
 	export let type: 'Date' | 'Exercise';
+
+	export let chart = true
 </script>
 
 <div class="flex flex-col space-y-6">
@@ -17,7 +19,7 @@
 			<div class=" mx-2 text-xl font-bold">{log.exercise.name}</div>
 		{/if}
 		<ExerciseLogEntry log_entry={log} />
-		{#if log.exercise.category === "Strength"}
+		{#if log.exercise.category === "Strength" && chart}
 		<ExerciseLogEntryChart log_data={log} />
 		{/if}
 	{/each}

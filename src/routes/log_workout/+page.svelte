@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
+	import type { WorkoutLogWithExercises, WorkoutRoutineWithExercises } from '$lib/db/schema';
 	import {
 		Accordion,
 		AccordionItem,
@@ -18,13 +18,14 @@
 	import AddExerciseCard from '../../components/AddWorkout/AddExerciseCard.svelte';
 	import SetInput from '../../components/Exercises/SetInput.svelte';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	import ExerciseLogs from '../../components/Progress/Log/ExerciseLogs.svelte';
 
 	export let data: PageData;
 	let selected_workout: WorkoutRoutineWithExercises | undefined;
 	let existing_workout: boolean = false;
 	let page: number = 1;
 	let new_exercises = 0;
-
+	let last_performed: WorkoutLogWithExercises
 	function handleWorkoutTypeChange() {
 		if (!existing_workout) {
 			selected_workout = undefined;
@@ -33,10 +34,11 @@
 		}
 	}
 
+
 	/* MODAL */
 	const modalStore = getModalStore();
 
-	function setSelectedWorkout(workout: WorkoutRoutineWithExercises) {
+	async function setSelectedWorkout(workout: WorkoutRoutineWithExercises) {
 		selected_workout = workout;
 		selected_workout.exercises.map((e) => (e.created_at = new Date(e.created_at)));
 		selected_workout.exercises.map(
@@ -44,7 +46,30 @@
 		);
 		$form.exercises = selected_workout.exercises;
 		$form.name = selected_workout.name;
+
+
+		// fetch the last performed data
+		const data = {
+			workout_name: workout.name
+		};
+
+		let res = await fetch('/api/workout_routine/last_performed', {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		console.log(res)
+
+		last_performed = await res.json();
+
+		console.log(last_performed)
+
+
 	}
+
 
 	const modalComponentWorkout: ModalComponent = {
 		ref: WorkoutSelection,
@@ -111,6 +136,7 @@
 			</div>
 		{:else if page === 2}
 			{#if existing_workout}
+			<ExerciseLogs logs={last_performed.exercise_routines} type="Exercise" chart={false} />
 				{#each $form.exercises as exercise, i}
 					<div class="my-6">
 						<div class="my-6 font-semibold text-lg flex justify-center items-center">
