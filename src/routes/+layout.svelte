@@ -2,12 +2,12 @@
 	import { run } from 'svelte/legacy';
 
 	import '../app.css';
-	import { SignIn, SignOut } from '@auth/sveltekit/components';
 	import { page } from '$app/stores';
 	import Footer from '../components/UI/Footer.svelte';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 	import { currentTheme } from '../stores/theme';
 	import { browser } from '$app/environment';
+	  import { signIn } from "@auth/sveltekit/client"
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -49,11 +49,9 @@
 		> -->
 		<div></div>
 	{:else}
-		<SignIn signInPage="/auth/signin">
-			<button slot="submitButton" class="rounded-md bg-primary-500 shadow-md px-2 py-1"
+			<button onclick={()=> signIn()} class="rounded-md bg-primary-500 shadow-md px-2 py-1"
 				>Sign In with Google</button
 			>
-		</SignIn>
 	{/if}
 
 	<div class="flex flex-col">
