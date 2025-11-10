@@ -49,7 +49,7 @@
 		> -->
 		<div></div>
 	{:else}
-		<SignIn signInPage="/auth/signin">
+		<SignIn>
 			<button slot="submitButton" class="rounded-md bg-primary-500 shadow-md px-2 py-1"
 				>Sign In with Google</button
 			>
