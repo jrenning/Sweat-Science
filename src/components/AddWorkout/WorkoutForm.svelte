@@ -1,24 +1,25 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
-	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import ExerciseSelectionForm from '../Exercises/ExerciseSelectionForm.svelte';
 	import type {
 		Equipment,
 		Exercise,
+		InsertExerciseRoutine,
 		insertExerciseRoutineSchema,
 		WorkoutRoutineWithExercises
 	} from '$lib/db/schema';
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import type { newWorkoutRoutineSchema } from '../../routes/add_workout/schemas';
+	import type { newWorkoutRoutine, newWorkoutRoutineSchema } from '../../routes/add_workout/schemas';
 	import AddExerciseCard from './AddExerciseCard.svelte';
 	import BackButton from '../UI/Buttons/BackButton.svelte';
 	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
+	import type { zod4 } from 'sveltekit-superforms/adapters';
 
 	
 	interface Props {
 		/* EXPORTS */
-		exerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
-		editExerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
+		exerciseForm: SuperValidated<InsertExerciseRoutine>;
+		editExerciseForm: SuperValidated<InsertExerciseRoutine>;
 		workoutForm: SuperValidated<typeof newWorkoutRoutineSchema>;
 		workout_routine: WorkoutRoutineWithExercises;
 		type: 'Update' | 'Add';
@@ -40,7 +41,6 @@
 
 	const post_link = type == 'Add' ? '?/add_workout' : '?/edit_workout';
 
-	const modalStore = getModalStore();
 
 	const _form = superForm(workoutForm, {
 		id: "add",
@@ -49,15 +49,6 @@
 
 	const { form, enhance, errors } = _form;
 
-	const modalComponentExercise: ModalComponent = {
-		ref: ExerciseSelectionForm,
-		props: { data: exerciseForm, post_link: exercise_post_link }
-	};
-	const addExerciseModal: ModalSettings = {
-		type: 'component',
-		title: `${type} Exercise`,
-		component: modalComponentExercise
-	};
 </script>
 
 <div class="flex flex-col justify-center items-center">
@@ -81,7 +72,6 @@
 			type="button"
 			class="btn-sm rounded-md variant-outline-surface text-md"
 			onclick={() => {
-				modalStore.trigger(addExerciseModal);
 			}}>Add Exercise</button
 		>
 		{#if workout_routine}

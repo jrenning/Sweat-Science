@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
-	import { popup } from '@skeletonlabs/skeleton';
 	import AddWorkoutCard from '../../../components/AddWorkoutPlan/AddWorkoutCard.svelte';
 	import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
 	import FormButton from '../../../components/UI/Buttons/FormButton.svelte';

@@ -5,9 +5,7 @@
 	import { signIn, signOut } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
 	import Footer from '../components/UI/Footer.svelte';
-	import { Modal, Toast, initializeStores } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
-	import { storePopup } from '@skeletonlabs/skeleton';
 	import { currentTheme } from '../stores/theme';
 	import { browser } from '$app/environment';
 	interface Props {
@@ -15,10 +13,6 @@
 	}
 
 	let { children }: Props = $props();
-	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
-
-	// init skeleton
-	initializeStores();
 
 	var today = new Date();
 	var dd = String(today.getDate()).padStart(2, '0');
@@ -36,8 +30,6 @@
 	}});
 </script>
 
-<Modal />
-<Toast />
 <header
 	class="flex flex-row items-center mt-6 justify-around mb-10 relative text-center w-full bg-surface-50 dark:bg-surface-900"
 >

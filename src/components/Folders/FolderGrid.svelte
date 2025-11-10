@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { WorkoutFolder, WorkoutRoutine } from '$lib/db/schema';
-	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import Folder from './Folder.svelte';
 	import AddFolderForm from './FolderForm.svelte';
 	import WorkoutInFolder from './WorkoutInFolder.svelte';
@@ -16,17 +15,6 @@
 
 	let { folders, workouts, folder_id }: Props = $props();
 
-	const modalStore = getModalStore();
-
-	const modalComponentFolder: ModalComponent = {
-		ref: AddFolderForm,
-		props: { parent_id: folder_id, type: 'add' }
-	};
-	const folderModal: ModalSettings = {
-		type: 'component',
-		title: 'Add Folder',
-		component: modalComponentFolder
-	};
 
 	let previousPage: string = $state('/');
 
@@ -39,8 +27,8 @@
 	<BackButton link={previousPage} />
 </div>
 <button
-	class="btn-md mx-4 w-20 hover:variant-filled-secondary variant-outline-secondary flex mt-6 justify-center items-center rounded-md shadow-md"
-	onclick={() => modalStore.trigger(folderModal)}>Add</button
+	class="btn-md mx-4 w-20 hover:preset-filled-secondary-500 variant-outline-secondary flex mt-6 justify-center items-center rounded-md shadow-md"
+	>Add</button
 >
 <div class="grid grid-cols-1 gap-4 mx-4 mt-4">
 	{#each folders as folder}

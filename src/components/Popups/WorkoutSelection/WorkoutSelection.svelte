@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { WorkoutRoutine, WorkoutRoutineWithExercises } from '$lib/db/schema';
-	import { Tab, TabGroup } from '@skeletonlabs/skeleton';
 	import WorkoutInFolder from '../../Folders/WorkoutInFolder.svelte';
 	import WorkoutSelect from './WorkoutSelect.svelte';
 	import SelectContainer from './SelectContainer.svelte';
@@ -48,47 +47,44 @@
 </script>
 
 <div class="card w-[80vw] h-[50vh] overflow-y-scroll">
-	<TabGroup>
-		<Tab bind:group={tabSet} name="tab1" value={0}>
-			<span>Recent</span>
-		</Tab>
-		<Tab bind:group={tabSet} name="tab2" value={1}>Favorites</Tab>
-		<Tab bind:group={tabSet} name="tab3" value={2}>List</Tab>
+	<div>
+		<div class="flex space-x-6 justify-center text-bold text-lg">
+			<button onclick={()=> tabSet=0}>Recent</button>
+			<button onclick={()=> tabSet=1}>Favorites</button>
+			<button onclick={()=> tabSet=2}>List</button>
+		</div>
 		<!-- Tab Panels --->
-		{#snippet panel()}
-			
-				{#if tabSet === 0}
-					{#await recent_workouts}
-						<div>Fetching workouts...</div>
-					{:then recent_workouts}
-						<SelectContainer>
-							{#each recent_workouts as workout}
-								<WorkoutSelect {workout} {onSelection} />
-							{/each}
-						</SelectContainer>
-					{/await}
-				{:else if tabSet === 1}
-					{#await favorite_workouts}
-						<div>Fetching workouts...</div>
-					{:then favorite_workouts}
-						<SelectContainer>
-							{#each favorite_workouts as workout}
-								<WorkoutSelect {workout} {onSelection}/>
-							{/each}
-						</SelectContainer>
-					{/await}
-				{:else if tabSet === 2}
-					{#await workout_options}
-						<div>Fetching workouts...</div>
-					{:then workout_options}
-						<SelectContainer>
-							{#each workout_options as workout}
-								<WorkoutSelect {workout} {onSelection}/>
-							{/each}
-						</SelectContainer>
-					{/await}
-				{/if}
-			
-			{/snippet}
-	</TabGroup>
+
+		{#if tabSet == 0}
+			{#await recent_workouts}
+				<div>Fetching workouts...</div>
+			{:then recent_workouts}
+				<SelectContainer>
+					{#each recent_workouts as workout}
+						<WorkoutSelect {workout} {onSelection} />
+					{/each}
+				</SelectContainer>
+			{/await}
+		{:else if tabSet == 1}
+			{#await favorite_workouts}
+				<div>Fetching workouts...</div>
+			{:then favorite_workouts}
+				<SelectContainer>
+					{#each favorite_workouts as workout}
+						<WorkoutSelect {workout} {onSelection} />
+					{/each}
+				</SelectContainer>
+			{/await}
+		{:else}
+			{#await workout_options}
+				<div>Fetching workouts...</div>
+			{:then workout_options}
+				<SelectContainer>
+					{#each workout_options as workout}
+						<WorkoutSelect {workout} {onSelection} />
+					{/each}
+				</SelectContainer>
+			{/await}
+		{/if}
+	</div>
 </div>

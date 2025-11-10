@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
-	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
 	import DeleteIcon from '../Icons/DeleteIcon.svelte';
 	import EditIcon from '../Icons/EditIcon.svelte';
 
@@ -11,7 +10,6 @@
 	}
 
 	let { workout, day }: Props = $props();
-    const modal = getModalStore()
 
 	async function deleteWorkout() {
 		const data = {
@@ -47,7 +45,7 @@
 		<div class="text-2xl font-semibold">{workout.name}</div>
 		<div class="flex flex-row space-x-6">
 			<a href={`/edit_workout/${workout.id}`} class="w-4 h-4"><EditIcon /></a>
-			<button type="button" class="w-4 h-4" onclick={() => modal.trigger(deleteModal)}><DeleteIcon /></button>
+			<button type="button" class="w-4 h-4"><DeleteIcon /></button>
 		</div>
 	</div>
 	<div>{workout.exercises.length} Exercises</div>

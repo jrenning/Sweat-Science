@@ -5,6 +5,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { superValidate } from 'sveltekit-superforms/client';
 import { insertWorkoutLogSchema } from '$lib/db/schema';
 import { addWorkoutLogSchema } from '../schemas';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async ({ locals, url, params }) => {
 	const session = await locals.getSession();
@@ -34,7 +35,7 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 
 		const workoutForm = await superValidate(
 			{ name: workout.name, exercises: logExercises, workout_time_seconds: 0},
-			addWorkoutLogSchema
+			zod4(addWorkoutLogSchema)
 		);
 
 		return {
@@ -47,7 +48,7 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 
 export const actions: Actions = {
 	default: async ({ request, locals, url, params }) => {
-		const workoutForm = await superValidate(request, addWorkoutLogSchema);
+		const workoutForm = await superValidate(request, zod4(addWorkoutLogSchema));
 		if (!workoutForm.valid) return fail(400, { workoutForm });
 
 		const session = await locals.getSession();

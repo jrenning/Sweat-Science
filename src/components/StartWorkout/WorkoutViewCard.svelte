@@ -2,18 +2,12 @@
 	import { goto, invalidateAll } from '$app/navigation';
 	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
 
-	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
 	import WorkoutOptions from '../Popups/WorkoutOptions.svelte';
 	interface Props {
 		workout: WorkoutRoutineWithExercises;
 	}
 
 	let { workout }: Props = $props();
-
-	const exercisePopup: PopupSettings = {
-		event: 'click',
-		target: `exercisePopup${workout.name}`
-	};
 </script>
 
 <div
@@ -22,11 +16,6 @@
 	<div class="flex justify-end items-center mr-2 mt-2 space-x-1">
 		<div
 			class="flex space-x-1"
-			use:popup={{
-				event: 'click',
-				target: `exerciseOptions${workout.name}`,
-				placement: 'bottom'
-			}}
 		>
 			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
 			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
@@ -42,13 +31,13 @@
 	<div class="flex mt-2 ml-4">
 		<div class="flex justify-between w-full">
 			<div class=" justify-start">
-				<button class="badge md:text-lg text-sm bg-surface-300" use:popup={exercisePopup}>
+				<button class="badge md:text-lg text-sm bg-surface-300">
 					{workout.exercises.length} Exercises
 				</button>
 			</div>
 			<div></div>
 			<a href={`/active_workout/${workout.id}`}
-				><button class="bg-secondary-500 px-4 mr-2 py-1 rounded-md shadow-md">&#x27A4;</button></a
+				><button class="bg-secondary-500 px-4 mr-2 py-1 rounded-md shadow-md">➤</button></a
 			>
 		</div>
 		{#if workout.exercises.length > 0}
@@ -56,7 +45,7 @@
 				<ol class="list mx-2 mt-2">
 					{#each workout.exercises as exercise, index}
 						<li>
-							<span class="rounded-full variant-filled-secondary px-2 py-1">{index + 1}.</span>
+							<span class="rounded-full preset-filled-secondary-500 px-2 py-1">{index + 1}.</span>
 							<span class="flex-auto text-md">{exercise.exercise.name}</span>
 						</li>
 					{/each}

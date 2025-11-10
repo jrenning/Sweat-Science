@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { invalidateAll } from "$app/navigation";
 	import type { WorkoutRoutineWithExercises } from "$lib/db/schema";
-	import { Autocomplete, getModalStore, type AutocompleteOption } from "@skeletonlabs/skeleton";
-	import type { AutocompleteEvents } from "@skeletonlabs/skeleton/dist/components/Autocomplete/Autocomplete.svelte";
 	import { onMount } from "svelte";
 	
 	interface Props {
@@ -12,9 +10,8 @@
 
 	let { plan_id, day }: Props = $props();
 
-const modal = getModalStore()
 
-let workoutOptions: AutocompleteOption[] = $state([])
+let workoutOptions = $state([])
 
 onMount(async ()=> {
 		const res = await fetch('/api/workout_routine');
@@ -31,7 +28,7 @@ onMount(async ()=> {
 
 let inputValue = $state("")
 
-	async function onWorkoutSelection(event: CustomEvent<AutocompleteOption>) {
+	async function onWorkoutSelection(event: CustomEvent) {
 		inputValue = event.detail.label;
         const data = {
             workout_id: event.detail.value,
@@ -48,9 +45,6 @@ let inputValue = $state("")
 
 		await invalidateAll()
 
-
-        // close the modal
-        modal.close()
         
 	}
 
@@ -61,11 +55,7 @@ let inputValue = $state("")
 
 	<form>
         <input class="input" type="search" name="demo" bind:value={inputValue} placeholder="Search..." />
-		<Autocomplete
-			bind:input={inputValue}
-			options={workoutOptions}
-			on:selection={onWorkoutSelection}
-		/>
+		
 	</form>
 
 

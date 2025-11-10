@@ -1,16 +1,13 @@
 <script lang="ts">
-	import { Tab, TabGroup } from "@skeletonlabs/skeleton";
-	import ClockIcon from "../../components/Icons/ClockIcon.svelte";
-	import ChartIcon from "../../components/Icons/ChartIcon.svelte";
-	import type { PageData } from "./$types";
-	import WorkoutLogs from "../../components/Progress/Log/WorkoutLogs.svelte";
-	import ExerciseSelector from "../../components/UI/ExerciseSelector.svelte";
-	import { goto } from "$app/navigation";
-	import RecentSearches from "../../components/Progress/RecentSearches.svelte";
-	import FormButton from "../../components/UI/Buttons/FormButton.svelte";
-	import type { Exercise } from "$lib/db/schema";
-
-    let tabSet: number = $state(0)
+	import ClockIcon from '../../components/Icons/ClockIcon.svelte';
+	import ChartIcon from '../../components/Icons/ChartIcon.svelte';
+	import type { PageData } from './$types';
+	import WorkoutLogs from '../../components/Progress/Log/WorkoutLogs.svelte';
+	import ExerciseSelector from '../../components/UI/ExerciseSelector.svelte';
+	import { goto } from '$app/navigation';
+	import RecentSearches from '../../components/Progress/RecentSearches.svelte';
+	import FormButton from '../../components/UI/Buttons/FormButton.svelte';
+	import type { Exercise } from '$lib/db/schema';
 
 	interface Props {
 		data: PageData;
@@ -18,38 +15,33 @@
 
 	let { data }: Props = $props();
 
-	function goToProgress(exercise: Exercise) {
-		goto(`/progress/${exercise.id}`)
-	}
+	let page = $state(1);
 
+	function goToProgress(exercise: Exercise) {
+		goto(`/progress/${exercise.id}`);
+	}
 </script>
 
-<TabGroup justify="justify-center">
-	<Tab bind:group={tabSet} name="tab1" value={0} class="flex justify-center items-center" >
-		{#snippet lead()}
-				<div class="w-5 h-5 justify-center flex items-center"><ClockIcon /></div>
-			{/snippet}
-		<span>Log</span>
-	</Tab>
-	<Tab bind:group={tabSet} name="tab2" value={1}>
-        {#snippet lead()}
-				<div class="w-5 h-5 justify-center flex items-center"><ChartIcon /></div>
-			{/snippet}
-        <span>Progress</span>
-    </Tab>
+<div class="justify-center">
+	<div class="flex space-x-20 justify-center mb-6">
+		<button class="flex flex-col justify-center items-center" onclick={()=> page =1}>
+			<div class="w-5 h-5 justify-center flex items-center"><ClockIcon /></div>
+			<span>Log</span>
+		</button>
+		<button onclick={() => page = 2}>
+			<div class="w-5 h-5 justify-center flex items-center"><ChartIcon /></div>
+			<span>Progress</span>
+		</button>
+	</div>
 	<!-- Tab Panels --->
-	{#snippet panel()}
-	
-			{#if tabSet === 0}
-			<div class="mx-4 mb-8">
-			<a href="/log_workout"><FormButton text="Log Workout"/></a>
-			</div>
-				<WorkoutLogs workouts={data.workouts}/>
-			{:else if tabSet === 1}
-				<ExerciseSelector callback={goToProgress}/>
+	{#if page == 1}
+		<div class="mx-4 mb-8">
+			<a href="/log_workout"><FormButton text="Log Workout" /></a>
+		</div>
+		<WorkoutLogs workouts={data.workouts} />
+	{:else}
+		<ExerciseSelector callback={goToProgress} />
 
-				<RecentSearches exercises={data.searches}/>
-	        {/if}
-		
-	{/snippet}
-</TabGroup>
+		<RecentSearches exercises={data.searches} />
+	{/if}
+</div>

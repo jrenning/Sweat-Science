@@ -14,6 +14,6 @@
 	}: Props = $props();
 </script>
 
-<button type={type} disabled={disabled} class="btn text-xl variant-filled-surface  shadow-md" onclick={() => action()}
+<button type={type} disabled={disabled} class="btn text-xl preset-filled-surface-500  shadow-md" onclick={() => action()}
 	>{text}</button
 >

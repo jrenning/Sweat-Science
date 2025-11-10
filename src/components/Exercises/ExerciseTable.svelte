@@ -17,7 +17,7 @@
 
 
 <div class="table-container">
-	<table class="table table-hover">
+	<table class="table ">
 		<thead>
 			<tr>
 				{#each categories as category}

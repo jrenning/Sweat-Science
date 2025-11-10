@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getModalStore, type ModalComponent, type ModalSettings } from "@skeletonlabs/skeleton";
+	import { type ModalComponent, type ModalSettings } from "@skeletonlabs/skeleton-svelte";
 	import ExerciseSelectionForm from "../../../components/Exercises/ExerciseSelectionForm.svelte";
 	import type { PageData } from "./$types";
 

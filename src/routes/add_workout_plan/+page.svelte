@@ -107,7 +107,7 @@
 		{#if $planFormErrors.start_date}<span>{$planFormErrors.start_date}</span>{/if}
 
 		<button
-			class="rounded-md shadow-md px-2 py-1 bg-surface-active-token"
+			class="rounded-md shadow-md px-2 py-1 preset-filled-surface-500"
 			type="button"
 			onclick={() => (pg += 1)}
 		>

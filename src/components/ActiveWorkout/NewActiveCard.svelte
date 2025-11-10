@@ -14,7 +14,7 @@
 
     	<div class="flex justify-center items-center mt-8">
 		<button
-			class="btn-md variant-filled-primary rounded-md shadow-md"
+			class="btn-md preset-filled-primary-500 rounded-md shadow-md"
 			onclick={() => goto(`/active_workout`)}>Start workout</button
 		>
 	</div>

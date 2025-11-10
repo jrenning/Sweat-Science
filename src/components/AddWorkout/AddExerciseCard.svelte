@@ -9,7 +9,6 @@
 
 	} from '$lib/db/schema';
 	import { invalidateAll } from '$app/navigation';
-	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton-svelte';
 	import ExerciseSelectionForm from '../Exercises/ExerciseSelectionForm.svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
@@ -40,29 +39,17 @@
 		await invalidateAll();
 	}
 
-	const modal = getModalStore();
-
 
     exerciseForm.data = exercise
 	let editExerciseForm = exerciseForm
 
-
-	const modalComponentEditExercise: ModalComponent = {
-		ref: ExerciseSelectionForm,
-		props: { data: editExerciseForm, exercise: exercise, post_link: `/edit_exercise_routine/${exercise.id}` }
-	};
-	const exerciseModal: ModalSettings = {
-		type: 'component',
-		title: 'Edit Exercise',
-		component: modalComponentEditExercise
-	};
 </script>
 
 <div class="rounded-md bg-surface-300 px-2 py-4 shadow-md border-surface-700 border">
 	<div class="flex justify-between items-center">
 		<div class="text-2xl font-semibold">{exercise.exercise.name}</div>
 		<div class="flex flex-row space-x-6">
-			<button onclick={() => modal.trigger(exerciseModal)} type="button" class="w-4 h-4"><EditIcon /></button>
+			<button type="button" class="w-4 h-4"><EditIcon /></button>
 			<button type="button" class="w-4 h-4" onclick={() => deleteExercise()}><DeleteIcon /></button
 			>
 		</div>

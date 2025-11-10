@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Tab, TabGroup, getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
+	import { Tab, type ModalComponent, type ModalSettings, Tabs } from '@skeletonlabs/skeleton-svelte';
 	import ClockIcon from '../../components/Icons/ClockIcon.svelte';
 	import ChartIcon from '../../components/Icons/ChartIcon.svelte';
 	import WeightIcon from '../../components/Icons/WeightIcon.svelte';
@@ -51,7 +51,7 @@
 
 </script>
 
-<TabGroup justify="justify-center">
+<Tabs justify="justify-center">
 	<Tab bind:group={tabSet} name="tab1" value={0} class="flex justify-center items-center">
 		{#snippet lead()}
 				<div class="w-5 h-5 justify-center flex items-center"><WeightIcon /></div>
@@ -74,14 +74,14 @@
 	{#snippet panel()}
 	
 			{#if tabSet === 0}
-				<button class="btn-md my-4 shadow-md rounded-md variant-filled-surface" onclick={()=> modalStore.trigger(exerciseModal)}>Add Exercise</button>
+				<button class="btn-md my-4 shadow-md rounded-md preset-filled-surface-500" onclick={()=> modalStore.trigger(exerciseModal)}>Add Exercise</button>
 				<ExerciseTable exercises={data.data.exercises} />
 			{:else if tabSet === 1}
-	        			<button class="btn-md my-4 shadow-md rounded-md variant-filled-surface" onclick={()=> modalStore.trigger(equipmentModal)}>Add Equipment</button>
+	        			<button class="btn-md my-4 shadow-md rounded-md preset-filled-surface-500" onclick={()=> modalStore.trigger(equipmentModal)}>Add Equipment</button>
 				<EquipmentTable equipment_list={data.data.equipment} />
 			{:else if tabSet == 2}
 				(tab 3)
 			{/if}
 		
 	{/snippet}
-</TabGroup>
+</Tabs>

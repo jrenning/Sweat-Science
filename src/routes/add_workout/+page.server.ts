@@ -12,6 +12,7 @@ import { getPendingWorkouts, getWorkoutById } from '$lib/db/queries/workout_rout
 import { insertExerciseRoutineSchema, insertWorkoutRoutine } from '$lib/db/schema';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async ({ url, locals }) => {
 	const session = await locals.getSession();
@@ -42,16 +43,16 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 		...workout_routine
 	};
 	// super forms
-	let workoutForm = await superValidate(formData, insertWorkoutRoutine);
+	let workoutForm = await superValidate(formData, zod4(insertWorkoutRoutine));
 
-	const exerciseForm = await superValidate(insertExerciseRoutineSchema);
-	const editExerciseForm = await superValidate(insertExerciseRoutineSchema);
+	const exerciseForm = await superValidate(zod4(insertExerciseRoutineSchema));
+	const editExerciseForm = await superValidate(zod4(insertExerciseRoutineSchema));
 	return { workoutForm, plan_id, day, workout_routine, exerciseForm, editExerciseForm };
 };
 
 export const actions: Actions = {
 	add_workout: async ({ request, locals, url }) => {
-		const workoutForm = await superValidate(request, insertWorkoutRoutine);
+		const workoutForm = await superValidate(request, zod4(insertWorkoutRoutine));
 		const session = await locals.getSession();
 		const user_id = session?.user.id ? session.user.id : '';
 		if (!workoutForm.valid) return fail(400, { workoutForm });
@@ -82,7 +83,7 @@ export const actions: Actions = {
 
 		const workout_id = pending_id[0].id;
 
-		const exerciseForm = await superValidate(request, insertExerciseRoutineSchema);
+		const exerciseForm = await superValidate(request, zod4(insertExerciseRoutineSchema));
 
 		if (!exerciseForm.valid) return fail(400, { exerciseForm });
 

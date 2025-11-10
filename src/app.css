@@ -1,8 +1,7 @@
 /* Write your global styles here, in PostCSS syntax */
 @import "tailwindcss";
-
 @import "@skeletonlabs/skeleton";
-@import "@skeletonlabs/skeleton-svelte";
+@import "@skeletonlabs/skeleton/themes/sahara";
 
 
 html {
@@ -21,7 +20,7 @@ body {
 }
 
 .input {
-    @apply text-center
+    text-align: center
 }
 
 .unset_input[type=text] {

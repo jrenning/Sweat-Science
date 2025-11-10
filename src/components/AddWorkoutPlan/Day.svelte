@@ -29,7 +29,7 @@
 	<div class="w-full h-[60px] border border-black rounded-md bg-surface-100 text-lg font-semibold">
 		<div class="mx-2 text-black">{number ? number : ''}</div>
 		{#if workout_number}<div
-				class="rounded-full text-xs mt-2 mx-1 flex justify-center items-center shadow-sm variant-filled-tertiary"
+				class="rounded-full text-xs mt-2 mx-1 flex justify-center items-center shadow-sm preset-filled-tertiary-500"
 			>
 				{workout_number}
 			</div>

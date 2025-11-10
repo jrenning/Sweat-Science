@@ -4,7 +4,7 @@
 </script>
 
 {#if link}
-<a href={link}><button class="text-2xl rotate-180">&#x279F;</button></a>
+<a href={link}><button class="text-2xl rotate-180">➟</button></a>
 {:else}
-<button on:click={()=> history.back()}><div class="text-2xl rotate-180">&#x279F;</div></button>
+<button on:click={()=> history.back()}><div class="text-2xl rotate-180">➟</div></button>
 {/if}

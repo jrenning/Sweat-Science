@@ -4,7 +4,7 @@ import type { LayoutServerLoad } from './$types';
 export const load: LayoutServerLoad = async (event) => {
 	// set user theme
 
-	const session = await event.locals.getSession();
+	const session = await event.locals.auth()
 	const user_id = session?.user.id ? session.user.id : '';
 
     const theme = await getUserTheme(user_id)
@@ -14,6 +14,6 @@ export const load: LayoutServerLoad = async (event) => {
 	}
 	return {
         theme: user_theme,
-		session: await event.locals.getSession()
+		session: await event.locals.auth()
 	};
 };

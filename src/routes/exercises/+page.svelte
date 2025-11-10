@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Tab, TabGroup } from '@skeletonlabs/skeleton';
+	import { Tab, Tabs } from '@skeletonlabs/skeleton-svelte';
 	import type { PageData } from './$types';
 	import { ExerciseCategories, exerciseLog } from '$lib/db/schema';
 	import EditIcon from '../../components/Icons/EditIcon.svelte';
@@ -32,7 +32,7 @@
 			</button>
 		</div>
 
-		<TabGroup>
+		<Tabs>
 			<Tab bind:group={tabSet} name="tab1" value={0}>
 				<span>About</span>
 			</Tab>
@@ -61,7 +61,7 @@
 							</select>
 							{#if editable}
 							<div class="flex justify-center items-center">
-							<button class="btn-md variant-filled-surface rounded-md shadow-md">
+							<button class="btn-md preset-filled-surface-500 rounded-md shadow-md">
 								Save
 							</button>
 							</div>
@@ -74,6 +74,6 @@
 					{/if}
 				
 					{/snippet}
-		</TabGroup>
+		</Tabs>
 	</div>
 {/if}

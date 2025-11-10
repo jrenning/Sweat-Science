@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { popup } from "@skeletonlabs/skeleton";
-
-
-    import FolderIcon from "../Icons/FolderIcon.svelte"
+	    import FolderIcon from "../Icons/FolderIcon.svelte"
 	import FolderOptions from "../Popups/FolderOptions.svelte";
 	interface Props {
 		name: string;
@@ -20,11 +17,6 @@
     <div class="flex items-center font-semibold text-xl">{name}</div>
     	<div
 		class="flex space-x-1"
-		use:popup={{
-			event: 'click',
-			target: `folderOptions${id}`,
-			placement: 'bottom'
-		}}
 	>
 		<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
 		<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>

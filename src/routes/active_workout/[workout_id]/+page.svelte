@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { ProgressBar } from '@skeletonlabs/skeleton';
+	import { Progress } from '@skeletonlabs/skeleton-svelte';
 	import { writable } from 'svelte/store';
 	import { superForm } from 'sveltekit-superforms/client';
-	import Timer from '../../../components/ActiveWorkout/Timer.svelte';
 	import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
 	import type { PageData } from './$types';
 	import SetInput from '../../../components/Exercises/SetInput.svelte';
@@ -96,7 +95,7 @@
 			</div>
 
 			<div class="w-[80%] flex flex-row justify-center items-center space-x-4">
-				<ProgressBar max={data.workout.exercises.length} value={progress} />
+				<Progress max={data.workout.exercises.length} value={progress} />
 				{#if exercise + 1 <= exercise_total}
 					<div>{exercise + 1}/{exercise_total}</div>
 				{:else}
@@ -121,7 +120,6 @@
 					<div>Set {set} / {current_exercise.sets}</div>
 				{/if}
 				{#if $rest}
-					<Timer duration={current_exercise.rest} finished={rest} />
 				{:else}
 					<div
 						class="rounded-md bg-surface-400 text-black shadow-md flex justify-evenly items-center w-[75%] h-[200px]"
@@ -198,7 +196,7 @@
 						onclick={() => handleBack()}
 					>
 						<div class="w-8 h-8 flex justify-center items-center rotate-180 text-4xl text-black">
-							&#x27A4;
+							➤
 						</div>
 					</button>
 					<button
@@ -206,7 +204,7 @@
 						class="rounded-md bg-surface-600 shadow-md p-6 flex justify-center items-center"
 						onclick={() => handleComplete()}
 					>
-						<div class="w-8 h-8 flex justify-center items-center text-black text-4xl">&#x2714;</div>
+						<div class="w-8 h-8 flex justify-center items-center text-black text-4xl">✔</div>
 					</button>
 					<button
 						type="button"
@@ -230,7 +228,7 @@
 				</div>
 				<button
 					type="submit"
-					class="btn-md rounded-md variant-filled-surface shadow-md"
+					class="btn-md rounded-md preset-filled-surface-500 shadow-md"
 					onclick={() => clearInterval(timer)}>Log Workout</button
 				>
 			{/if}

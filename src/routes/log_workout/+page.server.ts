@@ -2,7 +2,8 @@ import { getPossibleExercises } from '$lib/db/queries/exercise.js';
 import { convertWorkoutFromPercent, getAllUserWorkouts } from '$lib/db/queries/workout_routine.js';
 import { insertWorkoutLogSchema } from '$lib/db/schema';
 import { fail, redirect } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
+import { superValidate } from 'sveltekit-superforms';
+import { zod, zod4 } from 'sveltekit-superforms/adapters';
 import { addWorkoutLogSchema } from '../active_workout/schemas.js';
 import { createLogFromWorkout } from '$lib/db/mutations/logs.js';
 import { convertToUTC } from '../../helpers/datetime.js';
@@ -15,7 +16,7 @@ export async function load(event) {
 	const user_id = session?.user.id ? session.user.id : '';
 
 	// super forms
-	const workoutLogForm = await superValidate(addWorkoutLogSchema);
+	const workoutLogForm = await superValidate(zod4(addWorkoutLogSchema));
 
 	// get possible workouts to copy
 	let workouts = await getAllUserWorkouts(user_id);
@@ -39,7 +40,7 @@ export const actions = {
 		const session = await locals.getSession();
 		const user_id = session?.user.id ? session.user.id : '';
 
-		const logForm = await superValidate(request, addWorkoutLogSchema);
+		const logForm = await superValidate(request, zod4(addWorkoutLogSchema));
 
 		if (!logForm.valid) return fail(400, { logForm });
 

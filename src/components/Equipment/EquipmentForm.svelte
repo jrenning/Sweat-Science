@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { EquipmentTypes, MuscleGroups } from '$lib/db/schema';
-	import type {  AutocompleteOption } from '@skeletonlabs/skeleton';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { insertEquipmentSchema } from '../../routes/index/schemas';

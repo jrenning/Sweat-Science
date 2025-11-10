@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Goal } from '$lib/db/schema';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { Progress } from '@skeletonlabs/skeleton-svelte';
 	import { prettifyDate } from '../../helpers/datetime';
 	import DeleteIcon from '../Icons/DeleteIcon.svelte';
 	import { invalidateAll } from '$app/navigation';

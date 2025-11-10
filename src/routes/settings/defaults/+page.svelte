@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { LightSwitch } from '@skeletonlabs/skeleton';
-	import { hexToRgb, rgbStringToHex } from '../../../helpers/colors';
+		import { hexToRgb, rgbStringToHex } from '../../../helpers/colors';
 	import { currentTheme } from '../../../stores/theme';
 	import FormButton from '../../../components/UI/Buttons/FormButton.svelte';
 	import type { PageData } from './$types';
@@ -63,7 +62,6 @@
 		</select>
         <FormButton text="Set as Default" action={()=> setTheme()}/>
         </div>
-        <LightSwitch />
 	</div>
 
 	<div class="flex flex-col space-y-8 items-center">

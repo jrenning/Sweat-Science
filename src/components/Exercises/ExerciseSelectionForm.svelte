@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Exercise, InsertExerciseRoutine } from '$lib/db/schema';
-	import { getModalStore, getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
@@ -35,19 +34,12 @@
 		dataType: 'json',
 		onResult: ({ result }) => {
 			if (result.type == 'success') {
-				toastStore.trigger(success);
 			} else {
 			}
 		}
 	});
 	const { form, enhance, errors } = _form;
 
-	const toastStore = getToastStore();
-	const modalStore = getModalStore();
-
-	const success: ToastSettings = {
-		message: 'Exercise Added'
-	};
 
 	let sets = $state($form.sets ? $form.sets : 1);
 	let actual_sets = $state($form.sets ? $form.sets : 1);
@@ -201,7 +193,6 @@
 		</div>
 		<AddButton
 			action={() => {
-				modalStore.close();
 			}}
 		/>
 	</form>
