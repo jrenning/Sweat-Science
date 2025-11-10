@@ -2,7 +2,7 @@
 	import { run } from 'svelte/legacy';
 
 	import '../app.css';
-	import { signIn, signOut } from '@auth/sveltekit/client';
+	import { SignIn, SignOut } from '@auth/sveltekit/components';
 	import { page } from '$app/stores';
 	import Footer from '../components/UI/Footer.svelte';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
@@ -21,13 +21,14 @@
 
 	let todayString = mm + '/' + dd + '/' + yyyy;
 
-
-	run(() => {if (browser) {
-		if ($page.data.theme) {
-			$currentTheme = $page.data.theme
+	run(() => {
+		if (browser) {
+			if ($page.data.theme) {
+				$currentTheme = $page.data.theme;
+			}
+			document.body.setAttribute('data-theme', $currentTheme);
 		}
-		document.body.setAttribute("data-theme", $currentTheme)
-	}});
+	});
 </script>
 
 <header
@@ -48,9 +49,11 @@
 		> -->
 		<div></div>
 	{:else}
-		<button onclick={() => signIn('google')} class="rounded-md bg-primary-500 shadow-md px-2 py-1"
-			>Sign In with Google</button
-		>
+		<SignIn>
+			<button slot="submitButton" class="rounded-md bg-primary-500 shadow-md px-2 py-1"
+				>Sign In with Google</button
+			>
+		</SignIn>
 	{/if}
 
 	<div class="flex flex-col">
