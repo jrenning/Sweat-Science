@@ -9,18 +9,20 @@
 
 {#if log_entry.type == 'Weight'}
 	<table class=" bg-surface-200 mx-2 p-2 rounded-xl shadow-2xl">
-		<tr>
-			<th class="font-semibold p-2">Weight</th>
-			{#each log_entry.weight as weight}
-				<td class="p-2">{weight} {'lb'}</td>
-			{/each}
-		</tr>
-		<tr>
-			<th class="font-semibold">Reps</th>
-			{#each log_entry.reps as rep}
-				<td class="p-2">{rep}</td>
-			{/each}
-		</tr>
+		<tbody>
+			<tr>
+				<th class="font-semibold p-2">Weight</th>
+				{#each log_entry.weight as weight}
+					<td class="p-2">{weight} {'lb'}</td>
+				{/each}
+			</tr>
+			<tr>
+				<th class="font-semibold">Reps</th>
+				{#each log_entry.reps as rep}
+					<td class="p-2">{rep}</td>
+				{/each}
+			</tr>
+		</tbody>
 	</table>
 {:else if log_entry.type == 'Distance'}
 	<div class="bg-surface-200 mx-2 p-2 rounded-xl shadow-2xl flex justify-evenly">
@@ -44,12 +46,12 @@
 			<div>{log_entry.duration}</div>
 		</div>
 		{#if log_entry.overall_pace_seconds}
-		<div class="flex flex-col">
-			<div class="font-semibold">Pace</div>
-			{#each log_entry.overall_pace_seconds as time}
-				<div>{formatTime(time)}</div>
-			{/each}
-		</div>
+			<div class="flex flex-col">
+				<div class="font-semibold">Pace</div>
+				{#each log_entry.overall_pace_seconds as time}
+					<div>{formatTime(time)}</div>
+				{/each}
+			</div>
 		{/if}
 	</div>
 {/if}

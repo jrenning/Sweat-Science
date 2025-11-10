@@ -9,7 +9,7 @@
 
 	} from '$lib/db/schema';
 	import { invalidateAll } from '$app/navigation';
-	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
+	import { getModalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton-svelte';
 	import ExerciseSelectionForm from '../Exercises/ExerciseSelectionForm.svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';

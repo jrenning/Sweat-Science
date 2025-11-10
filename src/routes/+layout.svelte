@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { run } from 'svelte/legacy';
 
-	import '../app.postcss';
+	import '../app.css';
 	import { signIn, signOut } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
 	import Footer from '../components/UI/Footer.svelte';
-	import { LightSwitch, Modal, Toast, initializeStores } from '@skeletonlabs/skeleton';
+	import { Modal, Toast, initializeStores } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { currentTheme } from '../stores/theme';

@@ -6,5 +6,5 @@
 {#if link}
 <a href={link}><button class="text-2xl rotate-180">&#x279F;</button></a>
 {:else}
-<button on:click={()=> history.back()}><button class="text-2xl rotate-180">&#x279F;</button></button>
+<button on:click={()=> history.back()}><div class="text-2xl rotate-180">&#x279F;</div></button>
 {/if}

@@ -1,7 +1,7 @@
 <!-- https://eugenkiss.github.io/7guis/tasks#timer -->
 
 <script lang="ts">
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { Progress} from '@skeletonlabs/skeleton-svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
 	import PauseIcon from '../Icons/PauseIcon.svelte';
@@ -78,9 +78,9 @@
 </script>
 
 <div class="flex flex-col space-y-4 justify-center items-center">
-	<ProgressRadial value={($elapsedTime / duration) * 100}>
+	<Progress value={($elapsedTime / duration) * 100}>
 		{formatTime(duration - $elapsedTime)}
-	</ProgressRadial>
+	</Progress>
 	<!-- <button
 		on:click={() => handleButton()}
 		class="rounded-full variant-filled-secondary w-10 h-10 font-semibold shadow-md flex justify-center items-center text-lg"
