@@ -10,14 +10,15 @@ import { setError } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { addExercise } from '$lib/db/mutations/exercise';
 import { addEquipment } from '$lib/db/mutations/equipment';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
-	const data = await getExercisesWithEquipment(session ? session.user.id : '');
+	const data = await getExercisesWithEquipment(session?.user?.id ? session.user.id : '');
 	const equipment = await getAllEquipment();
 
-	const equipmentForm = await superValidate(insertExerciseSchema);
-	const exerciseForm = await superValidate(insertEquipmentSchema);
+	const equipmentForm = await superValidate(zod4(insertExerciseSchema));
+	const exerciseForm = await superValidate(zod4(insertEquipmentSchema));
 	return {
 		equipmentForm,
 		exerciseForm,
@@ -31,11 +32,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	exercise_form: async ({ request, locals, url }) => {
-		const exerciseForm = await superValidate(request, insertExerciseSchema);
+		const exerciseForm = await superValidate(request, zod4(insertExerciseSchema));
 		const session = await locals.getSession();
 		// pass in workout plan id
 		// TODO pass in param for id
-		const user_id = session?.user.id ? session.user.id : '';
+		const user_id = session?.user?.id ? session.user.id : '';
 
 		if (!exerciseForm.valid) return fail(400, { exerciseForm });
 
@@ -47,11 +48,11 @@ export const actions: Actions = {
 		return { exerciseForm };
 	},
 	equipment_form: async ({ request, locals, url }) => {
-		const equipmentForm = await superValidate(request, insertEquipmentSchema);
+		const equipmentForm = await superValidate(request, zod4(insertEquipmentSchema));
 		const session = await locals.getSession();
 		// pass in workout plan id
 		// TODO pass in param for id
-		const user_id = session?.user.id ? session.user.id : '';
+		const user_id = session?.user?.id ? session.user.id : '';
 
 
 		if (!equipmentForm.valid) return fail(400, { equipmentForm });
