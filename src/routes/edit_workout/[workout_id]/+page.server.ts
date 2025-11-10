@@ -57,7 +57,7 @@ export const actions: Actions = {
 		// update workout
 		await completeWorkoutRoutineForm(workoutForm.data.name, workout_id);
 
-		throw redirect(303, '/');
+		redirect(303, '/');
 	},
 	add_exercise: async ({ request, locals, url, params }) => {
 		const session = await locals.getSession();

@@ -42,7 +42,7 @@ export const load: PageServerLoad = async ({ locals, url, params }) => {
 			workoutForm
 		};
 	}
-	throw redirect(300, "/")
+	redirect(300, "/");
 };
 
 export const actions: Actions = {
@@ -55,6 +55,6 @@ export const actions: Actions = {
 
 		await createLogFromWorkout({ user_id: user_id, ...workoutForm.data });
 
-		throw redirect(303, '/');
+		redirect(303, '/');
 	}
 };

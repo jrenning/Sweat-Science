@@ -70,9 +70,9 @@ export const actions: Actions = {
 			workoutForm.data.days
 		);
 		if (workoutForm.data.workout_plan_id) {
-			throw redirect(303, '/add_workout_plan');
+			redirect(303, '/add_workout_plan');
 		} else {
-			throw redirect(303, '/');
+			redirect(303, '/');
 		}
 	},
 	add_exercise: async ({ request, locals, url }) => {

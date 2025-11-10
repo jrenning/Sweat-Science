@@ -40,7 +40,7 @@ export const actions: Actions = {
 
 			const id = await getWorkoutWithExercise(exerciseForm.data.id);
 
-			throw redirect(303, `/edit_workout/${id}`)
+			redirect(303, `/edit_workout/${id}`);
 		}
 	}
 };

@@ -47,6 +47,6 @@ export const actions = {
 
 		const id = await createLogFromWorkout(logForm.data);
 
-		throw redirect(303, `/progress/workouts/${id}`);
+		redirect(303, `/progress/workouts/${id}`);
 	}
 };

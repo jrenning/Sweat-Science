@@ -22,6 +22,6 @@ export const actions: Actions = {
                 return fail(400, { goalForm});
         }
         await addGoal(goalForm.data)
-        throw redirect(303, '/');
+        redirect(303, '/');
     }
 }
