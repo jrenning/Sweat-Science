@@ -6,21 +6,4 @@ import { db } from '$lib/db/db';
 import type { Handle } from '@sveltejs/kit';
 
 // export const trpcHandle: Handle = createTRPCHandle({ router, createContext });
-export const {handle, signIn, signOut} = SvelteKitAuth(async (event) => {
-	const authOptions = {
-		basePath: "/auth",
-		secret: AUTH_SECRET,
-    	trustHost: true,
-		adapter: DrizzleAdapter(db),
-		providers: [Google({ clientId: GOOGLE_ID, clientSecret: GOOGLE_SECRET })],
-		callbacks: {
-			async session({ session, user }) {
-				if (session.user) {
-					session.user.id = user.id;
-				}
-				return Promise.resolve(session);
-			}
-		}
-	};
-	return authOptions;
-});
+export {handle} from "./auth"
