@@ -14,12 +14,23 @@
 	import BackButton from '../UI/Buttons/BackButton.svelte';
 	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
 
-	/* EXPORTS */
-	export let exerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
-	export let editExerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
-	export let workoutForm: SuperValidated<typeof newWorkoutRoutineSchema>;
-	export let workout_routine: WorkoutRoutineWithExercises;
-	export let type: 'Update' | 'Add';
+	
+	interface Props {
+		/* EXPORTS */
+		exerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
+		editExerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
+		workoutForm: SuperValidated<typeof newWorkoutRoutineSchema>;
+		workout_routine: WorkoutRoutineWithExercises;
+		type: 'Update' | 'Add';
+	}
+
+	let {
+		exerciseForm,
+		editExerciseForm,
+		workoutForm,
+		workout_routine,
+		type
+	}: Props = $props();
 	/*        */
 
 	const exercise_post_link =
@@ -69,7 +80,7 @@
 		<button
 			type="button"
 			class="btn-sm rounded-md variant-outline-surface text-md"
-			on:click={() => {
+			onclick={() => {
 				modalStore.trigger(addExerciseModal);
 			}}>Add Exercise</button
 		>

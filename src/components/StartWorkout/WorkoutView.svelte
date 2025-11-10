@@ -6,7 +6,11 @@
 
 
 
-	export let workouts: WorkoutRoutineWithExercises[];
+	interface Props {
+		workouts: WorkoutRoutineWithExercises[];
+	}
+
+	let { workouts }: Props = $props();
 </script>
 
 <div class="flex justify-center items-center">

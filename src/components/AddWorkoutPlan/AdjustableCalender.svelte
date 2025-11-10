@@ -2,14 +2,15 @@
 	import MiniCalender from "./MiniCalender.svelte";
 
 
-	export let start_date: Date;
-	export let end_date: Date;
-
-	let calender_info: CalenderInfo[]
-
-	$: {
-		calender_info = generateCalenderInfo(new Date(start_date), new Date(end_date));
+	interface Props {
+		start_date: Date;
+		end_date: Date;
 	}
+
+	let { start_date, end_date }: Props = $props();
+
+	let calender_info: CalenderInfo[] = $derived(generateCalenderInfo(new Date(start_date), new Date(end_date)))
+
 
 
 	type CalenderInfo = {
@@ -56,6 +57,7 @@
 
 		return calender_info
 	}
+	
 </script>
 
 <div class="flex flex-col w-full">

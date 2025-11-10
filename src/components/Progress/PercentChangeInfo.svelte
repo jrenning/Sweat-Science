@@ -4,7 +4,11 @@
 	import { calcAverageMax } from '../../helpers/rep_max';
 	import PercentChangeSnippet from './PercentChangeSnippet.svelte';
 
-	export let exercise_data: ExerciseLogWithExercises[];
+	interface Props {
+		exercise_data: ExerciseLogWithExercises[];
+	}
+
+	let { exercise_data }: Props = $props();
 	let data = exercise_data.map((exercise) => exercise.estimated_max).reverse();
 	let average_data = exercise_data
 		.map((exercise) => calcAverageMax(exercise.weight, exercise.reps))

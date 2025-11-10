@@ -3,7 +3,11 @@
 	import SectionHeader from "../UI/SectionHeader.svelte";
 	import Goal from "./Goal.svelte";
 
-    export let goal_data: any[]
+	interface Props {
+		goal_data: any[];
+	}
+
+	let { goal_data }: Props = $props();
 
 
 </script>

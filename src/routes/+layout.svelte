@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import '../app.postcss';
 	import { signIn, signOut } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
@@ -8,6 +10,11 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { currentTheme } from '../stores/theme';
 	import { browser } from '$app/environment';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
 	// init skeleton
@@ -21,12 +28,12 @@
 	let todayString = mm + '/' + dd + '/' + yyyy;
 
 
-	$: {if (browser) {
+	run(() => {if (browser) {
 		if ($page.data.theme) {
 			$currentTheme = $page.data.theme
 		}
 		document.body.setAttribute("data-theme", $currentTheme)
-	}}
+	}});
 </script>
 
 <Modal />
@@ -47,9 +54,9 @@
 			on:click={() => signOut()}
 			class="rounded-md bg-primary-500 text-black shadow-md px-2 py-1">Sign out</button
 		> -->
-		<div />
+		<div></div>
 	{:else}
-		<button on:click={() => signIn('google')} class="rounded-md bg-primary-500 shadow-md px-2 py-1"
+		<button onclick={() => signIn('google')} class="rounded-md bg-primary-500 shadow-md px-2 py-1"
 			>Sign In with Google</button
 		>
 	{/if}
@@ -62,6 +69,6 @@
 	</div>
 </header>
 
-<slot />
+{@render children?.()}
 
 <Footer />

@@ -5,13 +5,17 @@
 	import { prettifyDate } from '../../../helpers/datetime';
 	import { calcAverageMax } from '../../../helpers/rep_max';
 
-	export let exercise_data: ExerciseLogWithExercises[];
+	interface Props {
+		exercise_data: ExerciseLogWithExercises[];
+	}
+
+	let { exercise_data }: Props = $props();
 	let data = exercise_data.map((exercise) => exercise.estimated_max).reverse();
 	let average_data = exercise_data.map((exercise) => calcAverageMax(exercise.weight, exercise.reps)).reverse();
 	let labels = exercise_data.map((exercise) => prettifyDate(exercise.created_at)).reverse();
 
 	let ctx;
-	let canvas: HTMLCanvasElement;
+	let canvas: HTMLCanvasElement = $state();
 
 	onMount(() => {
 		ctx = canvas.getContext('2d');
@@ -49,7 +53,7 @@
 
 <div class="relative">
 	<div class={`w-[365px] overflow-x-scroll flex justify-center`}>
-		<canvas bind:this={canvas} width={32} height={32}/>
+		<canvas bind:this={canvas} width={32} height={32}></canvas>
 	</div>
 	
 </div>

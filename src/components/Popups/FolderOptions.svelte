@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-	export let name: string;
-	export let id: number;
 	import {
 		popup,
 		type ModalSettings,
@@ -11,6 +9,12 @@
 	} from '@skeletonlabs/skeleton';
 	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
 	import FolderForm from '../Folders/FolderForm.svelte';
+	interface Props {
+		name: string;
+		id: number;
+	}
+
+	let { name, id }: Props = $props();
 	const modal = getModalStore();
 
 	async function deleteFolder() {
@@ -52,6 +56,6 @@
 </script>
 
 <div class="card flex flex-col space-y-4 p-4 hidden" data-popup={`folderOptions${id}`}>
-	<button on:click={() => modal.trigger(deleteModal)}>Delete</button>
-	<button class="flex flex-col space-y-1" on:click={()=> modal.trigger(editFolderModal)}>Edit</button>
+	<button onclick={() => modal.trigger(deleteModal)}>Delete</button>
+	<button class="flex flex-col space-y-1" onclick={()=> modal.trigger(editFolderModal)}>Edit</button>
 </div>

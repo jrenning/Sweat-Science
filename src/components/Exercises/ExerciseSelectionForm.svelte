@@ -14,10 +14,15 @@
 		ExerciseRoutineWithExercise,
 		InsertExerciceRoutineWithExercises
 	} from '$lib/db/schema';
-	/* EXPORTS */
-	export let data: SuperValidated<typeof insertExerciseRoutineSchema>;
-	export let post_link: string;
-	export let exercise: InsertExerciceRoutineWithExercises;
+	
+	interface Props {
+		/* EXPORTS */
+		data: SuperValidated<typeof insertExerciseRoutineSchema>;
+		post_link: string;
+		exercise: InsertExerciceRoutineWithExercises;
+	}
+
+	let { data = $bindable(), post_link, exercise }: Props = $props();
 	/*         */
 	// if editing
 	if (exercise) {
@@ -44,8 +49,8 @@
 		message: 'Exercise Added'
 	};
 
-	let sets = $form.sets ? $form.sets : 1;
-	let actual_sets = $form.sets ? $form.sets : 1;
+	let sets = $state($form.sets ? $form.sets : 1);
+	let actual_sets = $state($form.sets ? $form.sets : 1);
 	let sets_same = false;
 	$form.sets = actual_sets;
 
@@ -137,7 +142,7 @@
 				<div class="text-xl text-left font-semibold">Sets</div>
 
 				<div class="flex space-x-4">
-					<input type="checkbox" class="checkbox" name="same" on:click={() => toggleSameSets()} />
+					<input type="checkbox" class="checkbox" name="same" onclick={() => toggleSameSets()} />
 					<label for="same">All Sets the same</label>
 				</div>
 			</div>

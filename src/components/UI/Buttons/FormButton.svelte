@@ -1,10 +1,19 @@
 <script lang="ts">
-	export let text: string;
-	export let action: () => void = ()=> {}
-	export let type: "button" | "submit" = "button"
-	export let disabled = false
+	interface Props {
+		text: string;
+		action?: () => void;
+		type?: "button" | "submit";
+		disabled?: boolean;
+	}
+
+	let {
+		text,
+		action = ()=> {},
+		type = "button",
+		disabled = false
+	}: Props = $props();
 </script>
 
-<button type={type} disabled={disabled} class="btn text-xl variant-filled-surface  shadow-md" on:click={() => action()}
+<button type={type} disabled={disabled} class="btn text-xl variant-filled-surface  shadow-md" onclick={() => action()}
 	>{text}</button
 >

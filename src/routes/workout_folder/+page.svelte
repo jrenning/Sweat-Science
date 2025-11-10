@@ -2,7 +2,11 @@
 	import FolderGrid from '../../components/Folders/FolderGrid.svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <FolderGrid folders={data.folders} folder_id={null} workouts={data.workouts}/>

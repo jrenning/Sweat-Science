@@ -12,8 +12,12 @@
 	import RepMaxPlot from '../../../components/Progress/Charts/RepMaxPlot.svelte';
 	import MaxAveragePlot from '../../../components/Progress/Charts/MaxAveragePlot.svelte';
 	import PercentChangeInfo from '../../../components/Progress/PercentChangeInfo.svelte';
-	export let data: PageData;
-	let tabSet: number = 0;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+	let tabSet: number = $state(0);
 
 	let categories = ['Wt', 'Begin', 'Nov', 'Int', 'Adv'];
 
@@ -24,61 +28,71 @@
 		<div class="flex w-full justify-evenly space-x-6 mb-10">
 			<BackButton link="/progress" />
 			<h2 class="text-3xl font-bold">{data.exercise?.name}</h2>
-			<div />
+			<div></div>
 		</div>
 
 		<TabGroup>
 			<Tab bind:group={tabSet} name="tab1" value={0}>
-				<svelte:fragment slot="lead"><div class="w-5 h-5"><InfoIcon /></div></svelte:fragment>
+				{#snippet lead()}
+								<div class="w-5 h-5"><InfoIcon /></div>
+							{/snippet}
 				<span>Info</span>
 			</Tab>
 			<Tab bind:group={tabSet} name="tab2" value={1}>
-				<svelte:fragment slot="lead"><div class="w-5 h-5"><ChartIcon /></div></svelte:fragment>
+				{#snippet lead()}
+								<div class="w-5 h-5"><ChartIcon /></div>
+							{/snippet}
 				<span>Charts</span>
 			</Tab>
 			<Tab bind:group={tabSet} name="tab3" value={2}>
-				<svelte:fragment slot="lead"><div class="w-5 h-5"><TableIcon /></div></svelte:fragment>
+				{#snippet lead()}
+								<div class="w-5 h-5"><TableIcon /></div>
+							{/snippet}
 				<span>Data</span>
 			</Tab>
 			<Tab bind:group={tabSet} name="tab4" value={3}>
-				<svelte:fragment slot="lead"><div class="w-5 h-5"><ClipboardIcon /></div></svelte:fragment>
+				{#snippet lead()}
+								<div class="w-5 h-5"><ClipboardIcon /></div>
+							{/snippet}
 				<span>Log</span>
 			</Tab>
 			<!-- Tab Panels --->
-			<svelte:fragment slot="panel">
-				{#if tabSet === 0}
-					<InfoSection exercise={data.exercise} rep_max={data.rep_max} current_max={data.current_max} times_performed={data.log.length}/>
-				{:else if tabSet === 1}
-				<PercentChangeInfo exercise_data={data.log}/>
-				<RepMaxPlot exercise_data={data.log}/>
-				{:else if tabSet === 2}
-					<div class="table-container">
-						<table class="table table-hover">
-							<thead class="space-x-2">
-								<tr>
-									{#each categories as category}
-										<th>{category}</th>
-									{/each}
-								</tr>
-							</thead>
-							<tbody>
-								{#each data.weight_data as weight}
+			{#snippet panel()}
+					
+					{#if tabSet === 0}
+						<InfoSection exercise={data.exercise} rep_max={data.rep_max} current_max={data.current_max} times_performed={data.log.length}/>
+					{:else if tabSet === 1}
+					<PercentChangeInfo exercise_data={data.log}/>
+					<RepMaxPlot exercise_data={data.log}/>
+					{:else if tabSet === 2}
+						<div class="table-container">
+							<table class="table table-hover">
+								<thead class="space-x-2">
 									<tr>
-										<td>{weight.weight}</td>
-										<td>{weight.novice}</td>
-										<td>{weight.intermediate}</td>
-										<td>{weight.advanced}</td>
-										<td>{weight.elite}</td>
+										{#each categories as category}
+											<th>{category}</th>
+										{/each}
 									</tr>
-								{/each}
-							</tbody>
-						</table>
-					</div>
-				{:else if tabSet == 3}
-				<ExerciseLogs logs={data.log} type="Date"/>
+								</thead>
+								<tbody>
+									{#each data.weight_data as weight}
+										<tr>
+											<td>{weight.weight}</td>
+											<td>{weight.novice}</td>
+											<td>{weight.intermediate}</td>
+											<td>{weight.advanced}</td>
+											<td>{weight.elite}</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						</div>
+					{:else if tabSet == 3}
+					<ExerciseLogs logs={data.log} type="Date"/>
 
-				{/if}
-			</svelte:fragment>
+					{/if}
+				
+					{/snippet}
 		</TabGroup>
 	</div>
 {/if}

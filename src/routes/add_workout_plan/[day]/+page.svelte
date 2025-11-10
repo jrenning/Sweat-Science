@@ -8,14 +8,18 @@
 	import type { PageData } from './$types';
 	import AddWorkoutOptions from '../../../components/Popups/AddWorkoutOptions.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <div>
 	<div class="flex justify-evenly">
 		<BackButton link="/add_workout_plan?page=2" />
 		<div class="italic font-semibold text-2xl">Day {data.day}</div>
-		<div />
+		<div></div>
 	</div>
 	{#if data.workouts}
 	<div class="space-y-6">

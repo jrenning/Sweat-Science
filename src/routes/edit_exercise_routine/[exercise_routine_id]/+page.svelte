@@ -3,7 +3,11 @@
 	import ExerciseSelectionForm from "../../../components/Exercises/ExerciseSelectionForm.svelte";
 	import type { PageData } from "./$types";
 
-    export let data: PageData
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
     const modal = getModalStore()
 

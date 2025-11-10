@@ -5,8 +5,12 @@
 	import DeleteIcon from '../Icons/DeleteIcon.svelte';
 	import EditIcon from '../Icons/EditIcon.svelte';
 
-	export let workout: WorkoutRoutineWithExercises;
-	export let day: number
+	interface Props {
+		workout: WorkoutRoutineWithExercises;
+		day: number;
+	}
+
+	let { workout, day }: Props = $props();
     const modal = getModalStore()
 
 	async function deleteWorkout() {
@@ -43,7 +47,7 @@
 		<div class="text-2xl font-semibold">{workout.name}</div>
 		<div class="flex flex-row space-x-6">
 			<a href={`/edit_workout/${workout.id}`} class="w-4 h-4"><EditIcon /></a>
-			<button type="button" class="w-4 h-4" on:click={() => modal.trigger(deleteModal)}><DeleteIcon /></button>
+			<button type="button" class="w-4 h-4" onclick={() => modal.trigger(deleteModal)}><DeleteIcon /></button>
 		</div>
 	</div>
 	<div>{workout.exercises.length} Exercises</div>

@@ -49,7 +49,7 @@
 
 <div class="mt-6 flex items-center justify-center">
 	<button
-		on:click={() => Subscribe()}
+		onclick={() => Subscribe()}
 		class="mb-2 px-4 py-2 rounded-md bg-blue-300 text-xl font-semibold hover:bg-blue-100"
 	>
 		Test Notifications

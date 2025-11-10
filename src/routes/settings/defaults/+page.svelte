@@ -7,7 +7,11 @@
 	import SettingsHeader from '../../../components/Settings/SettingsHeader.svelte';
 
 
-	export let data: PageData
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 
 	const themes = [
@@ -52,7 +56,7 @@
 	<div class="flex flex-col space-y-8 items-center">
 		<h3 class="font-semibold text-xl flex justify-start w-[90%]">Theme</h3>
         <div class="flex space-x-6">
-		<select class="select" id="theme" on:change={()=> updateTheme()} value={data.default_settings.theme}>
+		<select class="select" id="theme" onchange={()=> updateTheme()} value={data.default_settings.theme}>
 			{#each themes as theme}
 				<option>{theme}</option>
 			{/each}

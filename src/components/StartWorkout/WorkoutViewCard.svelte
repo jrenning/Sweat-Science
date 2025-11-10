@@ -2,9 +2,13 @@
 	import { goto, invalidateAll } from '$app/navigation';
 	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
 
-	export let workout: WorkoutRoutineWithExercises;
 	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
 	import WorkoutOptions from '../Popups/WorkoutOptions.svelte';
+	interface Props {
+		workout: WorkoutRoutineWithExercises;
+	}
+
+	let { workout }: Props = $props();
 
 	const exercisePopup: PopupSettings = {
 		event: 'click',
@@ -24,14 +28,14 @@
 				placement: 'bottom'
 			}}
 		>
-			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
-			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
-			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
+			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
+			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
+			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
 		</div>
 	</div>
 	<WorkoutOptions name={workout.name} id={workout.id} />
 
-	<div class="h-[50%]" />
+	<div class="h-[50%]"></div>
 	<div class="flex text-black ml-4">
 		<h2 class="md:text-4xl text-3xl font-bold align-bottom">{workout.name}</h2>
 	</div>
@@ -42,7 +46,7 @@
 					{workout.exercises.length} Exercises
 				</button>
 			</div>
-			<div />
+			<div></div>
 			<a href={`/active_workout/${workout.id}`}
 				><button class="bg-secondary-500 px-4 mr-2 py-1 rounded-md shadow-md">&#x27A4;</button></a
 			>

@@ -3,10 +3,14 @@
 	import Chart from 'chart.js/auto';
 
 
-	export let data: number[]
-	export let labels: string[]
+	interface Props {
+		data: number[];
+		labels: string[];
+	}
+
+	let { data, labels }: Props = $props();
 	let ctx;
-	let canvas: HTMLCanvasElement;
+	let canvas: HTMLCanvasElement = $state();
 
 
 
@@ -39,7 +43,7 @@
 
 <div class="relative">
 	<div class={`w-[365px] overflow-x-scroll h-[150px] flex justify-center`}>
-		<canvas bind:this={canvas} />
+		<canvas bind:this={canvas}></canvas>
 	</div>
 	
 </div>

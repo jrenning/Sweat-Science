@@ -2,7 +2,11 @@
 	import BackButton from "../UI/Buttons/BackButton.svelte";
 
 
-    export let name: string
+	interface Props {
+		name: string;
+	}
+
+	let { name }: Props = $props();
 
 </script>
 
@@ -11,5 +15,5 @@
 		<BackButton link="/settings" />
 
 		<h1 class="mx-4 font-semibold text-4xl mb-10">{name}</h1>
-		<div />
+		<div></div>
 	</div>

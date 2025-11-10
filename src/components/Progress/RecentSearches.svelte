@@ -7,7 +7,11 @@
 		created_at: Date | null
 	}
 
-	export let exercises: SearchResult[];
+	interface Props {
+		exercises: SearchResult[];
+	}
+
+	let { exercises }: Props = $props();
 </script>
 
 <div>

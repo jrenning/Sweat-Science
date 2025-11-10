@@ -5,7 +5,11 @@
 	import { calcAverageMax } from '../../../helpers/rep_max';
 	import BarChart from './BarChart.svelte';
 
-	export let exercise_data: ExerciseLogWithExercises[];
+	interface Props {
+		exercise_data: ExerciseLogWithExercises[];
+	}
+
+	let { exercise_data }: Props = $props();
 	let data = exercise_data.map((exercise) => calcAverageMax(exercise.weight, exercise.reps)).reverse();
 	let labels = exercise_data.map((exercise) => prettifyDate(exercise.created_at)).reverse();
 

@@ -5,7 +5,11 @@
 	import { calcOneRepMax } from '../../../helpers/rep_max';
 	import BarChart from './BarChart.svelte';
 
-	export let log_data: ExerciseLogWithExercises;
+	interface Props {
+		log_data: ExerciseLogWithExercises;
+	}
+
+	let { log_data }: Props = $props();
 
 	let data: number[] = [];
 	let labels: string[] = [];

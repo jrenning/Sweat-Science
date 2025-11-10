@@ -2,10 +2,14 @@
 	import { getContext, onMount } from 'svelte';
 	import { current_day, current_plan_id } from '../../stores/workout_plan';
 
-	export let number: number | undefined;
-	export let global_day: number | undefined = undefined;
+	interface Props {
+		number: number | undefined;
+		global_day?: number | undefined;
+	}
 
-	let workout_number: number = 0;
+	let { number, global_day = undefined }: Props = $props();
+
+	let workout_number: number = $state(0);
 
 	onMount(async () => {
 		if (number) {

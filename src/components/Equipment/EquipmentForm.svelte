@@ -6,7 +6,11 @@
 	import type { insertEquipmentSchema } from '../../routes/index/schemas';
 
 
-	export let data: SuperValidated<insertEquipmentSchema>;
+	interface Props {
+		data: SuperValidated<insertEquipmentSchema>;
+	}
+
+	let { data }: Props = $props();
 
 	const { form, enhance, errors } = superForm(data);
 

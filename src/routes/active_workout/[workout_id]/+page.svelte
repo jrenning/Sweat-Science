@@ -6,18 +6,22 @@
 	import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
 	import type { PageData } from './$types';
 	import SetInput from '../../../components/Exercises/SetInput.svelte';
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	let exercise: number = 0;
-	let set: number = 1;
+	let { data }: Props = $props();
+
+	let exercise: number = $state(0);
+	let set: number = $state(1);
 	let rest = writable(false);
 
-	$: progress = exercise + 1;
-	$: exercise_total = data.workout?.exercises.length ? data.workout.exercises.length : 0;
-	$: current_exercise = data.workout?.exercises[exercise];
-	$: future_exercise = data.workout?.exercises[exercise + 1];
+	let progress = $derived(exercise + 1);
+	let exercise_total = $derived(data.workout?.exercises.length ? data.workout.exercises.length : 0);
+	let current_exercise = $derived(data.workout?.exercises[exercise]);
+	let future_exercise = $derived(data.workout?.exercises[exercise + 1]);
 
-	let selected_value = current_exercise?.exercise.name;
+	let selected_value = $state(current_exercise?.exercise.name);
 	function skipToExercise() {
 		if (selected_value) {
 			const exercise_names = data.workout?.exercises.map((exercise) => exercise.exercise.name);
@@ -88,7 +92,7 @@
 				<BackButton link="/" />
 
 				<div class="text-2xl font-semibold">{data.workout.name}</div>
-				<div />
+				<div></div>
 			</div>
 
 			<div class="w-[80%] flex flex-row justify-center items-center space-x-4">
@@ -104,7 +108,7 @@
 					<select
 						class="bg-transparent text-3xl flex justify-center items-center text-center"
 						bind:value={selected_value}
-						on:change={() => skipToExercise()}
+						onchange={() => skipToExercise()}
 					>
 						{#each data.workout.exercises as exercise}
 							<option class="text-lg">{exercise.exercise.name}</option>
@@ -191,7 +195,7 @@
 						type="button"
 						class="rounded-md bg-surface-600 shadow-md p-4 flex justify-center items-center"
 						disabled={exercise == 0 && set == 1}
-						on:click={() => handleBack()}
+						onclick={() => handleBack()}
 					>
 						<div class="w-8 h-8 flex justify-center items-center rotate-180 text-4xl text-black">
 							&#x27A4;
@@ -200,7 +204,7 @@
 					<button
 						type="button"
 						class="rounded-md bg-surface-600 shadow-md p-6 flex justify-center items-center"
-						on:click={() => handleComplete()}
+						onclick={() => handleComplete()}
 					>
 						<div class="w-8 h-8 flex justify-center items-center text-black text-4xl">&#x2714;</div>
 					</button>
@@ -208,12 +212,12 @@
 						type="button"
 						class="rounded-md bg-surface-600 shadow-md p-4 flex justify-center items-center"
 					>
-						<div class="w-8 h-8 bg-black flex justify-center items-center" />
+						<div class="w-8 h-8 bg-black flex justify-center items-center"></div>
 					</button>
 				</div>
 
 				<div class="text-4xl font-semibold text-gray-400">
-					<span id="minutes" />:<span id="seconds" />
+					<span id="minutes"></span>:<span id="seconds"></span>
 				</div>
 
 				<div class="text-right italic font-semibold w-full mr-4">
@@ -222,12 +226,12 @@
 			{:else}
 				<div class="flex flex-col space-y-6">
 					<label class="label" for="notes">Notes</label>
-					<textarea class="textarea" name="notes" bind:value={$form.notes} />
+					<textarea class="textarea" name="notes" bind:value={$form.notes}></textarea>
 				</div>
 				<button
 					type="submit"
 					class="btn-md rounded-md variant-filled-surface shadow-md"
-					on:click={() => clearInterval(timer)}>Log Workout</button
+					onclick={() => clearInterval(timer)}>Log Workout</button
 				>
 			{/if}
 		</div>

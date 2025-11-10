@@ -5,12 +5,16 @@
 	import type { AutocompleteEvents } from "@skeletonlabs/skeleton/dist/components/Autocomplete/Autocomplete.svelte";
 	import { onMount } from "svelte";
 	
-export let plan_id: number
-export let day: number
+	interface Props {
+		plan_id: number;
+		day: number;
+	}
+
+	let { plan_id, day }: Props = $props();
 
 const modal = getModalStore()
 
-let workoutOptions: AutocompleteOption[] = []
+let workoutOptions: AutocompleteOption[] = $state([])
 
 onMount(async ()=> {
 		const res = await fetch('/api/workout_routine');
@@ -25,7 +29,7 @@ onMount(async ()=> {
 })
 
 
-let inputValue = ""
+let inputValue = $state("")
 
 	async function onWorkoutSelection(event: CustomEvent<AutocompleteOption>) {
 		inputValue = event.detail.label;

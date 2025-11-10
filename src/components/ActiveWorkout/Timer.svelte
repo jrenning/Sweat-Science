@@ -9,8 +9,12 @@
 	import type { Writable } from 'svelte/store';
 	import { formatTime } from '../../helpers/datetime';
 
-	export let duration = 60;
-	export let finished: Writable<boolean>;
+	interface Props {
+		duration?: number;
+		finished: Writable<boolean>;
+	}
+
+	let { duration = 60, finished }: Props = $props();
 
 	let startTime: number;
 	let elapsedTime = tweened(0);

@@ -12,9 +12,13 @@
 	import ExerciseForm from '../../components/Exercises/ExerciseForm.svelte';
 	import EquipmentForm from '../../components/Equipment/EquipmentForm.svelte';
 
-	let tabSet: number = 0;
+	let tabSet: number = $state(0);
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	const equipment_names = data.data.equipment.map((equip) => {
 		return { name: equip.name, id: equip.id };
@@ -49,33 +53,35 @@
 
 <TabGroup justify="justify-center">
 	<Tab bind:group={tabSet} name="tab1" value={0} class="flex justify-center items-center">
-		<svelte:fragment slot="lead"
-			><div class="w-5 h-5 justify-center flex items-center"><WeightIcon /></div></svelte:fragment
-		>
+		{#snippet lead()}
+				<div class="w-5 h-5 justify-center flex items-center"><WeightIcon /></div>
+			{/snippet}
 		<span>Exercises</span>
 	</Tab>
 	<Tab bind:group={tabSet} name="tab2" value={1}>
-		<svelte:fragment slot="lead"
-			><div class="w-5 h-5 justify-center flex items-center"><DumbbellIcon /></div></svelte:fragment
-		>
+		{#snippet lead()}
+				<div class="w-5 h-5 justify-center flex items-center"><DumbbellIcon /></div>
+			{/snippet}
 		<span>Equipment</span>
 	</Tab>
 	<Tab bind:group={tabSet} name="tab3" value={2}>
-		<svelte:fragment slot="lead"
-			><div class="w-5 h-5 justify-center flex items-center"><PersonIcon /></div></svelte:fragment
-		>
+		{#snippet lead()}
+				<div class="w-5 h-5 justify-center flex items-center"><PersonIcon /></div>
+			{/snippet}
 		<span>Workouts</span>
 	</Tab>
 	<!-- Tab Panels --->
-	<svelte:fragment slot="panel">
-		{#if tabSet === 0}
-			<button class="btn-md my-4 shadow-md rounded-md variant-filled-surface" on:click={()=> modalStore.trigger(exerciseModal)}>Add Exercise</button>
-			<ExerciseTable exercises={data.data.exercises} />
-		{:else if tabSet === 1}
-        			<button class="btn-md my-4 shadow-md rounded-md variant-filled-surface" on:click={()=> modalStore.trigger(equipmentModal)}>Add Equipment</button>
-			<EquipmentTable equipment_list={data.data.equipment} />
-		{:else if tabSet == 2}
-			(tab 3)
-		{/if}
-	</svelte:fragment>
+	{#snippet panel()}
+	
+			{#if tabSet === 0}
+				<button class="btn-md my-4 shadow-md rounded-md variant-filled-surface" onclick={()=> modalStore.trigger(exerciseModal)}>Add Exercise</button>
+				<ExerciseTable exercises={data.data.exercises} />
+			{:else if tabSet === 1}
+	        			<button class="btn-md my-4 shadow-md rounded-md variant-filled-surface" onclick={()=> modalStore.trigger(equipmentModal)}>Add Equipment</button>
+				<EquipmentTable equipment_list={data.data.equipment} />
+			{:else if tabSet == 2}
+				(tab 3)
+			{/if}
+		
+	{/snippet}
 </TabGroup>

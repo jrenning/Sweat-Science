@@ -14,7 +14,6 @@
 	let inputChipEquipment = '';
 	let inputChipListEquipment: string[] = [];
 
-	export let data: SuperValidated<insertExerciseSchema>;
 
 	const { form, enhance, errors } = superForm(data);
 
@@ -30,14 +29,19 @@
 		id: number;
 	};
 
-	export let equipment_options: Equipment[];
+	interface Props {
+		data: SuperValidated<insertExerciseSchema>;
+		equipment_options: Equipment[];
+	}
+
+	let { data, equipment_options }: Props = $props();
 
 	const inputOptions: AutocompleteOption[] = equipment_options.map((option) => {
 		return { label: option.name, value: option.id };
 	});
 
-	let inputChipsMuscle: string[] = [];
-	let inputChipMuscle = '';
+	let inputChipsMuscle: string[] = $state([]);
+	let inputChipMuscle = $state('');
 
 	let muscle_group_options = MuscleGroups.enumValues;
 
@@ -72,7 +76,7 @@
 				class="textarea resize-y text-center"
 				bind:value={$form.description}
 				name="description"
-			/>
+			></textarea>
 			<label for="category">Category</label>
 			<select class="select" bind:value={$form.category} name="category">
 				{#each ExerciseCategories.enumValues as category}
@@ -108,6 +112,6 @@
 	<button
 		type="submit"
 		class="btn-md variant-outline-secondary flex w-full mt-6 justify-center items-center rounded-md shadow-md"
-		on:click={() => toastStore.trigger(success)}>Add</button
+		onclick={() => toastStore.trigger(success)}>Add</button
 	>
 </div>

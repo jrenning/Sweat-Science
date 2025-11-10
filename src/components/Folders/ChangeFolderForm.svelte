@@ -4,11 +4,15 @@
 	import { Autocomplete, getModalStore, type AutocompleteOption } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
 
-	let inputValue = '';
+	let inputValue = $state('');
     const modal = getModalStore()
-    export let workout_id: number
+	interface Props {
+		workout_id: number;
+	}
 
-	let folderOptions: AutocompleteOption[] = [];
+	let { workout_id }: Props = $props();
+
+	let folderOptions: AutocompleteOption[] = $state([]);
 
 	onMount(async () => {
 		const res = await fetch('/api/folders');

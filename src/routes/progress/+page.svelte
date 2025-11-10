@@ -10,9 +10,13 @@
 	import FormButton from "../../components/UI/Buttons/FormButton.svelte";
 	import type { Exercise } from "$lib/db/schema";
 
-    let tabSet: number = 0
+    let tabSet: number = $state(0)
 
-	export let data: PageData
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	function goToProgress(exercise: Exercise) {
 		goto(`/progress/${exercise.id}`)
@@ -22,24 +26,30 @@
 
 <TabGroup justify="justify-center">
 	<Tab bind:group={tabSet} name="tab1" value={0} class="flex justify-center items-center" >
-		<svelte:fragment slot="lead"><div class="w-5 h-5 justify-center flex items-center"><ClockIcon /></div></svelte:fragment>
+		{#snippet lead()}
+				<div class="w-5 h-5 justify-center flex items-center"><ClockIcon /></div>
+			{/snippet}
 		<span>Log</span>
 	</Tab>
 	<Tab bind:group={tabSet} name="tab2" value={1}>
-        <svelte:fragment slot="lead"><div class="w-5 h-5 justify-center flex items-center"><ChartIcon /></div></svelte:fragment>
+        {#snippet lead()}
+				<div class="w-5 h-5 justify-center flex items-center"><ChartIcon /></div>
+			{/snippet}
         <span>Progress</span>
     </Tab>
 	<!-- Tab Panels --->
-	<svelte:fragment slot="panel">
-		{#if tabSet === 0}
-		<div class="mx-4 mb-8">
-		<a href="/log_workout"><FormButton text="Log Workout"/></a>
-		</div>
-			<WorkoutLogs workouts={data.workouts}/>
-		{:else if tabSet === 1}
-			<ExerciseSelector callback={goToProgress}/>
+	{#snippet panel()}
+	
+			{#if tabSet === 0}
+			<div class="mx-4 mb-8">
+			<a href="/log_workout"><FormButton text="Log Workout"/></a>
+			</div>
+				<WorkoutLogs workouts={data.workouts}/>
+			{:else if tabSet === 1}
+				<ExerciseSelector callback={goToProgress}/>
 
-			<RecentSearches exercises={data.searches}/>
-        {/if}
-	</svelte:fragment>
+				<RecentSearches exercises={data.searches}/>
+	        {/if}
+		
+	{/snippet}
 </TabGroup>

@@ -4,13 +4,17 @@
 	import type { insertWorkoutFolderSchema } from '$lib/db/schema';
 	import { superForm } from 'sveltekit-superforms/client';
 	import AddButton from '../UI/Buttons/AddButton.svelte';
-	export let data: SuperValidated<typeof insertWorkoutFolderSchema>;
 	const _form = superForm(data, {
 		dataType: 'json'
 	});
 	const { form, enhance, errors } = _form;
-	export let parent_id: number;
-	export let type: "add" | "edit"
+	interface Props {
+		data: SuperValidated<typeof insertWorkoutFolderSchema>;
+		parent_id: number;
+		type: "add" | "edit";
+	}
+
+	let { data, parent_id, type }: Props = $props();
 </script>
 
 <div class="card p-4 flex flex-col space-y-6">

@@ -1,6 +1,10 @@
 <script lang="ts">
-	export let value: number;
-	export let name: 'Year' | 'Quarter' | 'Month' | "Last";
+	interface Props {
+		value: number;
+		name: 'Year' | 'Quarter' | 'Month' | "Last";
+	}
+
+	let { value, name }: Props = $props();
 </script>
 
 <div class="flex flex-col">

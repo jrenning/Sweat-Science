@@ -7,9 +7,13 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
-	export let goalForm: SuperValidated<typeof newGoalSchema>;
+	interface Props {
+		goalForm: SuperValidated<typeof newGoalSchema>;
+	}
 
-	let exercise_based = true;
+	let { goalForm }: Props = $props();
+
+	let exercise_based = $state(true);
 
 	const _form = superForm(goalForm, {
 		id: 'add',
@@ -43,7 +47,7 @@
 	<div class="text-xl">New Goal</div>
 	<form class="space-y-4 flex flex-col" use:enhance method="POST" action={'?/add_goal'}>
 		<label for="name">Goal Type</label>
-		<select bind:value={$form.goal_type} on:change={handleTypeChange}>
+		<select bind:value={$form.goal_type} onchange={handleTypeChange}>
 			{#each GoalTypesZ.options as goal_type}
 				<option>{goal_type}</option>
 			{/each}

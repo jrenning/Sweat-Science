@@ -7,10 +7,14 @@
 	import BackButton from '../UI/Buttons/BackButton.svelte';
 	import { afterNavigate } from '$app/navigation';
 
-	export let folders: WorkoutFolder[];
-	export let workouts: WorkoutRoutine[]
 
-	export let folder_id: number | null;
+	interface Props {
+		folders: WorkoutFolder[];
+		workouts: WorkoutRoutine[];
+		folder_id: number | null;
+	}
+
+	let { folders, workouts, folder_id }: Props = $props();
 
 	const modalStore = getModalStore();
 
@@ -24,7 +28,7 @@
 		component: modalComponentFolder
 	};
 
-	let previousPage: string = '/';
+	let previousPage: string = $state('/');
 
 	afterNavigate(({ from }) => {
 		previousPage = from?.url.pathname || previousPage;
@@ -36,7 +40,7 @@
 </div>
 <button
 	class="btn-md mx-4 w-20 hover:variant-filled-secondary variant-outline-secondary flex mt-6 justify-center items-center rounded-md shadow-md"
-	on:click={() => modalStore.trigger(folderModal)}>Add</button
+	onclick={() => modalStore.trigger(folderModal)}>Add</button
 >
 <div class="grid grid-cols-1 gap-4 mx-4 mt-4">
 	{#each folders as folder}

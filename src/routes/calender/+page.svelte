@@ -4,17 +4,21 @@
 	import { firstDayOfWeek } from '../../helpers/datetime';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 	let days = ['Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa'];
 	let today = new Date();
 	let start_of_week = firstDayOfWeek(today, 0);
-	let selected_day = days[today.getDay()];
-	$: idx = days.indexOf(selected_day);
-	$: workouts_this_week = data.workouts.filter(
+	let selected_day = $state(days[today.getDay()]);
+	let idx = $derived(days.indexOf(selected_day));
+	let workouts_this_week = $derived(data.workouts.filter(
 		(workout) => workout.created_at.getTime() > start_of_week.getTime()
-	);
+	));
 
-	$: workouts = workouts_this_week.filter((workout) => workout.created_at.getDay() == idx);
+	let workouts = $derived(workouts_this_week.filter((workout) => workout.created_at.getDay() == idx));
 
 	function getExerciseTotal() {
 		let total = 0;
@@ -41,7 +45,7 @@
 <div>
 	<div class="flex justify-evenly w-full">
 		<div class="text-2xl">This Week</div>
-		<div />
+		<div></div>
 		<div class="text-lg text-gray-400">My Plans</div>
 	</div>
 
@@ -50,7 +54,7 @@
 			{#if day == selected_day}
 				<button class="text-surface-600">{day}</button>
 			{:else}
-				<button on:click={() => (selected_day = day)}>{day}</button>
+				<button onclick={() => (selected_day = day)}>{day}</button>
 			{/if}
 		{/each}
 	</div>

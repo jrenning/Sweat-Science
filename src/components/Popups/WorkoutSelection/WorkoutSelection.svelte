@@ -5,10 +5,14 @@
 	import WorkoutSelect from './WorkoutSelect.svelte';
 	import SelectContainer from './SelectContainer.svelte';
 
-	let tabSet = 0;
-	export let parent
+	let tabSet = $state(0);
 
-	export let onSelection: (workout: WorkoutRoutine) => void
+	interface Props {
+		parent: any;
+		onSelection: (workout: WorkoutRoutine) => void;
+	}
+
+	let { parent, onSelection }: Props = $props();
 
 	//@ts-ignore
 	let workout_options: Promise<WorkoutRoutineWithExercises[]> = getWorkoutOptions();
@@ -51,38 +55,40 @@
 		<Tab bind:group={tabSet} name="tab2" value={1}>Favorites</Tab>
 		<Tab bind:group={tabSet} name="tab3" value={2}>List</Tab>
 		<!-- Tab Panels --->
-		<svelte:fragment slot="panel">
-			{#if tabSet === 0}
-				{#await recent_workouts}
-					<div>Fetching workouts...</div>
-				{:then recent_workouts}
-					<SelectContainer>
-						{#each recent_workouts as workout}
-							<WorkoutSelect {workout} {onSelection} />
-						{/each}
-					</SelectContainer>
-				{/await}
-			{:else if tabSet === 1}
-				{#await favorite_workouts}
-					<div>Fetching workouts...</div>
-				{:then favorite_workouts}
-					<SelectContainer>
-						{#each favorite_workouts as workout}
-							<WorkoutSelect {workout} {onSelection}/>
-						{/each}
-					</SelectContainer>
-				{/await}
-			{:else if tabSet === 2}
-				{#await workout_options}
-					<div>Fetching workouts...</div>
-				{:then workout_options}
-					<SelectContainer>
-						{#each workout_options as workout}
-							<WorkoutSelect {workout} {onSelection}/>
-						{/each}
-					</SelectContainer>
-				{/await}
-			{/if}
-		</svelte:fragment>
+		{#snippet panel()}
+			
+				{#if tabSet === 0}
+					{#await recent_workouts}
+						<div>Fetching workouts...</div>
+					{:then recent_workouts}
+						<SelectContainer>
+							{#each recent_workouts as workout}
+								<WorkoutSelect {workout} {onSelection} />
+							{/each}
+						</SelectContainer>
+					{/await}
+				{:else if tabSet === 1}
+					{#await favorite_workouts}
+						<div>Fetching workouts...</div>
+					{:then favorite_workouts}
+						<SelectContainer>
+							{#each favorite_workouts as workout}
+								<WorkoutSelect {workout} {onSelection}/>
+							{/each}
+						</SelectContainer>
+					{/await}
+				{:else if tabSet === 2}
+					{#await workout_options}
+						<div>Fetching workouts...</div>
+					{:then workout_options}
+						<SelectContainer>
+							{#each workout_options as workout}
+								<WorkoutSelect {workout} {onSelection}/>
+							{/each}
+						</SelectContainer>
+					{/await}
+				{/if}
+			
+			{/snippet}
 	</TabGroup>
 </div>

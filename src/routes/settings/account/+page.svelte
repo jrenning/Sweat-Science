@@ -3,7 +3,11 @@
 	import BackButton from '../../../components/UI/Buttons/BackButton.svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	type SettingType = 'weight' | 'height';
 
@@ -30,13 +34,13 @@
 	<div class="flex flex-col space-y-6 mx-20">
 		<div class="flex space-x-6 items-center">
 			<h3 class="font-semibold text-xl flex justify-start">Weight</h3>
-			<input type="number" inputmode="numeric" class="input" value={data.account_settings.weight} on:blur={(e)=> updateSetting(e.target, "weight")} />
+			<input type="number" inputmode="numeric" class="input" value={data.account_settings.weight} onblur={(e)=> updateSetting(e.target, "weight")} />
 			<div>lb</div>
 		</div>
 
 		<div class="flex space-x-6 justify-center items-center">
 			<h3 class="font-semibold text-xl flex justify-start">Height</h3>
-			<input type="number" inputmode="numeric" class="input" value={data.account_settings.height}  on:blur={(e)=> updateSetting(e.target,"height")}/>
+			<input type="number" inputmode="numeric" class="input" value={data.account_settings.height}  onblur={(e)=> updateSetting(e.target,"height")}/>
 			<div>in</div>
 		</div>
 	</div>

@@ -2,13 +2,22 @@
 	import type { ExerciseLogWithExercises } from '$lib/db/schema';
 	import ExerciseLogFull from './ExerciseLogFull.svelte';
 
-	export let logs: ExerciseLogWithExercises[];
 
-	export let type: 'Date' | 'Exercise';
 
-	export let chart = true
 
-	export let comparison_data: ExerciseLogWithExercises[][] = []
+	interface Props {
+		logs: ExerciseLogWithExercises[];
+		type: 'Date' | 'Exercise';
+		chart?: boolean;
+		comparison_data?: ExerciseLogWithExercises[][];
+	}
+
+	let {
+		logs,
+		type,
+		chart = true,
+		comparison_data = []
+	}: Props = $props();
 </script>
 
 <div class="flex flex-col mt-6">

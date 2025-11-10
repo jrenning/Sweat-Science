@@ -5,7 +5,11 @@
 	import EditIcon from '../../components/Icons/EditIcon.svelte';
 
 
-	export let exercises: ExerciseWithEquipment[]
+	interface Props {
+		exercises: ExerciseWithEquipment[];
+	}
+
+	let { exercises }: Props = $props();
 
 	let categories = ['Name', 'Description', 'Category', 'Equipment', "Muscle Groups"];
 
@@ -23,7 +27,7 @@
 		</thead>
 		<tbody>
 			{#each exercises as exercise}
-				<tr on:click={()=> goto(`/exercises?exercise_id=${exercise.id}`)}>
+				<tr onclick={()=> goto(`/exercises?exercise_id=${exercise.id}`)}>
 					<td>{exercise.name}</td>
 					<td>{exercise.description ? exercise.description : 'None'}</td>
 					<td>{exercise.category}</td>

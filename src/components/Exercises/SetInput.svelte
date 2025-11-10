@@ -1,18 +1,10 @@
 <script lang="ts">
-	export let type: 'Weight' | 'Distance' | 'Duration';
 
-	export let weight = 0;
-	export let reps = 0;
 
-	export let distance = 0;
 
-	export let duration = 0;
 
-	export let pace = 0;
 
-	export let hidden = false;
 
-	export let percent = false;
 
 	let visible = hidden ? 'none' : 'flex';
 
@@ -22,9 +14,32 @@
 		Duration: '% of Longest'
 	};
 
-	export let extra = true;
 
-	export let cardio = false;
+	interface Props {
+		type: 'Weight' | 'Distance' | 'Duration';
+		weight?: number;
+		reps?: number;
+		distance?: number;
+		duration?: number;
+		pace?: number;
+		hidden?: boolean;
+		percent?: boolean;
+		extra?: boolean;
+		cardio?: boolean;
+	}
+
+	let {
+		type,
+		weight = $bindable(0),
+		reps = $bindable(0),
+		distance = $bindable(0),
+		duration = $bindable(0),
+		pace = $bindable(0),
+		hidden = false,
+		percent = $bindable(false),
+		extra = true,
+		cardio = false
+	}: Props = $props();
 </script>
 
 <div style={`display: ${visible}`} class="flex-col space-y-4">

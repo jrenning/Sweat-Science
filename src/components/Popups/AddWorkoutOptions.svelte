@@ -11,8 +11,12 @@
 	import AddExistingWorkout from '../AddWorkoutPlan/AddExistingWorkout.svelte';
 
 
-	export let plan_id: number
-	export let day: number
+	interface Props {
+		plan_id: number;
+		day: number;
+	}
+
+	let { plan_id, day }: Props = $props();
 	const modal = getModalStore();
 
 		const modalComponentWorkout: ModalComponent = {
@@ -31,5 +35,5 @@
 
 <div class="card flex flex-col space-y-4 p-4 hidden" data-popup="workoutAddOptions">
 	<a href={`/add_workout?plan_id=${plan_id}&day=${day}`}><button>Add New</button></a>
-	<button class="flex flex-col space-y-1" on:click={()=> modal.trigger(addExistingWorkoutModal)}>Add Existing</button>
+	<button class="flex flex-col space-y-1" onclick={()=> modal.trigger(addExistingWorkoutModal)}>Add Existing</button>
 </div>

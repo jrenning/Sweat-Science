@@ -6,13 +6,22 @@
 	import PercentChangeInfo from '../PercentChangeInfo.svelte';
 	import ExerciseLogEntry from './ExerciseLogEntry.svelte';
 
-	export let log: ExerciseLogWithExercises;
 
-	export let type: 'Date' | 'Exercise';
 
-	export let chart = true;
 
-	export let comparison_data: ExerciseLogWithExercises[] = [];
+	interface Props {
+		log: ExerciseLogWithExercises;
+		type: 'Date' | 'Exercise';
+		chart?: boolean;
+		comparison_data?: ExerciseLogWithExercises[];
+	}
+
+	let {
+		log,
+		type,
+		chart = true,
+		comparison_data = []
+	}: Props = $props();
 
 	// get last performed time before current item
 	function findMatchingIdx() {

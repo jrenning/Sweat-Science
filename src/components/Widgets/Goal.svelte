@@ -5,11 +5,15 @@
 	import DeleteIcon from '../Icons/DeleteIcon.svelte';
 	import { invalidateAll } from '$app/navigation';
 
-	export let goal: Goal & {
+	interface Props {
+		goal: Goal & {
 		current_val: number;
 	};
+	}
 
-	let goal_string: string;
+	let { goal }: Props = $props();
+
+	let goal_string: string = $state();
 
 	if (goal.goal_type == '1RM') {
 		goal_string = '1RM';
@@ -51,7 +55,7 @@
 				<div
 					class="h-2 rounded-md bg-blue-300 w"
 					style={`width: calc(100%*${goal.current_val / goal.goal_value}`}
-				/>
+				></div>
 			</div>
 			<div class="text-sm">{goal.current_val}/{goal.goal_value}</div>
 		</div>
@@ -61,7 +65,7 @@
 			{prettifyDate(goal.deadline)}
 		</div>
 	{/if}
-	<button class="h-4 w-4" on:click={handleDelete}>
+	<button class="h-4 w-4" onclick={handleDelete}>
 		<DeleteIcon />
 	</button>
 </div>

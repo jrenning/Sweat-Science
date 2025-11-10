@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { popup } from "@skeletonlabs/skeleton";
 
-    export let name: string
-    export let id: number
 
     import FolderIcon from "../Icons/FolderIcon.svelte"
 	import FolderOptions from "../Popups/FolderOptions.svelte";
+	interface Props {
+		name: string;
+		id: number;
+	}
+
+	let { name, id }: Props = $props();
 
 
 </script>
@@ -22,9 +26,9 @@
 			placement: 'bottom'
 		}}
 	>
-		<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
-		<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
-		<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black" />
+		<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
+		<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
+		<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
 	</div>
     <FolderOptions id={id} name={name}/>
 </div>

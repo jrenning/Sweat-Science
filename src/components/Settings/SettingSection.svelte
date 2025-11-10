@@ -1,9 +1,13 @@
 <script lang="ts">
-	export let name: string;
 
-	export let link: string;
 
 	import ChevronIcon from '../Icons/ChevronIcon.svelte';
+	interface Props {
+		name: string;
+		link: string;
+	}
+
+	let { name, link }: Props = $props();
 </script>
 
 <a href={link}>

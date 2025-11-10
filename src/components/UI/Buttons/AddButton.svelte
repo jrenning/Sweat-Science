@@ -1,9 +1,13 @@
 <script lang="ts">
-	export let action: () => void = () => {};
+	interface Props {
+		action?: () => void;
+	}
+
+	let { action = () => {} }: Props = $props();
 </script>
 
 <button
-	on:click={() => action()}
+	onclick={() => action()}
 	class="btn-md variant-outline-secondary flex w-full mt-6 justify-center items-center rounded-md shadow-md"
 	>Add</button
 >

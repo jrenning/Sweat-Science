@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-	export let name: string;
-	export let id: number;
 	import {
 		popup,
 		type ModalSettings,
@@ -10,6 +8,12 @@
 		type ModalComponent
 	} from '@skeletonlabs/skeleton';
 	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
+	interface Props {
+		name: string;
+		id: number;
+	}
+
+	let { name, id }: Props = $props();
 	const modal = getModalStore();
 
 	async function deleteWorkout() {
@@ -52,7 +56,7 @@
 </script>
 
 <div class="card flex flex-col space-y-4 p-4 hidden" data-popup={`exerciseOptions${name}`}>
-	<button on:click={() => modal.trigger(deleteModal)}>Delete</button>
+	<button onclick={() => modal.trigger(deleteModal)}>Delete</button>
 	<a class="flex flex-col space-y-1" href={`/edit_workout/${id}`}>Edit</a>
-	<button on:click={()=> modal.trigger(changeFolderModal)}>Change Folder</button>
+	<button onclick={()=> modal.trigger(changeFolderModal)}>Change Folder</button>
 </div>

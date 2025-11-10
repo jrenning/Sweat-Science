@@ -3,7 +3,11 @@
 	import { calculateCalories } from '../../helpers/calories';
 	import { formatTime } from '../../helpers/datetime';
 
-	export let last_workout: WorkoutLogWithExercises | undefined;
+	interface Props {
+		last_workout: WorkoutLogWithExercises | undefined;
+	}
+
+	let { last_workout }: Props = $props();
 </script>
 
 {#if last_workout}

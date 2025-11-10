@@ -2,7 +2,11 @@
 	import type { Equipment } from "$lib/db/schema";
 
 
-    	export let equipment_list: Equipment[]
+	interface Props {
+		equipment_list: Equipment[];
+	}
+
+	let { equipment_list }: Props = $props();
 
 	let categories = ['Name', 'Type'];
 </script>

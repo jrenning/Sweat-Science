@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { WorkoutLogWithExercises } from '$lib/db/schema';
 
-	export let workouts: WorkoutLogWithExercises[];
+	interface Props {
+		workouts: WorkoutLogWithExercises[];
+	}
+
+	let { workouts }: Props = $props();
 </script>
 
 <div class="flex flex-col space-y-4">

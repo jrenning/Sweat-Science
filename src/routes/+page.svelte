@@ -7,7 +7,11 @@
 	import SubscribeButton from '../components/Notifications/SubscribeButton.svelte';
 	import CurrentGoals from '../components/Widgets/CurrentGoals.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 </script>
 
@@ -26,6 +30,6 @@
 			</div>
 		</div>
 	{:else}
-		<div />
+		<div></div>
 	{/if}
 </div>

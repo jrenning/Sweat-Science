@@ -23,11 +23,15 @@
 	}
 
 
-    export let current_exercise: string = ""
-    export let callback: (exercise: Exercise) => void = () => {}
+	interface Props {
+		current_exercise?: string;
+		callback?: (exercise: Exercise) => void;
+	}
+
+	let { current_exercise = $bindable(""), callback = () => {} }: Props = $props();
 
 
-    let inputValue = ""
+    let inputValue = $state("")
 
     function onExerciseSelection(event: CustomEvent<AutocompleteOption>) {
         inputValue = event.detail.label

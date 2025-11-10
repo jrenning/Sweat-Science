@@ -10,7 +10,11 @@
 	import { goto } from '$app/navigation';
 	import { calcOneRepMax, calculateOneRepFromArray } from '../../../../helpers/rep_max';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 
 
@@ -38,7 +42,7 @@
 	<div class="flex flex-col justify-center items-center">
 		<div class="flex justify-between w-[95%]">
 			<BackButton link="/progress" />
-			<div />
+			<div></div>
 		</div>
 	</div>
 	{#if data.data}

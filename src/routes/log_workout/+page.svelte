@@ -22,12 +22,16 @@
 	import ExerciseLogEntry from '../../components/Progress/Log/ExerciseLogEntry.svelte';
 	import { prettifyDate } from '../../helpers/datetime';
 
-	export let data: PageData;
-	let selected_workout: WorkoutRoutineWithExercises | undefined;
-	let existing_workout: boolean = false;
-	let page: number = 1;
-	let new_exercises = 0;
-	let last_performed: WorkoutLogWithExercises;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+	let selected_workout: WorkoutRoutineWithExercises | undefined = $state();
+	let existing_workout: boolean = $state(false);
+	let page: number = $state(1);
+	let new_exercises = $state(0);
+	let last_performed: WorkoutLogWithExercises = $state();
 	function handleWorkoutTypeChange() {
 		if (!existing_workout) {
 			selected_workout = undefined;
@@ -90,7 +94,7 @@
 	<div class="flex w-full justify-evenly space-x-6 mb-10">
 		<BackButton link="/progress" />
 		<h2 class="text-3xl font-bold">Log Workout</h2>
-		<div />
+		<div></div>
 	</div>
 	<form class="" method="POST" action={'/log_workout?/log_workout'} use:enhance>
 		{#if page === 1}
@@ -103,7 +107,7 @@
 						class="input w-6 h-6"
 						type="checkbox"
 						bind:checked={existing_workout}
-						on:change={() => handleWorkoutTypeChange()}
+						onchange={() => handleWorkoutTypeChange()}
 					/>
 				</div>
 			</div>
@@ -178,90 +182,94 @@
 				<Accordion>
 					{#each { length: new_exercises } as exercise, i}
 						<AccordionItem>
-							<svelte:fragment slot="summary">
-								<div>
-									<span class="font-semibold">Exercise {i + 1}</span>
-									<button
-										class=" shadow-md bg-red-300 rounded-full ml-12 px-2 py-1"
-										type="button"
-										on:click={() => {
+							{#snippet summary()}
+															
+									<div>
+										<span class="font-semibold">Exercise {i + 1}</span>
+										<button
+											class=" shadow-md bg-red-300 rounded-full ml-12 px-2 py-1"
+											type="button"
+											onclick={() => {
 											$form.exercises = $form.exercises.filter((ele, idx) => idx !== i);
 											new_exercises -= 1;
 										}}>X</button
-									>
-								</div>
-							</svelte:fragment>
-							<svelte:fragment slot="content">
-								<ExerciseSelector
-									callback={(exercise) =>
-										($form.exercises[i] = {
-											exercise_id: exercise.id,
-											sets: 1,
-											reps: [],
-											weight: [],
-											distance: [],
-											duration: [],
-											rest: 0
-										})}
-								/>
-								{#if $form.exercises[i]}
-									<div class="flex justify-center flex-row space-x-6 mt-6">
-										<label class="label" for="weight">Weight</label>
-										<input
-											type="radio"
-											class="radio"
-											name="type"
-											value="Weight"
-											bind:group={$form.exercises[i].type}
-										/>
-										<label for="distance">Distance</label>
-										<input
-											type="radio"
-											class="radio"
-											name="type"
-											value="Distance"
-											bind:group={$form.exercises[i].type}
-										/>
-										<label for="time">Time</label>
-										<input
-											type="radio"
-											class="radio"
-											name="type"
-											value="Duration"
-											bind:group={$form.exercises[i].type}
-										/>
+										>
 									</div>
-									<div class="flex mt-8 justify-between m-auto w-40 items-center">
-										<FormButton text="+" action={() => ($form.exercises[i].sets += 1)} />
-										{$form.exercises[i].sets}
-										<FormButton text="-" action={() => ($form.exercises[i].sets -= 1)} />
-									</div>
-									<div class="grid grid-cols-2 gap-x-2 gap-y-16 row mx-8 mt-10">
-										{#each { length: $form.exercises[i].sets } as set, j}
-											{#if $form.exercises[i].type == 'Weight'}
-												<SetInput
-													type="Weight"
-													extra={false}
-													bind:weight={$form.exercises[i].weight[j]}
-													bind:reps={$form.exercises[i].reps[j]}
-												/>
-											{:else if $form.exercises[i].type == 'Distance'}
-												<SetInput
-													type="Distance"
-													extra={false}
-													bind:distance={$form.exercises[i].distance[j]}
-												/>
-											{:else if $form.exercises[i].type == 'Duration'}
-												<SetInput
-													type="Duration"
-													extra={false}
-													bind:duration={$form.exercises[i].duration[i]}
-												/>
-											{/if}
-										{/each}
-									</div>
-								{/if}
-							</svelte:fragment>
+								
+															{/snippet}
+							{#snippet content()}
+															
+									<ExerciseSelector
+										callback={(exercise) =>
+											($form.exercises[i] = {
+												exercise_id: exercise.id,
+												sets: 1,
+												reps: [],
+												weight: [],
+												distance: [],
+												duration: [],
+												rest: 0
+											})}
+									/>
+									{#if $form.exercises[i]}
+										<div class="flex justify-center flex-row space-x-6 mt-6">
+											<label class="label" for="weight">Weight</label>
+											<input
+												type="radio"
+												class="radio"
+												name="type"
+												value="Weight"
+												bind:group={$form.exercises[i].type}
+											/>
+											<label for="distance">Distance</label>
+											<input
+												type="radio"
+												class="radio"
+												name="type"
+												value="Distance"
+												bind:group={$form.exercises[i].type}
+											/>
+											<label for="time">Time</label>
+											<input
+												type="radio"
+												class="radio"
+												name="type"
+												value="Duration"
+												bind:group={$form.exercises[i].type}
+											/>
+										</div>
+										<div class="flex mt-8 justify-between m-auto w-40 items-center">
+											<FormButton text="+" action={() => ($form.exercises[i].sets += 1)} />
+											{$form.exercises[i].sets}
+											<FormButton text="-" action={() => ($form.exercises[i].sets -= 1)} />
+										</div>
+										<div class="grid grid-cols-2 gap-x-2 gap-y-16 row mx-8 mt-10">
+											{#each { length: $form.exercises[i].sets } as set, j}
+												{#if $form.exercises[i].type == 'Weight'}
+													<SetInput
+														type="Weight"
+														extra={false}
+														bind:weight={$form.exercises[i].weight[j]}
+														bind:reps={$form.exercises[i].reps[j]}
+													/>
+												{:else if $form.exercises[i].type == 'Distance'}
+													<SetInput
+														type="Distance"
+														extra={false}
+														bind:distance={$form.exercises[i].distance[j]}
+													/>
+												{:else if $form.exercises[i].type == 'Duration'}
+													<SetInput
+														type="Duration"
+														extra={false}
+														bind:duration={$form.exercises[i].duration[i]}
+													/>
+												{/if}
+											{/each}
+										</div>
+									{/if}
+								
+															{/snippet}
 						</AccordionItem>
 					{/each}
 				</Accordion>
@@ -275,7 +283,7 @@
 		{:else if page == 3}
 			<div class="mx-4 my-6">
 				<label class="font-semibold mb-2" for="notes">Notes</label>
-				<textarea class="textarea" bind:value={$form.notes} />
+				<textarea class="textarea" bind:value={$form.notes}></textarea>
 			</div>
 
 			<div class="flex justify-center items-center space-x-8">

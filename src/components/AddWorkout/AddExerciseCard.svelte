@@ -14,9 +14,13 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
 
-	export let exercise: InsertExerciceRoutineWithExercises;
-	export let workout_id: number;
-	export let exerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>
+	interface Props {
+		exercise: InsertExerciceRoutineWithExercises;
+		workout_id: number;
+		exerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
+	}
+
+	let { exercise, workout_id, exerciseForm = $bindable() }: Props = $props();
 
 	async function deleteExercise() {
 		const data = {
@@ -58,8 +62,8 @@
 	<div class="flex justify-between items-center">
 		<div class="text-2xl font-semibold">{exercise.exercise.name}</div>
 		<div class="flex flex-row space-x-6">
-			<button on:click={() => modal.trigger(exerciseModal)} type="button" class="w-4 h-4"><EditIcon /></button>
-			<button type="button" class="w-4 h-4" on:click={() => deleteExercise()}><DeleteIcon /></button
+			<button onclick={() => modal.trigger(exerciseModal)} type="button" class="w-4 h-4"><EditIcon /></button>
+			<button type="button" class="w-4 h-4" onclick={() => deleteExercise()}><DeleteIcon /></button
 			>
 		</div>
 	</div>

@@ -4,11 +4,21 @@
 	import type { WorkoutRoutineWithExercises } from "$lib/db/schema";
 
 
-    export let dates: number[]
-    export let start_date: Date
-    export let day_offset: number
-    export let month_offset: number
-    export let day_start: number
+    interface Props {
+        dates: number[];
+        start_date: Date;
+        day_offset: number;
+        month_offset: number;
+        day_start: number;
+    }
+
+    let {
+        dates,
+        start_date,
+        day_offset,
+        month_offset,
+        day_start
+    }: Props = $props();
     const new_date = new Date(start_date)
     new_date.setMonth(start_date.getMonth()+month_offset)
 

@@ -2,10 +2,19 @@
 	import type { Exercise } from '$lib/db/schema';
 	import { prettifyDate } from '../../helpers/datetime';
 
-	export let exercise: Exercise;
-	export let rep_max: number | undefined | null;
-	export let current_max: number | undefined | null;
-	export let times_performed: number;
+	interface Props {
+		exercise: Exercise;
+		rep_max: number | undefined | null;
+		current_max: number | undefined | null;
+		times_performed: number;
+	}
+
+	let {
+		exercise,
+		rep_max,
+		current_max,
+		times_performed
+	}: Props = $props();
 </script>
 
 <div class="space-y-6">

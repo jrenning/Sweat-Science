@@ -5,8 +5,12 @@
 	import { prettifyDate } from '../../../helpers/datetime';
 	import { calcOneRepForWholeExercise, calculateOneRepFromArray } from '../../../helpers/rep_max';
 
-	export let exercise_data: ExerciseLogWithExercises;
-    export let comparison_data: ExerciseLogWithExercises
+	interface Props {
+		exercise_data: ExerciseLogWithExercises;
+		comparison_data: ExerciseLogWithExercises;
+	}
+
+	let { exercise_data, comparison_data }: Props = $props();
 
     console.log(comparison_data)
     console.log(exercise_data)
@@ -18,7 +22,7 @@
     }
 
 	let ctx;
-	let canvas: HTMLCanvasElement;
+	let canvas: HTMLCanvasElement = $state();
 
     let combined_data = data.concat(last_data).filter((a)=> a > 0)
 
@@ -58,7 +62,7 @@
 
 <div class="relative">
 	<div class={`w-[365px] overflow-x-scroll flex justify-center`}>
-		<canvas bind:this={canvas} width={32} height={32}/>
+		<canvas bind:this={canvas} width={32} height={32}></canvas>
 	</div>
 	
 </div>

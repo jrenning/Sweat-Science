@@ -11,9 +11,13 @@
 	import AddButton from '../../components/UI/Buttons/AddButton.svelte';
 	import { onNavigate } from '$app/navigation';
 
-	let pg = $page.url.searchParams.get('page') ? Number($page.url.searchParams.get('page')) : 1;
+	let pg = $state($page.url.searchParams.get('page') ? Number($page.url.searchParams.get('page')) : 1);
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	const {
 		form: planForm,
@@ -31,7 +35,7 @@
 
 	export const snapshot = { capture, restore };
 
-	$: end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + $planForm.total_days);
+	let end = $derived(new Date(start.getFullYear(), start.getMonth(), start.getDate() + $planForm.total_days));
 
 	function updatePage(number: number) {
 		pg = number;
@@ -105,7 +109,7 @@
 		<button
 			class="rounded-md shadow-md px-2 py-1 bg-surface-active-token"
 			type="button"
-			on:click={() => (pg += 1)}
+			onclick={() => (pg += 1)}
 		>
 			Next
 		</button>
@@ -113,21 +117,21 @@
 		<div class="flex flex-col justify-center items-center">
 			
 			<div class="flex justify-evenly w-full mb-6">
-				<button class="rotate-180" on:click={()=> pg = 1}><ChevronIcon /></button>
+				<button class="rotate-180" onclick={()=> pg = 1}><ChevronIcon /></button>
 				<label for="days" class="font-semibold text-xl">Number of Days</label>
 				<div></div>
 			</div>
 			<div class="flex justify-center items-center space-x-4">
 				<button
 					class="rounded-md btn-md bg-surface-300 shadow-md px-2 py-1"
-					on:click={() => {
+					onclick={() => {
 						updatePlanDays(-7);
 					}}
 					type="button">- Week</button
 				>
 				<button
 					class="rounded-md shadow-md bg-surface-300 px-2 py-1 btn-md"
-					on:click={() => {
+					onclick={() => {
 						updatePlanDays(-1);
 					}}
 					type="button">-</button
@@ -136,12 +140,12 @@
 				<input bind:value={$planForm.total_days} class=" input w-8" name="days" />
 				<button
 					class="rounded-md shadow-md px-2 py-1 bg-surface-300 btn-md"
-					on:click={() => updatePlanDays(1)}
+					onclick={() => updatePlanDays(1)}
 					type="button">+</button
 				>
 				<button
 					class="rounded-md shadow-md px-2 py-1 bg-surface-300 btn-md"
-					on:click={() => updatePlanDays(7)}
+					onclick={() => updatePlanDays(7)}
 					type="button">+ Week</button
 				>
 			</div>
@@ -151,7 +155,7 @@
 		</div>
 	{:else if pg == 3}
 		<div class="flex flex-col space-y-4">
-			<button class="btn-md variant-outline-secondary" type="button" on:click={() => (pg -= 1)}
+			<button class="btn-md variant-outline-secondary" type="button" onclick={() => (pg -= 1)}
 				>Go Back</button
 			>
 		</div>
