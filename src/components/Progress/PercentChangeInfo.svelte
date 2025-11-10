@@ -14,10 +14,12 @@
 	let yearChange = getPercentChangeOverTime(average_data, dates, 'Year');
 	let quarterChange = getPercentChangeOverTime(average_data, dates, 'Quarter');
 	let monthChange = getPercentChangeOverTime(average_data, dates, 'Month');
+	let lastChange = getPercentChangeOverTime(average_data, dates, "Last Performed")
 </script>
 
 <div class="flex space-x-10 justify-center">
 	<PercentChangeSnippet value={yearChange} name="Year" />
     <PercentChangeSnippet value={quarterChange} name="Quarter" />
     <PercentChangeSnippet value={monthChange} name="Month" />
+	<PercentChangeSnippet value={lastChange} name="Last" />
 </div>

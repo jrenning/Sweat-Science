@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let value: number;
-	export let name: 'Year' | 'Quarter' | 'Month';
+	export let name: 'Year' | 'Quarter' | 'Month' | "Last";
 </script>
 
 <div class="flex flex-col">

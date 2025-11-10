@@ -1,4 +1,4 @@
-type Scale = 'Year' | 'Quarter' | 'Month';
+type Scale = 'Year' | 'Quarter' | 'Month' | "Last Performed";
 export function getPercentChangeOverTime(data: number[], dates: Date[], time: Scale) {
 	let target = new Date();
 
@@ -21,6 +21,11 @@ export function getPercentChangeOverTime(data: number[], dates: Date[], time: Sc
 	let filtered_distances = distances.filter((d) => d < 0);
 	// find closest
 	let idx = distances.indexOf(Math.max(...filtered_distances));
+
+	if (time == 'Last Performed') {
+		idx = data.length - 2;
+	}
+
 	let current = data.at(data.length - 1);
 	let old = data.at(idx);
 	if (current && old) {

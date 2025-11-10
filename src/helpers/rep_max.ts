@@ -20,9 +20,30 @@ export function calcOneRepMax(weight: number, reps: number, formula: OneRepFormu
 }
 
 export function calculateOneRepFromArray(weight: number[], reps: number[]) {
+	/*
+	Returns the max one rep mex from an array
+	*/
 	let i = weight.indexOf(Math.max(...weight));
 
 	return calcOneRepMax(weight[i], reps[i]);
+}
+
+export function calcOneRepForWholeExercise(weight: number[], reps: number[]) {
+	/*
+	Returns the max one rep mex for all sets in an exercise
+	*/
+	let maxes: number[] = [];
+
+	for (let i = 0; i < weight.length; i++) {
+		if (weight[i] && reps[i]) {
+			//@ts-ignore
+			maxes.push(calcOneRepMax(weight[i], reps[i]));
+		} else {
+			maxes.push(0);
+		}
+	}
+
+	return maxes;
 }
 
 export function calcAverageMax(weight: number[], reps: number[]) {
@@ -34,11 +55,10 @@ export function calcAverageMax(weight: number[], reps: number[]) {
 		if (result) {
 			maxes += result;
 		} else {
-            // adjust for when i skip a set
+			// adjust for when i skip a set
 			length -= 1;
 		}
 	}
 
 	return maxes / length;
 }
-

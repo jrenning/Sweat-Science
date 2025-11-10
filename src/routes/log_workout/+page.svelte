@@ -19,13 +19,15 @@
 	import SetInput from '../../components/Exercises/SetInput.svelte';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import ExerciseLogs from '../../components/Progress/Log/ExerciseLogs.svelte';
+	import ExerciseLogEntry from '../../components/Progress/Log/ExerciseLogEntry.svelte';
+	import { prettifyDate } from '../../helpers/datetime';
 
 	export let data: PageData;
 	let selected_workout: WorkoutRoutineWithExercises | undefined;
 	let existing_workout: boolean = false;
 	let page: number = 1;
 	let new_exercises = 0;
-	let last_performed: WorkoutLogWithExercises
+	let last_performed: WorkoutLogWithExercises;
 	function handleWorkoutTypeChange() {
 		if (!existing_workout) {
 			selected_workout = undefined;
@@ -33,7 +35,6 @@
 			$form.exercises = [];
 		}
 	}
-
 
 	/* MODAL */
 	const modalStore = getModalStore();
@@ -46,7 +47,6 @@
 		);
 		$form.exercises = selected_workout.exercises;
 		$form.name = selected_workout.name;
-
 
 		// fetch the last performed data
 		const data = {
@@ -61,15 +61,12 @@
 			}
 		});
 
-		console.log(res)
+		console.log(res);
 
 		last_performed = await res.json();
 
-		console.log(last_performed)
-
-
+		console.log(last_performed);
 	}
-
 
 	const modalComponentWorkout: ModalComponent = {
 		ref: WorkoutSelection,
@@ -136,11 +133,17 @@
 			</div>
 		{:else if page === 2}
 			{#if existing_workout}
-			<ExerciseLogs logs={last_performed.exercise_routines} type="Exercise" chart={false} />
 				{#each $form.exercises as exercise, i}
 					<div class="my-6">
 						<div class="my-6 font-semibold text-lg flex justify-center items-center">
 							{exercise.exercise.name}
+						</div>
+						<!-- //last performed metrics -->
+						<div class="mb-6">
+							<div class="mx-4 italic text-sm">
+								Last performed: {prettifyDate(new Date(last_performed.created_at))}
+							</div>
+							<ExerciseLogEntry log_entry={last_performed.exercise_routines[i]} />
 						</div>
 						<div class="grid grid-cols-2 gap-x-2 gap-y-16 row mx-8">
 							{#each { length: exercise.sets } as set, j}
@@ -233,7 +236,7 @@
 										{$form.exercises[i].sets}
 										<FormButton text="-" action={() => ($form.exercises[i].sets -= 1)} />
 									</div>
-									<div class="flex flex-col space-y-6 justify-center items-center mt-10">
+									<div class="grid grid-cols-2 gap-x-2 gap-y-16 row mx-8 mt-10">
 										{#each { length: $form.exercises[i].sets } as set, j}
 											{#if $form.exercises[i].type == 'Weight'}
 												<SetInput

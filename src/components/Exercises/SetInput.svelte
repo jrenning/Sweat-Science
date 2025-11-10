@@ -32,7 +32,7 @@
 		<label class="font-semibold" for="type">{type}</label>
 		{#if type == 'Weight'}
 			<input
-				class="w-16 input outline-secondary-500 outline-2"
+				class="w-16 input outline-secondary-500 outline-2 justify-right"
 				name="type"
 				type="number"
 				inputmode="numeric"

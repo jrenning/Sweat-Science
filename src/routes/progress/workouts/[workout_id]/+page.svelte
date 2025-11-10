@@ -8,8 +8,11 @@
 	import type { PageData } from './$types';
 	import { redirect } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
+	import { calcOneRepMax, calculateOneRepFromArray } from '../../../../helpers/rep_max';
 
 	export let data: PageData;
+
+
 
 	async function deleteLog() {
 		if (!data.data) {
@@ -27,7 +30,7 @@
 			}
 		});
 		// go back to home
-		goto("/progress")
+		goto('/progress');
 	}
 </script>
 
@@ -39,21 +42,20 @@
 		</div>
 	</div>
 	{#if data.data}
-	<div class="mx-4 my-6">
-		<LastWorkout last_workout={data.data} />
-	</div>
-	<div class="rounded-md flex flex-col mb-6 bg-surface-100 shadow-md mx-10">
-		<div class="mx-4 text-xl font-semibold">Notes</div>
-		<div class="mx-4">{data.data?.notes}</div>
-	</div>
-	<div class="flex justify-center space-x-4">
-		<FormButton text="Remove" action={()=> deleteLog()}/>
-		<FormButton text="Edit" />
-	</div>
+		<div class="mx-4 my-6">
+			<LastWorkout last_workout={data.data} />
+		</div>
+		<div class="rounded-md flex flex-col mb-6 bg-surface-100 shadow-md mx-10">
+			<div class="mx-4 text-xl font-semibold">Notes</div>
+			<div class="mx-4">{data.data?.notes}</div>
+		</div>
+		<div class="flex justify-center space-x-4">
+			<FormButton text="Remove" action={() => deleteLog()} />
+			<FormButton text="Edit" />
+		</div>
 
-		<ExerciseLogs logs={data.data?.exercise_routines} type="Exercise" />
-	{:else} 
+		<ExerciseLogs logs={data.data?.exercise_routines} type="Exercise" comparison_data={data.last_performed_data}/>
+	{:else}
 		<div class="flex justify-center font-semibold">This log couldn't be found</div>
 	{/if}
-
 </div>

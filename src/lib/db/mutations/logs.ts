@@ -21,6 +21,8 @@ export async function createLogFromWorkout(input: AddWorkoutLog) {
 			user_id: input.user_id
 		});
 	});
+
+	return data[0].id
 }
 
 

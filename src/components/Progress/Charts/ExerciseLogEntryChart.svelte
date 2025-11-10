@@ -17,15 +17,19 @@
 			data.push(calcOneRepMax(weight, reps));
 			labels.push(`${i + 1}`);
 		}
+		else if (reps) {
+			data.push(0)
+			labels.push(`${i + 1}`);
+		}
 	}
-
-	let average = data.reduce((a, b) => a + b) / data.length;
+	console.log(data)
+	let average = Math.round((data.reduce((a, b) => a + b) / data.length)*100) / 100;
 
 
 </script>
 
 <BarChart data={data} labels={labels} />
-<div class="text-right">Avg: {average}</div>
+<div class="text-right mr-2">Avg: {average}</div>
 
 
 <style>
