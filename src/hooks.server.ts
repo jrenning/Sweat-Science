@@ -8,6 +8,7 @@ import type { Handle } from '@sveltejs/kit';
 // export const trpcHandle: Handle = createTRPCHandle({ router, createContext });
 export const {handle, signIn, signOut} = SvelteKitAuth(async (event) => {
 	const authOptions = {
+		basePath: "/auth",
 		secret: AUTH_SECRET,
     	trustHost: true,
 		adapter: DrizzleAdapter(db),
