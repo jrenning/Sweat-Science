@@ -56,6 +56,7 @@
 		"@auth/sveltekit": "^1.11.1",
 		"@floating-ui/dom": "^1.7.4",
 		"@paralleldrive/cuid2": "^3.0.4",
+		"@sveltejs/adapter-vercel": "^6.1.1",
 		"@tailwindcss/postcss": "^4.1.17",
 		"chart.js": "^4.5.1",
 		"dotenv": "^17.2.3",
