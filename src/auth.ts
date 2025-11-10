@@ -7,6 +7,7 @@ import { SvelteKitAuth } from "@auth/sveltekit";
 export const {handle, signIn, signOut} = SvelteKitAuth(
     {
         secret: AUTH_SECRET,
+        basePath: "/auth",
         trustHost: true,
         adapter: DrizzleAdapter(db),
         providers: [Google({ clientId: GOOGLE_ID, clientSecret: GOOGLE_SECRET })],
