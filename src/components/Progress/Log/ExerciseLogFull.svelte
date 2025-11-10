@@ -31,7 +31,7 @@
 			}
 		}
 	}
-
+	//@ts-ignore
     let last_idx = findMatchingIdx()+1
 
     console.log(last_idx)

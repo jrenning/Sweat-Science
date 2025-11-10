@@ -29,10 +29,10 @@
 		await invalidateAll();
 	}
 
-	const deleteModal: ModalSettings = {
+	const deleteModal = {
 		type: 'confirm',
 		title: 'Delete Workout?',
-		response: async (r) => {
+		response: async (r: any) => {
 			if (r) {
 				await deleteWorkout();
 			}

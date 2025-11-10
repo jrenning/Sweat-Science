@@ -16,7 +16,7 @@
 	
 	interface Props {
 		/* EXPORTS */
-		data: SuperValidated<typeof insertExerciseRoutineSchema>;
+		data: SuperValidated<InsertExerciceRoutineWithExercises>;
 		post_link: string;
 		exercise: InsertExerciceRoutineWithExercises;
 	}
@@ -125,7 +125,7 @@
 			<input type="radio" class="radio" name="type" value="Duration" bind:group={$form.type} />
 		</div>
 		<div class="flex space-x-4 justify-start w-full">
-			<label class="text-xl font-semibold">Rest</label>
+			<label class="text-xl font-semibold" for="rest">Rest</label>
 			<input class=" w-10 input" type="number" bind:value={$form.rest} />
 			<span class="font-bold">s</span>
 		</div>

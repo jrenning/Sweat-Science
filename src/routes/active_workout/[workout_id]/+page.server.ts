@@ -8,10 +8,10 @@ import { addWorkoutLogSchema } from '../schemas';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async ({ locals, url, params }) => {
-	const session = await locals.getSession();
+	const session = await locals.auth();
 	// pass in workout plan id
 	// TODO pass in param for id
-	const user_id = session?.user.id ? session.user.id : '';
+	const user_id = session?.user?.id ? session.user.id : '';
 
 	let workout = await getWorkoutById(
 		user_id,
@@ -52,7 +52,7 @@ export const actions: Actions = {
 		if (!workoutForm.valid) return fail(400, { workoutForm });
 
 		const session = await locals.getSession();
-		const user_id = session?.user.id ? session.user.id : '';
+		const user_id = session?.user?.id ? session.user.id : '';
 
 		await createLogFromWorkout({ user_id: user_id, ...workoutForm.data });
 

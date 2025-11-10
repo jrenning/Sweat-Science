@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { ExerciseCategories, MuscleGroups } from '$lib/db/schema';
+	import {
+		ExerciseCategories,
+		MuscleGroups,
+		type InsertExercise,
+		type InsertExerciseRoutine
+	} from '$lib/db/schema';
 	import { TagsInput } from '@skeletonlabs/skeleton-svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -8,8 +13,9 @@
 	let inputChipEquipment = '';
 	let inputChipListEquipment: string[] = [];
 
-	const { form, enhance, errors } = superForm(data);
+	let { data, equipment_options }: Props = $props();
 
+	const { form, enhance, errors } = superForm(data);
 
 	type Equipment = {
 		name: string;
@@ -17,19 +23,14 @@
 	};
 
 	interface Props {
-		data: SuperValidated<insertExerciseSchema>;
+		data: SuperValidated<InsertExercise>;
 		equipment_options: Equipment[];
 	}
-
-	let { data, equipment_options }: Props = $props();
-
 
 	let inputChipsMuscle: string[] = $state([]);
 	let inputChipMuscle = $state('');
 
 	let muscle_group_options = MuscleGroups.enumValues;
-
-
 </script>
 
 <div class="card py-4 px-14 flex flex-col">
@@ -84,6 +85,6 @@
 	<button
 		type="submit"
 		class="btn-md variant-outline-secondary flex w-full mt-6 justify-center items-center rounded-md shadow-md"
-		onclick={}>Add</button
+		>Add</button
 	>
 </div>

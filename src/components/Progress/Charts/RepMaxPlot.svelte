@@ -15,6 +15,7 @@
 	let labels = exercise_data.map((exercise) => prettifyDate(exercise.created_at)).reverse();
 
 	let ctx;
+	//@ts-ignore
 	let canvas: HTMLCanvasElement = $state();
 
 	onMount(() => {

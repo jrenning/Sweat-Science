@@ -21,7 +21,7 @@ onMount(async ()=> {
 		let workoutData = folders.map((workout) => {
 			return { label: workout.name, value: workout.id };
 		});
-
+		//@ts-ignore
         workoutOptions = workoutData
 })
 
@@ -55,7 +55,7 @@ let inputValue = $state("")
 
 	<form>
         <input class="input" type="search" name="demo" bind:value={inputValue} placeholder="Search..." />
-		
+
 	</form>
 
 

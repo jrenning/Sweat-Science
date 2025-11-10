@@ -12,7 +12,7 @@
 	}
 
 	let { goal }: Props = $props();
-
+	//@ts-ignore
 	let goal_string: string = $state();
 
 	if (goal.goal_type == '1RM') {

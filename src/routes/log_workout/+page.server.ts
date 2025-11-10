@@ -7,13 +7,13 @@ import { zod, zod4 } from 'sveltekit-superforms/adapters';
 import { addWorkoutLogSchema } from '../active_workout/schemas.js';
 import { createLogFromWorkout } from '$lib/db/mutations/logs.js';
 import { convertToUTC } from '../../helpers/datetime.js';
+import type { Actions, PageServerLoad } from './$types.js';
 
-/** @type {import('./$types').PageServerLoad} */
-export async function load(event) {
+export const load: PageServerLoad = async(event) => {
 	const session = await event.locals.getSession();
 	// pass in workout plan id
 	// TODO pass in param for id
-	const user_id = session?.user.id ? session.user.id : '';
+	const user_id = session?.user?.id ? session.user.id : '';
 
 	// super forms
 	const workoutLogForm = await superValidate(zod4(addWorkoutLogSchema));
@@ -34,11 +34,11 @@ export async function load(event) {
 	return { workoutLogForm, exercise_choices, updated_workouts };
 }
 
-/** @type {import('./$types').Actions} */
-export const actions = {
+
+export const actions: Actions = {
 	log_workout: async ({ request, locals }) => {
 		const session = await locals.getSession();
-		const user_id = session?.user.id ? session.user.id : '';
+		const user_id = session?.user?.id ? session.user.id : '';
 
 		const logForm = await superValidate(request, zod4(addWorkoutLogSchema));
 

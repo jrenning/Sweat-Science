@@ -5,7 +5,7 @@
 </script>
 
 <div
-	class="flex-grow-0 flex-shrink-0 md:space-y-10 space-y-4 flex-auto rounded-md bg-red-100 dark:bg-red-300 border border-black shadow-md md:w-[300px] w-[250px] h-[250px] md:h-[300px]"
+	class="grow-0 shrink-0 md:space-y-10 space-y-4 flex-auto rounded-md bg-red-100 dark:bg-red-300 border border-black shadow-md md:w-[300px] w-[250px] h-[250px] md:h-[300px]"
 >
 <div class="flex flex-col justify-center items-center">
 	<div class="flex justify-center items-center">

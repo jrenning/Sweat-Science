@@ -5,6 +5,8 @@
 		ExerciseRoutineWithExercise,
 		InsertExerciceRoutineWithExercises,
 
+		InsertExerciseRoutine,
+
 		insertExerciseRoutineSchema
 
 	} from '$lib/db/schema';
@@ -16,7 +18,7 @@
 	interface Props {
 		exercise: InsertExerciceRoutineWithExercises;
 		workout_id: number;
-		exerciseForm: SuperValidated<typeof insertExerciseRoutineSchema>;
+		exerciseForm: SuperValidated<InsertExerciseRoutine>;
 	}
 
 	let { exercise, workout_id, exerciseForm = $bindable() }: Props = $props();

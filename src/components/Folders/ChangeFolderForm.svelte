@@ -10,6 +10,7 @@
 
 	let { workout_id }: Props = $props();
 
+	let folderOptions = $state()
 
 	onMount(async () => {
 		const res = await fetch('/api/folders');

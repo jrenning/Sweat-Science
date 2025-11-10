@@ -20,6 +20,7 @@
 		/* EXPORTS */
 		exerciseForm: SuperValidated<InsertExerciseRoutine>;
 		editExerciseForm: SuperValidated<InsertExerciseRoutine>;
+			//@ts-ignore
 		workoutForm: SuperValidated<typeof newWorkoutRoutineSchema>;
 		workout_routine: WorkoutRoutineWithExercises;
 		type: 'Update' | 'Add';

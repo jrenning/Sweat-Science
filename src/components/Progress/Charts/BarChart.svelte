@@ -10,6 +10,7 @@
 
 	let { data, labels }: Props = $props();
 	let ctx;
+	//@ts-ignore
 	let canvas: HTMLCanvasElement = $state();
 
 

@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 	const session = await locals.getSession();
 	// pass in workout plan id
 	// TODO pass in param for id
-	const user_id = session?.user.id ? session.user.id : '';
+	const user_id = session?.user?.id ? session.user.id : '';
 
 	let plan_id_url = url.searchParams.get('plan_id');
 	let day_url = url.searchParams.get('day');
@@ -54,7 +54,7 @@ export const actions: Actions = {
 	add_workout: async ({ request, locals, url }) => {
 		const workoutForm = await superValidate(request, zod4(insertWorkoutRoutine));
 		const session = await locals.getSession();
-		const user_id = session?.user.id ? session.user.id : '';
+		const user_id = session?.user?.id ? session.user.id : '';
 		if (!workoutForm.valid) return fail(400, { workoutForm });
 
 		// get pending id
@@ -78,7 +78,7 @@ export const actions: Actions = {
 	},
 	add_exercise: async ({ request, locals, url }) => {
 		const session = await locals.getSession();
-		const user_id = session?.user.id ? session.user.id : '';
+		const user_id = session?.user?.id ? session.user.id : '';
 		let pending_id = await getPendingWorkouts(user_id);
 
 		const workout_id = pending_id[0].id;

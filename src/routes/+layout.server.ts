@@ -5,7 +5,7 @@ export const load: LayoutServerLoad = async (event) => {
 	// set user theme
 
 	const session = await event.locals.auth()
-	const user_id = session?.user.id ? session.user.id : '';
+	const user_id = session?.user?.id ? session.user.id : '';
 
     const theme = await getUserTheme(user_id)
 	let user_theme = "sahara"

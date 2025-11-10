@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Exercise } from '$lib/db/schema';
+	import type { Exercise, InsertGoal } from '$lib/db/schema';
 	import { dateProxy, superForm } from 'sveltekit-superforms/client';
 	import { GoalTypesZ, newGoalSchema } from './schemas';
 	import BackButton from '../../components/UI/Buttons/BackButton.svelte';
@@ -8,7 +8,7 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
 	interface Props {
-		goalForm: SuperValidated<typeof newGoalSchema>;
+		goalForm: SuperValidated<InsertGoal>;
 	}
 
 	let { goalForm }: Props = $props();

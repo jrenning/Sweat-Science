@@ -22,6 +22,7 @@
     }
 
 	let ctx;
+	//@ts-ignore
 	let canvas: HTMLCanvasElement = $state();
 
     let combined_data = data.concat(last_data).filter((a)=> a > 0)

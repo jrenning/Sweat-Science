@@ -28,7 +28,7 @@
 	</div>
 	<WorkoutOptions name={workout.name} id={workout.id} />
 
-	<div class="flex flex-grow justify-end">
+	<div class="flex grow justify-end">
 		<button class="bg-secondary-500 px-4 mr-2 py-1 rounded-md shadow-md" onclick={()=> goto(`/active_workout/${workout.id}`)}>➤</button>
 	</div>
 </div>
