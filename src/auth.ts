@@ -11,13 +11,13 @@ export const {handle, signIn, signOut} = SvelteKitAuth(
         trustHost: true,
         adapter: DrizzleAdapter(db),
         providers: [Google({ clientId: GOOGLE_ID, clientSecret: GOOGLE_SECRET })],
-        // callbacks: {
-        // 	async session({ session, user }) {
-        // 		if (session.user) {
-        // 			session.user.id = user.id;
-        // 		}
-        // 		return Promise.resolve(session);
-        // 	}
-        // }
+        callbacks: {
+        	async session({ session, user }) {
+        		if (session.user) {
+        			session.user.id = user.id;
+        		}
+        		return Promise.resolve(session);
+        	}
+        }
     }
 );
