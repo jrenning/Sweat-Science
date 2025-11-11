@@ -1,5 +1,9 @@
 <script lang="ts">
-	import type { WorkoutLogWithExercises, WorkoutRoutineWithExercises } from '$lib/db/schema';
+	import type {
+		ExerciseLogWithExercises,
+		WorkoutLogWithExercises,
+		WorkoutRoutineWithExercises
+	} from '$lib/db/schema';
 	import { Accordion } from '@skeletonlabs/skeleton-svelte';
 	import WorkoutSelection from '../../components/Popups/WorkoutSelection/WorkoutSelection.svelte';
 	import BackButton from '../../components/UI/Buttons/BackButton.svelte';
@@ -51,7 +55,6 @@
 		const data = {
 			workout_name: workout.name
 		};
-
 		let res = await fetch('/api/workout_routine/last_performed', {
 			method: 'POST',
 			body: JSON.stringify(data),
@@ -61,6 +64,35 @@
 		});
 
 		last_performed = await res.json();
+	}
+
+	let last_performed_exercises: (ExerciseLogWithExercises | undefined)[] = $state([]);
+
+	function handleExerciseAmountChange(change: number) {
+		new_exercises += change;
+
+		// update
+		if (change == 1) {
+			last_performed_exercises.length = last_performed_exercises.length + 1;
+		}
+	}
+
+	async function fetchLastPerformedExerciseData(exercise_id: number, idx: number) {
+		const data = {
+			exercise_id: exercise_id
+		};
+
+		let res = await fetch('/api/exercise_routine/last_performed', {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		let last_e_performed = (await res.json()) as ExerciseLogWithExercises;
+
+		last_performed_exercises[idx] = last_e_performed;
 	}
 
 	/* FORM */
@@ -102,8 +134,10 @@
 							<Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-100" />
 							<Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center">
 								<Dialog.Content class="card bg-surface-200 w-md p-4 space-y-2 shadow-xl">
-									<Dialog.Title class="text-2xl flex justify-center font-bold">Select Workout</Dialog.Title>
-									<WorkoutSelection onSelection={setSelectedWorkout}/>
+									<Dialog.Title class="text-2xl flex justify-center font-bold"
+										>Select Workout</Dialog.Title
+									>
+									<WorkoutSelection onSelection={setSelectedWorkout} />
 									<Dialog.CloseTrigger class="btn preset-tonal-error">Close</Dialog.CloseTrigger>
 								</Dialog.Content>
 							</Dialog.Positioner>
@@ -172,7 +206,7 @@
 				{/each}
 			{:else}
 				<div class="mb-10 flex justify-center">
-					<FormButton text="Add Exercise" action={() => (new_exercises += 1)} />
+					<FormButton text="Add Exercise" action={() => handleExerciseAmountChange(1)} />
 				</div>
 				<Accordion collapsible multiple>
 					{#each { length: new_exercises } as exercise, i}
@@ -186,6 +220,8 @@
 										onclick={() => {
 											$form.exercises = $form.exercises.filter((ele, idx) => idx !== i);
 											new_exercises -= 1;
+											// remove right item from last_performed
+											last_performed_exercises = last_performed_exercises.filter((e, idx)=> idx !== i)
 										}}>X</button
 									>
 								</div>
@@ -196,8 +232,8 @@
 
 							<Accordion.ItemContent>
 								<ExerciseSelector
-									callback={(exercise) =>
-										($form.exercises[i] = {
+									callback={async (exercise) => {
+										$form.exercises[i] = {
 											exercise_id: exercise.id,
 											sets: 1,
 											reps: [],
@@ -205,7 +241,9 @@
 											distance: [],
 											duration: [],
 											rest: 0
-										})}
+										};
+										fetchLastPerformedExerciseData(exercise.id, i);
+									}}
 								/>
 								{#if $form.exercises[i]}
 									<div class="flex justify-center flex-row space-x-6 mt-6">
@@ -234,6 +272,14 @@
 											bind:group={$form.exercises[i].type}
 										/>
 									</div>
+									{#if last_performed_exercises[i]}
+										<div class="mb-6 flex flex-col justify-center">
+											<div class="mx-4 italic text-sm">
+												Last performed: {prettifyDate(new Date(last_performed_exercises[i].created_at))}
+											</div>
+											<ExerciseLogEntry log_entry={last_performed_exercises[i]} />
+										</div>
+									{/if}
 									<div class="flex mt-8 justify-between m-auto w-40 items-center">
 										<FormButton text="+" action={() => ($form.exercises[i].sets += 1)} />
 										{$form.exercises[i].sets}
