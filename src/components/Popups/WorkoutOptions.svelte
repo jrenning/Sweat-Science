@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
+	import { Popover, Portal } from '@skeletonlabs/skeleton-svelte';
 	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
 	interface Props {
 		name: string;
@@ -24,11 +25,25 @@
 		// refresh page data
 		await invalidateAll();
 	}
-
 </script>
 
-<div class="card flex flex-col space-y-4 p-4 hidden" data-popup={`exerciseOptions${name}`}>
-	<button>Delete</button>
-	<a class="flex flex-col space-y-1" href={`/edit_workout/${id}`}>Edit</a>
-	<button>Change Folder</button>
-</div>
+<Popover>
+	<Popover.Trigger>
+		<div class="flex space-x-1">
+			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
+			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
+			<div class="w-[0.35rem] h-[0.35rem] rounded-full bg-black"></div>
+		</div>
+	</Popover.Trigger>
+	<Portal>
+		<Popover.Positioner>
+			<Popover.Content
+				class="card flex flex-col justify-center text-sm items-center space-y-4 p-2 bg-surface-100"
+			>
+				<button>Delete</button>
+				<a class="flex flex-col space-y-1" href={`/edit_workout/${id}`}>Edit</a>
+				<button>Change Folder</button>
+			</Popover.Content>
+		</Popover.Positioner>
+	</Portal>
+</Popover>
