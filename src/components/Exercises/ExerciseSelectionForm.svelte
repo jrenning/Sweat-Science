@@ -13,12 +13,13 @@
 		ExerciseRoutineWithExercise,
 		InsertExerciceRoutineWithExercises
 	} from '$lib/db/schema';
+	import { Dialog } from '@skeletonlabs/skeleton-svelte';
 	
 	interface Props {
 		/* EXPORTS */
-		data: SuperValidated<InsertExerciceRoutineWithExercises>;
+		data: SuperValidated<InsertExerciseRoutine>;
 		post_link: string;
-		exercise: InsertExerciceRoutineWithExercises;
+		exercise?: InsertExerciceRoutineWithExercises;
 	}
 
 	let { data = $bindable(), post_link, exercise }: Props = $props();
@@ -191,9 +192,9 @@
 				{/if}
 			{/each}
 		</div>
-		<AddButton
-			action={() => {
-			}}
-		/>
+		<Dialog.CloseTrigger class="btn preset-tonal" type="submit">
+			Add
+		</Dialog.CloseTrigger>
 	</form>
 </div>
+

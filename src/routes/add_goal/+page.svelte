@@ -6,16 +6,17 @@
 	import ExerciseSelector from '../../components/UI/ExerciseSelector.svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	import type { PageData } from './$types';
 
 	interface Props {
-		goalForm: SuperValidated<InsertGoal>;
+		data: PageData;
 	}
 
-	let { goalForm }: Props = $props();
+	let { data }: Props = $props();
 
 	let exercise_based = $state(true);
 
-	const _form = superForm(goalForm, {
+	const _form = superForm(data.goalForm, {
 		id: 'add',
 		dataType: 'json'
 	});
@@ -60,6 +61,14 @@
 
         <label>Deadline</label>
         <input type="date" bind:value={$proxyDate}/>
-		<button class="btn variant-outline-surface">Add Goal</button>
+		<button class="rounded-md border-secondary-200 border-1 mx-24">Add Goal</button>
 	</form>
 </div>
+
+<style>
+input {
+	background-color: var(--color-surface-200);
+	border-radius: 0.4rem;
+	padding: 0.1rem;
+}
+</style>

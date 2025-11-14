@@ -40,7 +40,7 @@
 			<Popover.Content
 				class="card flex flex-col justify-center text-sm items-center space-y-4 p-2 bg-surface-100"
 			>
-				<button>Delete</button>
+				<button onclick={()=> deleteWorkout()}>Delete</button>
 				<a class="flex flex-col space-y-1" href={`/edit_workout/${id}`}>Edit</a>
 				<button>Change Folder</button>
 			</Popover.Content>

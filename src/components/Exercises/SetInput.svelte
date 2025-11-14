@@ -7,7 +7,7 @@
 		duration = $bindable(),
 		pace = $bindable(),
 		hidden = false,
-		percent = $bindable(false),
+		percent = $bindable(),
 		extra = true,
 		cardio = false
 	}: Props = $props();
@@ -16,7 +16,7 @@
 
 	let extra_options = {
 		Weight: '% of 1RM',
-		Distance: '% of Longest',
+		  Distance: '% of Longest',
 		Duration: '% of Longest'
 	};
 

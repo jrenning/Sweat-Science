@@ -11,6 +11,9 @@ export const load: PageServerLoad = async ({ url, locals }) => {
     // pass in workout plan id
     // TODO pass in param for id
     const user_id = session?.user?.id ? session.user.id : '';
+    const goalForm = await superValidate(zod4(insertGoalSchema))
+
+    return {goalForm}
 }
 
 export const actions: Actions = {
