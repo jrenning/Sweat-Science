@@ -15,7 +15,7 @@
 		"test:unit": "vitest",
 		"generate": "drizzle-kit generate:pg",
 		"migrate": "ts-node src/lib/db/migrate",
-		"push": "drizzle-kit push:pg",
+		"push": "drizzle-kit push",
 		"introspect": "drizzle-kit introspect:pg"
 	},
 	"devDependencies": {

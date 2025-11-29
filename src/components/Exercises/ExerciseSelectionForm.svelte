@@ -190,7 +190,7 @@
 						bind:percent={$form.percent_max[i]}
 					/>
 				{/if}
-			{/each}
+			{/each}    
 		</div>
 		<Dialog.CloseTrigger class="btn preset-tonal" type="submit">
 			Add

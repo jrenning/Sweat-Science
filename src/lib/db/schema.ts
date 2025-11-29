@@ -414,6 +414,7 @@ export const exerciseLog = pgTable('exercise_log', {
 	}),
 	// this only really applies to weighted exercises
 	estimated_max: real('estimated_max'),
+	average_max: real("average_max"),
 	overall_pace_seconds: integer("overall_pace_seconds").array()
 });
 

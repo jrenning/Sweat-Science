@@ -12,8 +12,6 @@
 
 	let { exercise_data, comparison_data }: Props = $props();
 
-    console.log(comparison_data)
-    console.log(exercise_data)
 	let data = calcOneRepForWholeExercise(exercise_data.weight, exercise_data.reps)
     let last_data = calcOneRepForWholeExercise(comparison_data.weight, comparison_data.reps)
 	let labels = []

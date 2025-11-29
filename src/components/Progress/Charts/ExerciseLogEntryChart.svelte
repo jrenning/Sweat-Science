@@ -26,7 +26,6 @@
 			labels.push(`${i + 1}`);
 		}
 	}
-	console.log(data)
 	let average = Math.round((data.reduce((a, b) => a + b) / data.length)*100) / 100;
 
 

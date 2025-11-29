@@ -4,10 +4,8 @@
 	import ComparisonChart from '../Charts/ComparisonChart.svelte';
 	import ExerciseLogEntryChart from '../Charts/ExerciseLogEntryChart.svelte';
 	import PercentChangeInfo from '../PercentChangeInfo.svelte';
+	import RankInfo from '../RankInfo.svelte';
 	import ExerciseLogEntry from './ExerciseLogEntry.svelte';
-
-
-
 
 	interface Props {
 		log: ExerciseLogWithExercises;
@@ -16,12 +14,7 @@
 		comparison_data?: ExerciseLogWithExercises[];
 	}
 
-	let {
-		log,
-		type,
-		chart = true,
-		comparison_data = []
-	}: Props = $props();
+	let { log, type, chart = true, comparison_data = [] }: Props = $props();
 
 	// get last performed time before current item
 	function findMatchingIdx() {
@@ -32,11 +25,7 @@
 		}
 	}
 	//@ts-ignore
-    let last_idx = findMatchingIdx()+1
-
-    console.log(last_idx)
-
-
+	let last_idx = findMatchingIdx() + 1;
 
 </script>
 
@@ -50,14 +39,12 @@
 
 	{#if comparison_data.length > 1 && last_idx < comparison_data.length}
 		{#if log.exercise.category === 'Strength' && chart}
-			<ComparisonChart
-				exercise_data={log}
-				comparison_data={comparison_data[last_idx]}
-			/>
+			<ComparisonChart exercise_data={log} comparison_data={comparison_data[last_idx]} />
 		{/if}
 
 		<!-- // if there is a point to compare against (2 total) -->
 		<PercentChangeInfo exercise_data={comparison_data} />
+		<RankInfo log={log} last_performed={comparison_data[last_idx]}/>
 	{:else if log.exercise.category === 'Strength' && chart}
 		<ExerciseLogEntryChart log_data={log} />
 	{/if}

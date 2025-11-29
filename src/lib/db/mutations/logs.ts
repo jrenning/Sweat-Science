@@ -1,5 +1,5 @@
 import { and, eq } from 'drizzle-orm';
-import { calculateOneRepFromArray } from '../../../helpers/rep_max';
+import { calcAverageMax, calculateOneRepFromArray } from '../../../helpers/rep_max';
 import { db } from '../db';
 import { getEstimatedOneRepMax } from '../queries/exercise';
 import { getWorkoutById } from '../queries/workout_routine';
@@ -30,7 +30,7 @@ export async function createExerciseLog(input: InsertExerciseLog) {
 	// TODO make work with duration and distance if you want
 	return await db
 		.insert(exerciseLog)
-		.values({ estimated_max: calculateOneRepFromArray(input.weight, input.reps), ...input });
+		.values({ estimated_max: calculateOneRepFromArray(input.weight, input.reps), average_max: calcAverageMax(input.weight, input.reps), ...input });
 }
 
 export async function deleteLogByID(log_id: number, user_id: string) {
