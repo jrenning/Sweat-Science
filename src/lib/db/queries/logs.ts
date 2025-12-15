@@ -20,7 +20,8 @@ export async function getUserWorkoutLogs(user_id: string) {
 			}
 		},
 		where: eq(workoutLog.user_id, user_id),
-		orderBy: desc(workoutLog.created_at)
+		orderBy: desc(workoutLog.created_at),
+		limit: 50
 	});
 }
 

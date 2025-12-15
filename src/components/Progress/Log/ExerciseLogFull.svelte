@@ -31,7 +31,7 @@
 
 <div class={'flex  flex-col justify-center flex-center space-y-6 '}>
 	{#if type == 'Date'}
-		<div class=" mx-2 text-xl font-bold">{prettifyDate(log.created_at)}</div>
+		<a href={`/progress/workouts/${log.workout_log_id}`}><div class="underline mx-2 text-xl font-bold">{prettifyDate(log.created_at)}</div></a>
 	{:else if type == 'Exercise'}
 		<div class=" mx-2 text-xl font-bold">{log.exercise.name}</div>
 	{/if}
