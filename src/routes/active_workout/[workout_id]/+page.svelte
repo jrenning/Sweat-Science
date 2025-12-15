@@ -70,18 +70,18 @@
 	function pad(val: any) {
 		return val > 9 ? val : '0' + val;
 	}
-	const timer = setInterval(function () {
-		if (typeof $form.workout_time_seconds !== 'undefined' && typeof document !== 'undefined') {
-			//@ts-ignore
-			$form.workout_time_seconds = $form.workout_time_seconds + 1;
-			//@ts-ignore
-			document.getElementById('seconds').innerHTML = pad($form.workout_time_seconds % 60);
-			//@ts-ignore
-			document.getElementById('minutes').innerHTML = pad(
-				Math.floor($form.workout_time_seconds / 60)
-			);
-		}
-	}, 1000);
+	// const timer = setInterval(function () {
+	// 	if (typeof $form.workout_time_seconds !== 'undefined' && typeof document !== 'undefined') {
+	// 		//@ts-ignore
+	// 		$form.workout_time_seconds = $form.workout_time_seconds + 1;
+	// 		//@ts-ignore
+	// 		document.getElementById('seconds').innerHTML = pad($form.workout_time_seconds % 60);
+	// 		//@ts-ignore
+	// 		document.getElementById('minutes').innerHTML = pad(
+	// 			Math.floor($form.workout_time_seconds / 60)
+	// 		);
+	// 	}
+	// }, 1000);
 </script>
 
 {#if data.workout}
@@ -229,7 +229,7 @@
 				<button
 					type="submit"
 					class="btn-md rounded-md preset-filled-surface-500 shadow-md"
-					onclick={() => clearInterval(timer)}>Log Workout</button
+					>Log Workout</button
 				>
 			{/if}
 		</div>

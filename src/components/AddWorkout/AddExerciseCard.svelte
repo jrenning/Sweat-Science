@@ -4,16 +4,14 @@
 	import type {
 		ExerciseRoutineWithExercise,
 		InsertExerciceRoutineWithExercises,
-
 		InsertExerciseRoutine,
-
 		insertExerciseRoutineSchema
-
 	} from '$lib/db/schema';
 	import { invalidateAll } from '$app/navigation';
 	import ExerciseSelectionForm from '../Exercises/ExerciseSelectionForm.svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import ChangeFolderForm from '../Folders/ChangeFolderForm.svelte';
+	import { Popover, Portal } from '@skeletonlabs/skeleton-svelte';
 
 	interface Props {
 		exercise: InsertExerciceRoutineWithExercises;
@@ -41,19 +39,28 @@
 		await invalidateAll();
 	}
 
-
-    exerciseForm.data = exercise
-	let editExerciseForm = exerciseForm
-
+	exerciseForm.data = exercise;
+	let editExerciseForm = exerciseForm;
 </script>
 
 <div class="rounded-md bg-surface-300 px-2 py-4 shadow-md border-surface-700 border">
 	<div class="flex justify-between items-center">
 		<div class="text-2xl font-semibold">{exercise.exercise.name}</div>
 		<div class="flex flex-row space-x-6">
-			<button type="button" class="w-4 h-4"><EditIcon /></button>
-			<button type="button" class="w-4 h-4" onclick={() => deleteExercise()}><DeleteIcon /></button
-			>
+			<Popover>
+				<Popover.Trigger type="button" class="w-4 h-4"><EditIcon /></Popover.Trigger>
+				<Portal>
+					<Popover.Positioner>
+						<Popover.Content>
+							<ExerciseSelectionForm
+								data={editExerciseForm}
+								post_link={`/edit_exercise_routine/${exercise.id}`}
+							/>
+						</Popover.Content>
+					</Popover.Positioner>
+				</Portal>
+			</Popover>
+			<button type="button" class="w-4 h-4" onclick={() => deleteExercise()}><DeleteIcon /></button>
 		</div>
 	</div>
 	<div>{exercise.sets} Sets</div>

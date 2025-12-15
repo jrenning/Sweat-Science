@@ -14,7 +14,7 @@
 
 <div>
 <SectionHeader name="Goals"/>
-<div class="grid md:grid-cols-2 justify-center items-center">
+<div class="grid space-y-6 justify-center items-center">
 {#each goal_data as goal}
     <Goal goal={goal}/>
 

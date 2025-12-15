@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 	import type { WorkoutRoutineWithExercises } from '$lib/db/schema';
+	import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
 	import DeleteIcon from '../Icons/DeleteIcon.svelte';
 	import EditIcon from '../Icons/EditIcon.svelte';
 
@@ -45,7 +46,7 @@
 		<div class="text-2xl font-semibold">{workout.name}</div>
 		<div class="flex flex-row space-x-6">
 			<a href={`/edit_workout/${workout.id}`} class="w-4 h-4"><EditIcon /></a>
-			<button type="button" class="w-4 h-4"><DeleteIcon /></button>
+			<button type="button" class="w-4 h-4" onclick={()=> deleteWorkout()}><DeleteIcon /></button>
 		</div>
 	</div>
 	<div>{workout.exercises.length} Exercises</div>

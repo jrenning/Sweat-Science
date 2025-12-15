@@ -30,7 +30,7 @@
 
     function handleTypeChange(e: any) {
         let type = e.target.value as string
-        if (type == "1RM" || type == "average-weight") {
+        if (type == "1RM" || type == "average_weight") {
             exercise_based = true
         }
         else {

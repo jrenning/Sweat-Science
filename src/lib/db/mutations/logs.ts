@@ -6,6 +6,9 @@ import { getWorkoutById } from '../queries/workout_routine';
 import { exerciseLog, workoutLog, type InsertExerciseLog, type AddWorkoutLog } from '../schema';
 
 export async function createLogFromWorkout(input: AddWorkoutLog) {
+	console.log(input)
+
+
 	const data = await db
 		.insert(workoutLog)
 		.values(input)

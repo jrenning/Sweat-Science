@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db';
-import { Goal, goals } from '../schema';
+import { type Goal, goals } from '../schema';
 import { getCurrentAverageWeight, getCurrentOneRepMax } from './exercise';
 
 type GoalTypes = '1RM' | 'average_weight' | 'weekly_workouts' | 'weekly_exercises';

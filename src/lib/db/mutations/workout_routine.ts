@@ -178,7 +178,7 @@ export async function updateWorkoutDays(workout_id: number, day: number) {
 	let days = await getWorkoutDays(workout_id);
 
 	if (days[0].days) {
-		return await db.update(workout_routine).set({ days: [...days[0].days, day] });
+		return await db.update(workout_routine).set({ days: [...days[0].days, day] }).where(eq(workout_routine.id, workout_id));
 	}
 }
 

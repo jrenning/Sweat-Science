@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { WorkoutLogWithExercises } from '$lib/db/schema';
+	import { convertToUTC } from '../../../helpers/datetime';
 
 	interface Props {
 		workouts: WorkoutLogWithExercises[];
@@ -14,7 +15,7 @@
 			><div class="flex flex-row space-x-6 border-1 border-secondary-200 rounded-md mx-4 p-4">
 				<div>
 					<div class="font-semibold text-2xl">{workout.name ? workout.name : 'Unnamed Workout'}</div>
-					<div class="text-lg">{workout.created_at.toDateString()}</div>
+					<div class="text-lg">{convertToUTC(workout.created_at).toDateString()}</div>
 				</div>
 			</div></a
 		>

@@ -10,8 +10,12 @@
 	import ChevronIcon from '../../components/Icons/ChevronIcon.svelte';
 	import AddButton from '../../components/UI/Buttons/AddButton.svelte';
 	import { onNavigate } from '$app/navigation';
+	import WorkoutPlanReview from '../../components/AddWorkoutPlan/WorkoutPlanReview.svelte';
+	import SuperDebug from 'sveltekit-superforms';
 
-	let pg = $state($page.url.searchParams.get('page') ? Number($page.url.searchParams.get('page')) : 1);
+	let pg = $state(
+		$page.url.searchParams.get('page') ? Number($page.url.searchParams.get('page')) : 1
+	);
 
 	interface Props {
 		data: PageData;
@@ -26,7 +30,7 @@
 		capture,
 		restore
 	} = superForm(data.formWorkoutPlan, {
-		taintedMessage: false
+		dataType: "json"
 	});
 
 	$current_plan_id = $planForm.id ? $planForm.id : 0;
@@ -35,27 +39,25 @@
 
 	export const snapshot = { capture, restore };
 
-	let end = $derived(new Date(start.getFullYear(), start.getMonth(), start.getDate() + $planForm.total_days));
+	let end = $derived(
+		new Date(start.getFullYear(), start.getMonth(), start.getDate() + $planForm.total_days)
+	);
 
 	function updatePage(number: number) {
 		pg = number;
 	}
 
-
-
 	function getWorkoutsOnDay(day: number) {
 		if (data.workouts) {
 			return data.workouts.filter((item) => item.days && item.days.includes(day)).length;
 		}
-		return 0
-		
+		return 0;
 	}
 
 	setContext('workout_plan_page', {
 		updatePage,
 		getWorkoutsOnDay
 	});
-
 
 	function updatePlanDays(change: number) {
 		if ($planForm.total_days + change < 0) {
@@ -65,14 +67,13 @@
 		}
 	}
 
-	onNavigate(async ()=> {
+	onNavigate(async () => {
 		// update plan days before navigation
-		await fetch("/api/workout_plan/days", {
-			method: "POST",
-			body: JSON.stringify({total_days: $planForm.total_days, plan_id: $current_plan_id})
-		})
-	})
-
+		await fetch('/api/workout_plan/days', {
+			method: 'POST',
+			body: JSON.stringify({ total_days: $planForm.total_days, plan_id: $current_plan_id })
+		});
+	});
 </script>
 
 <form
@@ -81,17 +82,18 @@
 	class="flex flex-col space-y-4 bg-surface-200 m-4 rounded-md p-2"
 	use:planEnhance
 >
+<SuperDebug data={planForm} />
 	{#if pg == 1}
-		<input type="hidden" name="user_id" value={$page.data.session?.user.id} />
+		<input type="hidden" name="user_id" value={$page.data.session?.user?.id} />
 		{#if $planForm.id}<input type="hidden" name="id" value={$planForm.id} />{/if}
 		<label for="name" class="label font-semibold text-xl">Name</label>
-		<input type="text" id="name" name="name" class="input" bind:value={$planForm.name} />
+		<input type="text" id="name" name="name" class="input rounded-md border-1 border" bind:value={$planForm.name} />
 		{#if $planFormErrors.name}<span>{$planFormErrors.name}</span>{/if}
-		<label for="description" class="label font-semibold text-xl">Description</label>
+		<label for="description" class="label  font-semibold text-xl">Description</label>
 		<input
 			type="text"
 			id="description"
-			class="input"
+			class="input rounded-md border-1 border"
 			name="description"
 			bind:value={$planForm.description}
 		/>
@@ -115,9 +117,8 @@
 		</button>
 	{:else if pg == 2}
 		<div class="flex flex-col justify-center items-center">
-			
 			<div class="flex justify-evenly w-full mb-6">
-				<button class="rotate-180" onclick={()=> pg = 1}><ChevronIcon /></button>
+				<button class="rotate-180" onclick={() => (pg = 1)}><ChevronIcon /></button>
 				<label for="days" class="font-semibold text-xl">Number of Days</label>
 				<div></div>
 			</div>
@@ -137,7 +138,7 @@
 					type="button">-</button
 				>
 
-				<input bind:value={$planForm.total_days} class=" input w-8" name="days" />
+				<input bind:value={$planForm.total_days} class=" input w-12" name="days" />
 				<button
 					class="rounded-md shadow-md px-2 py-1 bg-surface-300 btn-md"
 					onclick={() => updatePlanDays(1)}
@@ -151,13 +152,30 @@
 			</div>
 
 			<AdjustableCalender start_date={start} end_date={end} />
-			<AddButton />
+			<div class="flex space-x-6">
+				<a
+					class="rounded-md mt-6 shadow-md px-2 py-1 preset-filled-surface-500"
+					type="button"
+					href="/add_workout_plan/multi-day"
+				>
+					Multi-Day View
+				</a>
+				<button
+					class="rounded-md mt-6 shadow-md px-2 py-1 preset-filled-surface-500"
+					type="button"
+					onclick={() => (pg += 1)}
+				>
+					Review
+				</button>
+			</div>
 		</div>
-	{:else if pg == 3}
+	{:else if pg == 3 && $planForm.id}
 		<div class="flex flex-col space-y-4">
 			<button class="btn-md variant-outline-secondary" type="button" onclick={() => (pg -= 1)}
 				>Go Back</button
 			>
+			<WorkoutPlanReview plan_id={$planForm.id} plan_days={$planForm.total_days} />
+			<button class="btn bg-surface-300" type="submit" >Add Workout Plan</button>
 		</div>
 	{/if}
 </form>

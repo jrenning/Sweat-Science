@@ -13,22 +13,29 @@
 	}
 
 	let { data }: Props = $props();
+
+	let days: number[] = $state([]);
+    let inputValue = $state("")
+
+    function onInputValueChange() {
+        let spaceless = inputValue.replace(/\s/g, "");
+        let inputDays = spaceless.split(",")
+        //@ts-ignore
+        days = inputDays
+
+    }
 </script>
 
 <div>
 	<div class="flex justify-evenly">
 		<BackButton link="/add_workout_plan?page=2" />
-		<div class="italic font-semibold text-2xl">Day {data.day}</div>
-		<div></div>
+		<div class="italic font-semibold text-2xl">Multi-Day Add</div>
 	</div>
-	{#if data.workouts}
-		<div class="space-y-6">
-			<h2 class="font-semibold text-2xl mx-4">Workouts</h2>
-			{#each data.workouts as workout}
-				<AddWorkoutCard {workout} day={data.day} />
-			{/each}
+	<div class="flex flex-col mt-8">
+		<div class="flex justify-center mb-4 bg-secondary-50 border-secondary-100 border-1 rounded-md mx-20">
+			<input placeholder="Days (i.e 1,2,3)" oninput={() => onInputValueChange()} bind:value={inputValue} />
 		</div>
-	{/if}
+	</div>
 	<Popover>
 		<div class="flex justify-center mt-10">
 			<Popover.Trigger class="btn rounded-md shadow-md bg-surface-500 text-white font-semibold"
@@ -37,7 +44,7 @@
 			<Portal>
 				<Popover.Positioner>
 					<Popover.Content>
-						<AddWorkoutOptions plan_id={data.plan_id} day={data.day} />
+						<AddWorkoutOptions plan_id={data.plan_id} day={days} />
 					</Popover.Content>
 				</Popover.Positioner>
 			</Portal>

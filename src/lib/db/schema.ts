@@ -31,6 +31,12 @@ export type WorkoutRoutineWithExercises = InferSelectModel<typeof workout_routin
 	exercises: ExerciseRoutineWithExercise[];
 };
 
+export type WorkoutPlan = InferSelectModel<typeof workout_plans>
+
+export type WorkoutPlanWithWorkouts = InferSelectModel<typeof workout_plans> & {
+	workouts: WorkoutRoutineWithExercises[]  
+}
+
 export type Exercise = InferSelectModel<typeof exercises>;
 export type ExerciseWithEquipment = InferSelectModel<typeof exercises> & {
 	equipment: InferSelectModel<typeof equipment> | null;
@@ -267,7 +273,8 @@ export const workout_plans = pgTable('workout_plans', {
 });
 
 export const workoutPlansRelations = relations(workout_plans, ({ many }) => ({
-	workouts: many(workout_routine)
+	workouts: many(workout_routine),
+	completed_workouts: many(workoutLog)
 }));
 
 export const DaysOfWeek = pgEnum('days_of_week', [
@@ -441,7 +448,11 @@ export const workoutLog = pgTable('workout_log', {
 	user_id: text('user_id').references(() => users.id),
 	created_at: timestamp('created_at').defaultNow().notNull(),
 	workout_time_seconds: integer('workout_time_seconds'),
-	notes: text('notes')
+	notes: text('notes'),
+	// for workout plans
+	plan_id: integer("plan_id").references(()=> workout_plans.id),
+	plan_day: integer("plan_day"),
+	plan_start_date: timestamp("plan_start_date")
 });
 
 export const workoutLogRelations = relations(workoutLog, ({ one, many }) => ({
@@ -449,6 +460,10 @@ export const workoutLogRelations = relations(workoutLog, ({ one, many }) => ({
 	user: one(users, {
 		fields: [workoutLog.user_id],
 		references: [users.id]
+	}),
+	workout_plan: one(workout_plans, {
+		fields: [workoutLog.plan_id],
+		references: [workout_plans.id]
 	})
 }));
 

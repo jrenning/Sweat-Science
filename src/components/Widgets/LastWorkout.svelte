@@ -1,46 +1,76 @@
 <script lang="ts">
 	import type { WorkoutLogWithExercises } from '$lib/db/schema';
 	import { calculateCalories } from '../../helpers/calories';
-	import { formatTime } from '../../helpers/datetime';
+	import { convertToUTC, formatTime } from '../../helpers/datetime';
+	import { niceRound } from '../../helpers/math';
 
 	interface Props {
 		last_workout: WorkoutLogWithExercises | undefined;
+		last_workout_metrics: {difference: number}
 	}
 
-	let { last_workout }: Props = $props();
+	let { last_workout, last_workout_metrics }: Props = $props();
+
+	let time = convertToUTC(last_workout?.created_at)
 </script>
 
 {#if last_workout}
-<a href={`/progress/workouts/${last_workout.id}`}>
-	<div class=" bg-surface-400 rounded-md shadow-md text-black p-1">
-		<div class="font-bold text-3xl italic mx-4 mt-2">{last_workout?.name}</div>
-		<div class="italic mx-4 mb-2">{last_workout?.created_at?.toDateString()}</div>
-		<div class="grid grid-cols-3 mx-2 mt-6 mb-8">
-			<div class="flex flex-col justify-center items-center space-y-4">
-				<div class="w-5 h-5 flex justify-center items-center text-lg font-bold">Exercises</div>
+<a href={`/progress/workouts/${last_workout.id}`} class="block">
+	<div
+		class="rounded-xl bg-surface-400 border shadow-sm hover:shadow-md transition-shadow p-5"
+	>
+		<!-- Header -->
+		<div class="mb-4">
+			<h3 class="text-2xl font-bold text-gray-900 italic">
+				{last_workout.name}
+			</h3>
+			<p class="text-sm text-gray-800">
+				{time ? time.toDateString() : ''}
+			</p>
+		</div>
+
+		<!-- Metrics -->
+		<div class="grid grid-cols-3 gap-4">
+			<!-- Exercises -->
+			<div class="flex flex-col items-center gap-2">
+				<span class="text-xs font-medium text-gray-800 uppercase">
+					Exercises
+				</span>
 				<div
-					class="rounded-md bg-[#E67070] bg-surface-200 flex justify-center items-center font-bold text-xl w-20 h-12"
+					class="w-20 h-12 rounded-lg bg-surface-100 flex items-center justify-center text-xl font-semibold text-gray-900"
 				>
 					{last_workout.exercise_routines.length}
 				</div>
 			</div>
-			<div class="flex flex-col justify-center items-center space-y-4">
-				<div class="w-5 h-5 flex justify-center items-center text-lg font-bold">Time</div>
+
+			<!-- Workout Progress -->
+			<div class="flex flex-col items-center gap-2">
+				<span class="text-xs flex justify-center text-center font-medium text-gray-800 uppercase">
+					Workout Progress
+				</span>
 				<div
-					class="rounded-md bg-[#E67070] bg-surface-200 flex justify-center items-center font-bold text-xl w-20 h-12"
+					class="w-20 h-12 rounded-lg bg-surface-100 text-green-700 flex items-center justify-center text-xl font-semibold"
 				>
-					{formatTime(last_workout.workout_time_seconds ? last_workout.workout_time_seconds : 0)}
+					{niceRound(last_workout_metrics.difference)}%
 				</div>
+				<span class="text-[10px] text-gray-800">
+					vs last session
+				</span>
 			</div>
-			<div class="flex flex-col justify-center items-center space-y-4">
-				<div class="w-5 h-5 flex justify-center items-center text-lg font-bold">Calories</div>
+
+			<!-- Top Exercise Increase -->
+			<div class="flex flex-col items-center gap-2">
+				<span class="text-xs font-medium text-gray-800 uppercase">
+					Top Lift
+				</span>
 				<div
-					class="rounded-md bg-[#E67070] bg-surface-200 flex justify-center items-center font-bold text-xl w-20 h-12"
+					class="w-20 h-12 rounded-lg bg-surface-100 text-blue-700 flex items-center justify-center text-xl font-semibold"
 				>
-					{calculateCalories((last_workout.workout_time_seconds ? last_workout.workout_time_seconds : 0)/60, 70.5)} cal
 				</div>
+				<span class="text-[10px] text-gray-800 text-center">
+				</span>
 			</div>
 		</div>
 	</div>
-	</a>
+</a>
 {/if}

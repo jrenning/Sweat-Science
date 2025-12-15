@@ -1,14 +1,23 @@
 import { addExistingWorkoutToPlan } from '$lib/db/mutations/workout_plan';
 import { addWorkoutToPlan } from '$lib/db/mutations/workout_routine';
-import type { RequestHandler } from '@sveltejs/kit';
+import { json, type RequestHandler } from '@sveltejs/kit';
 
 export const POST: RequestHandler = async ({ locals, request }) => {
 	const session = await locals.getSession();
-	const user_id = session?.user.id ? session.user.id : '';
+	const user_id = session?.user?.id ? session.user.id : '';
 	const { plan_id, workout_id, day } = await request.json();
-	const data = await addExistingWorkoutToPlan(user_id, plan_id, workout_id, day)
+	if (!Array.isArray(day)) {
+	await addExistingWorkoutToPlan(user_id, plan_id, workout_id, day)
 		.then(() => new Response(JSON.stringify({ success: true })))
 		.catch((err: any) => new Response(JSON.stringify({ error: err })));
 
-	return data;
+	}
+	else {
+		day.forEach( async (d)=> {
+			await addExistingWorkoutToPlan(user_id, plan_id, workout_id, d)
+		})
+	}
+
+	return json({"message": "Workout added"})
+
 };

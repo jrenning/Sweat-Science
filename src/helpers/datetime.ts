@@ -117,3 +117,10 @@ export const formatTime = (time: number) => {
 
 	return `${minute_str}:${second_str}`;
 };
+
+export function getDaysDiff(date1: Date, date2: Date) {
+  const oneDayMs = 1000 * 60 * 60 * 24;
+
+ let res = ((date1.getTime() - date2.getTime()) / oneDayMs);
+  return res < 0 ? -Math.ceil(-res) : Math.ceil(res)
+}

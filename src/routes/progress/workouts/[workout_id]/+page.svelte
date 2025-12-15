@@ -47,7 +47,7 @@
 	</div>
 	{#if data.data}
 		<div class="mx-4 my-6">
-			<LastWorkout last_workout={data.data} />
+			<LastWorkout last_workout={data.data} last_workout_metrics={data.last_performed_metrics}/>
 		</div>
 		<div class="rounded-md flex flex-col mb-6 bg-surface-100 shadow-md mx-10">
 			<div class="mx-4 text-xl font-semibold">Notes</div>

@@ -210,6 +210,7 @@
 				</div>
 				<Accordion collapsible multiple>
 					{#each { length: new_exercises } as exercise, i}
+					<!-- @ts-ignore -->
 						<Accordion.Item value={i}>
 							<div class="flex justify-between mb-4">
 								<div class="flex space-x-6">

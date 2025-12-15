@@ -7,8 +7,8 @@
 
 	interface Props {
 		goal: Goal & {
-		current_val: number;
-	};
+			current_val: number;
+		};
 	}
 
 	let { goal }: Props = $props();
@@ -25,47 +25,67 @@
 		goal_string = 'Weekly Workouts';
 	}
 
-
 	async function handleDelete() {
-		if (confirm("Are you sure you want to delete this goal?")) {
-		const data = {
-			goal_id: goal.id
+		if (confirm('Are you sure you want to delete this goal?')) {
+			const data = {
+				goal_id: goal.id
+			};
+			const response = await fetch('/api/goals', {
+				method: 'DELETE',
+				body: JSON.stringify(data),
+				headers: {
+					'content-type': 'application/json'
+				}
+			});
+			// invalidate not working
+			location.reload();
 		}
-		const response = await fetch("/api/goals", {
-			method: "DELETE",
-			body: JSON.stringify(data),
-			headers: {
-				'content-type': 'application/json'
-			}
-		})
-		// invalidate not working
-		location.reload()
-	}
 	}
 </script>
 
-<div class="flex items-center space-x-4">
-	<div class="flex flex-col">
-		<div class="md:text-lg text-sm">
-			Get a {goal.goal_value}
-			{goal_string} in {goal.exercise.name}
+<div
+	class="flex items-start justify-between gap-4 rounded-xl border bg-surface-100 p-4 shadow-sm hover:shadow-md transition-shadow"
+>
+	<!-- Left Content -->
+	<div class="flex-1 space-y-2">
+		<!-- Goal Text -->
+		<div class="text-sm md:text-base font-medium text-gray-900">
+			<span class="text-gray-500">Goal:</span>
+			Get <span class="font-semibold">{goal.goal_value}</span>
+			<span class="font-semibold">{goal_string}</span>
+			in <span class="font-semibold">{goal.exercise.name}</span>
 		</div>
-		<div class="flex items-center space-x-4">
-			<div class=" flex h-2 w-[100px] items-center rounded-md bg-gray-300 text-[0.7rem] md:text-lg">
+
+		<!-- Progress -->
+		<div class="flex items-center gap-3">
+			<div class="relative h-2 w-full max-w-xs rounded-full bg-gray-200 overflow-hidden">
 				<div
-					class="h-2 rounded-md bg-blue-300 w"
-					style={`width: calc(100%*${goal.current_val / goal.goal_value}`}
-				></div>
+					class="absolute left-0 top-0 h-full rounded-full bg-secondary-500 transition-all"
+					style={`width: ${Math.min(100, (goal.current_val / goal.goal_value) * 100)}%`}
+				/>
 			</div>
-			<div class="text-sm">{goal.current_val}/{goal.goal_value}</div>
+
+			<span class="text-xs font-medium text-gray-600">
+				{goal.current_val} / {goal.goal_value}
+			</span>
 		</div>
+
+		<!-- Deadline -->
+		{#if goal.deadline}
+			<div class="text-xs italic text-gray-500">
+				Target date: {prettifyDate(goal.deadline)}
+			</div>
+		{/if}
 	</div>
-	{#if goal.deadline}
-		<div class="italic text-sm">
-			{prettifyDate(goal.deadline)}
+
+	<!-- Actions -->
+	<button
+		onclick={handleDelete}
+		class="p-2 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 transition"
+		aria-label="Delete goal"
+	>
+		<div class="w-4 h-4">
+			<DeleteIcon />
 		</div>
-	{/if}
-	<button class="h-4 w-4" onclick={handleDelete}>
-		<DeleteIcon />
 	</button>
 </div>

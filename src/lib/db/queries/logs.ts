@@ -1,13 +1,14 @@
-import { and, desc, eq, gte, lte, sql } from 'drizzle-orm';
+import { and, desc, eq, gte, lt, lte, sql } from 'drizzle-orm';
 import { db } from '../db';
 import {
-	ExerciseLogWithExercises,
+	type ExerciseLogWithExercises,
 	exerciseLog,
 	exercise_routine,
 	workoutLog,
 	type WorkoutLogWithExercises
 } from '../schema';
 import { convertToUTC } from '../../../helpers/datetime';
+import { getPercentDifBetweenWorkouts } from '../../../helpers/workouts';
 
 export async function getUserWorkoutLogs(user_id: string) {
 	return await db.query.workoutLog.findMany({
@@ -68,6 +69,46 @@ export async function getLastWorkout(user_id: string) {
 				}
 			}
 		}
+	});
+}
+
+export async function getLastWorkoutMetrics(workout: WorkoutLogWithExercises, user_id: string) {
+	//@ts-ignore
+	const previous_done = await getPreviousTimeWorkoutPerformed(
+		workout.name,
+		workout.created_at,
+		user_id
+	);
+
+	let difference = 0
+	if (previous_done) {
+		difference = getPercentDifBetweenWorkouts(workout, previous_done);
+	}
+
+	// top lift, go through each exerise and see if it improved. Choose the highest
+
+	return { difference };
+}
+
+export async function getPreviousTimeWorkoutPerformed(
+	workout_name: string,
+	date_limit: Date,
+	user_id: string
+) {
+	return await db.query.workoutLog.findFirst({
+		with: {
+			exercise_routines: {
+				with: {
+					exercise: true
+				}
+			}
+		},
+		where: and(
+			eq(workoutLog.user_id, user_id),
+			eq(workoutLog.name, workout_name),
+			lt(workoutLog.created_at, date_limit)
+		),
+		orderBy: desc(workoutLog.created_at)
 	});
 }
 
@@ -136,6 +177,7 @@ export async function getRankingofWorkoutExercises(
 			await getRankOfPerformedExercise(
 				exercise_log_id,
 				exercise_id,
+				//@ts-ignore
 				workout_data.user_id,
 				after_date
 			)
@@ -174,6 +216,7 @@ export async function getRankOfPerformedExercise(
 					// eq(exerciseLog.id, id),
 					eq(exerciseLog.exercise_id, exercise_id),
 					gte(exerciseLog.created_at, after_date),
+					//@ts-ignore
 					lte(exerciseLog.created_at, exercise?.created_at),
 					eq(exerciseLog.user_id, user_id)
 				)

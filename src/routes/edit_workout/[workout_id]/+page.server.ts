@@ -15,12 +15,13 @@ import { insertEquipmentSchema, insertExerciseRoutineSchema } from '$lib/db/sche
 import { getPendingWorkouts, getWorkoutById } from '$lib/db/queries/workout_routine';
 import { appendExerciseRoutinetoWorkout } from '$lib/db/mutations/exercise_routine';
 import { newWorkoutRoutineSchema } from '../../add_workout/schemas';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.getSession();
 	// pass in workout plan id
 	// TODO pass in param for id
-	const user_id = session?.user.id ? session.user.id : '';
+	const user_id = session?.user?.id ? session.user.id : '';
 
 	// get workout id
 	const workout_id = Number(event.params.workout_id) ? Number(event.params.workout_id) : 0;
@@ -31,10 +32,10 @@ export const load: PageServerLoad = async (event) => {
 		// super forms
 		const workoutForm = await superValidate(
 			{ name: workout_routine.name },
-			newWorkoutRoutineSchema
+			zod4(newWorkoutRoutineSchema)
 		);
-		const exerciseForm = await superValidate(insertExerciseRoutineSchema);
-		const editExerciseForm = await superValidate(insertExerciseRoutineSchema);
+		const exerciseForm = await superValidate(zod4(insertExerciseRoutineSchema));
+		const editExerciseForm = await superValidate(zod4(insertExerciseRoutineSchema));
 		return { workoutForm, workout_routine, exerciseForm, editExerciseForm};
 	}
 	return {}
@@ -42,13 +43,13 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	edit_workout: async ({ request, locals, url, params }) => {
-		const workoutForm = await superValidate(request, newWorkoutRoutineSchema);
+		const workoutForm = await superValidate(request, zod4(newWorkoutRoutineSchema));
 		const plan_id = Number(url.searchParams.get('plan_id'));
 		const day = Number(url.searchParams.get('day'));
 		const session = await locals.getSession();
 		// pass in workout plan id
 		// TODO pass in param for id
-		const user_id = session?.user.id ? session.user.id : '';
+		const user_id = session?.user?.id ? session.user.id : '';
 		if (!workoutForm.valid) return fail(400, { workoutForm });
 
 		// get pending id
@@ -61,12 +62,12 @@ export const actions: Actions = {
 	},
 	add_exercise: async ({ request, locals, url, params }) => {
 		const session = await locals.getSession();
-		const user_id = session?.user.id ? session.user.id : '';
+		const user_id = session?.user?.id ? session.user.id : '';
 
 		const workout_id = Number(params.workout_id) ? Number(params.workout_id) : 0;
 
 
-		const exerciseForm = await superValidate(request, insertExerciseRoutineSchema);
+		const exerciseForm = await superValidate(request, zod4(insertExerciseRoutineSchema));
 
 		if (!exerciseForm.valid) return fail(400, { exerciseForm });
 
