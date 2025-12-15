@@ -52,14 +52,24 @@
 </script>
 
 {#if rank}
-	<div class="flex space-x-2">
+	<div class="flex flex-col items-center gap-1">
 		{#if rank == 1}
-			<div class="h-4 w-4 fill-amber-400"><TrophyIcon /></div>
+			<div class="h-5 w-5 fill-amber-400">
+				<TrophyIcon />
+			</div>
 		{:else if rank == 2}
-			<div class="h-4 w-4 fill-gray-300"><TrophyIcon /></div>
+			<div class="h-5 w-5 fill-gray-300">
+				<TrophyIcon />
+			</div>
 		{:else if rank == 3}
-			<div class="h-4 w-4 fill-yellow-700"><TrophyIcon /></div>
+			<div class="h-5 w-5 fill-yellow-700">
+				<TrophyIcon />
+			</div>
 		{/if}
-		<div class="">{rank}/{total}</div>
+
+		<div class="text-lg font-bold text-gray-900">
+			{rank}
+			<span class="text-sm font-medium text-gray-500">/ {total}</span>
+		</div>
 	</div>
 {/if}

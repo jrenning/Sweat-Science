@@ -23,35 +23,57 @@
 	overall_time.setFullYear(last_year.getFullYear() - 100);
 </script>
 
-<div class="flex flex-col justify-center items-center">
-	<div class="grid gap-10 grid-cols-4 justify-center">
-		<RankInfoSnippet
-			id={log.id}
-			exercise_id={log.exercise_id}
-			all_time={false}
-			after_date={last_year}
-		/>
-		<RankInfoSnippet
-			id={log.id}
-			exercise_id={log.exercise_id}
-			all_time={false}
-			after_date={last_quarter}
-		/>
-		<RankInfoSnippet
-			id={log.id}
-			exercise_id={log.exercise_id}
-			all_time={false}
-			after_date={last_month}
-		/>
-		<RankInfoSnippet
-			id={log.id}
-			exercise_id={log.exercise_id}
-			all_time={false}
-			after_date={last_performed.created_at}
-		/>
+<div class="max-w-4xl mx-auto mt-8 space-y-6">
+	<h3 class="text-lg font-semibold text-gray-900 text-center">
+		Ranking Performance
+	</h3>
+
+	<!-- Time-Based Rankings -->
+	<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+		<div class="rounded-xl border bg-white p-4 shadow-sm text-center">
+			<div class="text-xs font-medium text-gray-500 mb-2">Year</div>
+			<RankInfoSnippet
+				id={log.id}
+				exercise_id={log.exercise_id}
+				all_time={false}
+				after_date={last_year}
+			/>
+		</div>
+
+		<div class="rounded-xl border bg-white p-4 shadow-sm text-center">
+			<div class="text-xs font-medium text-gray-500 mb-2">Quarter</div>
+			<RankInfoSnippet
+				id={log.id}
+				exercise_id={log.exercise_id}
+				all_time={false}
+				after_date={last_quarter}
+			/>
+		</div>
+
+		<div class="rounded-xl border bg-white p-4 shadow-sm text-center">
+			<div class="text-xs font-medium text-gray-500 mb-2">Month</div>
+			<RankInfoSnippet
+				id={log.id}
+				exercise_id={log.exercise_id}
+				all_time={false}
+				after_date={last_month}
+			/>
+		</div>
+
+		<div class="rounded-xl border bg-white p-4 shadow-sm text-center">
+			<div class="text-xs font-medium text-gray-500 mb-2">Last</div>
+			<RankInfoSnippet
+				id={log.id}
+				exercise_id={log.exercise_id}
+				all_time={false}
+				after_date={last_performed.created_at}
+			/>
+		</div>
 	</div>
-	<div class="flex space-x-8 mt-6">
-		<div>All Time:</div>
+
+	<!-- All Time Ranking -->
+	<div class="flex items-center justify-center gap-4 rounded-xl border bg-gray-50 p-4">
+		<span class="text-sm font-medium text-gray-600">All-Time Rank</span>
 		<RankInfoSnippet
 			id={log.id}
 			exercise_id={log.exercise_id}

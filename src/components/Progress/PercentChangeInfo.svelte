@@ -21,9 +21,17 @@
 	let lastChange = getPercentChangeOverTime(average_data, dates, "Last Performed")
 </script>
 
-<div class="flex space-x-10 justify-center">
-	<PercentChangeSnippet value={yearChange} name="Year" />
-    <PercentChangeSnippet value={quarterChange} name="Quarter" />
-    <PercentChangeSnippet value={monthChange} name="Month" />
-	<PercentChangeSnippet value={lastChange} name="Last" />
+<div class="max-w-4xl mx-auto mt-6">
+	<h3 class="text-lg font-semibold text-center text-gray-900 mb-4">
+		Progress Over Time
+	</h3>
+
+	<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+		<PercentChangeSnippet value={yearChange} name="Year" />
+		<PercentChangeSnippet value={quarterChange} name="Quarter" />
+		<PercentChangeSnippet value={monthChange} name="Month" />
+		<PercentChangeSnippet value={lastChange} name="Last" />
+	</div>
 </div>
+
+
