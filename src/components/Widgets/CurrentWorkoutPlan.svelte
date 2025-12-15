@@ -35,39 +35,68 @@
 	let completed = days.includes(diff + 1);
 </script>
 
-<div class="card bg-surface-400 rounded-md p-4 flex flex-col space-y-4">
-	<div class="flex justify-end p-2">
-		<WorkoutPlanOptions id={current_plan.id} start_date={current_plan.start_date} />
-	</div>
-	<div class="md:text-4xl text-3xl font-bold">{current_plan.name}</div>
+<div class="rounded-xl bg-surface-400 border shadow-sm p-5 flex flex-col gap-5">
+	<!-- Header -->
+	<div class="flex items-start justify-between">
+		<h2 class="text-2xl md:text-3xl font-bold text-gray-900">
+			{current_plan.name}
+		</h2>
 
-	<div class="flex justify-between">
+		<WorkoutPlanOptions
+			id={current_plan.id}
+			start_date={current_plan.start_date}
+		/>
+	</div>
+
+	<!-- Status Row -->
+	<div class="flex items-center justify-between gap-4 flex-wrap">
 		{#if current_workout}
-			<div class=" flex rounded-md bg-surface-200 p-1 space-x-2">
-				<span>Day {diff + 1}</span>
-				<span>--</span>
-				<span class="font-bold italic"> {current_workout.name}</span>
+			<div class="flex items-center gap-2 rounded-lg bg-surface-100 px-3 py-2">
+				<span class="text-sm font-medium text-gray-500">
+					Day {diff + 1}
+				</span>
+				<span class="text-gray-400">•</span>
+				<span class="text-sm font-semibold text-gray-900 italic">
+					{current_workout.name}
+				</span>
 			</div>
+
 			{#if completed}
-				<a href={`/progress`}>
-					<button class="bg-secondary-500 px-4 mr-2 py-1 rounded-md shadow-md">Completed</button>
+				<a href="/progress">
+					<button
+						class="rounded-lg bg-secondary-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-600 transition"
+					>
+						Completed
+					</button>
 				</a>
 			{:else}
-				<a href={`/active_workout/${current_workout.id}?day=${diff + 1}`}
-					><button class="bg-secondary-500 px-4 mr-2 py-1 rounded-md shadow-md">➤</button></a
-				>
+				<a href={`/active_workout/${current_workout.id}?day=${diff + 1}`}>
+					<button
+						class="rounded-lg bg-secondary-500 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition"
+					>
+						Start Workout →
+					</button>
+				</a>
 			{/if}
 		{:else if diff > -1}
-			<div class=" flex rounded-md bg-surface-200 p-1 space-x-2">
-				<span>Day {diff + 1}</span>
-				<span>--</span>
-				<span class="font-bold italic">Rest</span>
+			<div class="flex items-center gap-2 rounded-lg bg-surface-100 px-3 py-2">
+				<span class="text-sm font-medium text-gray-500">
+					Day {diff + 1}
+				</span>
+				<span class="text-gray-400">•</span>
+				<span class="text-sm font-semibold text-gray-600 italic">
+					Rest Day
+				</span>
 			</div>
 		{:else}
-			<div class=" flex rounded-md bg-surface-200 p-1 space-x-2">
-				<span>Starting on </span>
-				<span>--</span>
-				<span class="font-bold italic"> {prettifyDate(convertToUTC(past))}</span>
+			<div class="flex items-center gap-2 rounded-lg bg-surface-100 px-3 py-2">
+				<span class="text-sm text-gray-500">
+					Starts on
+				</span>
+				<span class="text-gray-400">•</span>
+				<span class="text-sm font-semibold text-gray-900 italic">
+					{prettifyDate(convertToUTC(past))}
+				</span>
 			</div>
 		{/if}
 	</div>

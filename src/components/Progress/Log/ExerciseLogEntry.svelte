@@ -8,50 +8,86 @@
 </script>
 
 {#if log_entry.type == 'Weight'}
-	<table class=" bg-surface-200 mx-2 p-2 rounded-xl shadow-2xl">
-		<tbody>
-			<tr>
-				<th class="font-semibold p-2">Weight</th>
-				{#each log_entry.weight as weight}
-					<td class="p-2">{weight} {'lb'}</td>
-				{/each}
-			</tr>
-			<tr>
-				<th class="font-semibold">Reps</th>
-				{#each log_entry.reps as rep}
-					<td class="p-2">{rep}</td>
-				{/each}
-			</tr>
-		</tbody>
-	</table>
+	<div class="mx-2 my-3 rounded-xl border bg-surface-200 shadow-sm overflow-x-auto">
+		<table class="w-full text-sm">
+			<tbody>
+				<tr class="border-t">
+					<td class="px-4 py-2 font-medium text-gray-600">
+						Weight (lb)
+					</td>
+					{#each log_entry.weight as weight}
+						<td class="px-4 py-2 text-center font-semibold text-gray-900">
+							{weight}
+						</td>
+					{/each}
+				</tr>
+				<tr class="border-t bg-surface-200">
+					<td class="px-4 py-2 font-medium text-gray-600">
+						Reps
+					</td>
+					{#each log_entry.reps as rep}
+						<td class="px-4 py-2 text-center text-gray-700">
+							{rep}
+						</td>
+					{/each}
+				</tr>
+			</tbody>
+		</table>
+	</div>
 {:else if log_entry.type == 'Distance'}
-	<div class="bg-surface-200 mx-2 p-2 rounded-xl shadow-2xl flex justify-evenly">
-		<div class="flex flex-col">
-			<div class="font-semibold">Distance</div>
-			<div>{log_entry.distance}</div>
-		</div>
-		{#if log_entry.overall_pace_seconds}
-			<div class="flex flex-col">
-				<div class="font-semibold">Pace</div>
-				{#each log_entry.overall_pace_seconds as time}
-					<div>{formatTime(time)}</div>
-				{/each}
+	<div class="mx-2 my-3 rounded-xl border bg-surface-200 p-4 shadow-sm">
+		<div class="grid grid-cols-2 gap-4 text-center">
+			<div>
+				<div class="text-xs font-medium uppercase text-gray-500 mb-1">
+					Distance
+				</div>
+				<div class="text-lg font-semibold text-gray-900">
+					{log_entry.distance}
+				</div>
 			</div>
-		{/if}
+
+			{#if log_entry.overall_pace_seconds}
+				<div>
+					<div class="text-xs font-medium uppercase text-gray-500 mb-1">
+						Pace
+					</div>
+					<div class="space-y-1">
+						{#each log_entry.overall_pace_seconds as time}
+							<div class="text-sm text-gray-700">
+								{formatTime(time)}
+							</div>
+						{/each}
+					</div>
+				</div>
+			{/if}
+		</div>
 	</div>
 {:else if log_entry.type == 'Duration'}
-	<div class="bg-surface-200 mx-2 p-2 rounded-xl shadow-2xl flex justify-evenly">
-		<div class="flex flex-col">
-			<div class="font-semibold">Duration</div>
-			<div>{log_entry.duration}</div>
-		</div>
-		{#if log_entry.overall_pace_seconds}
-			<div class="flex flex-col">
-				<div class="font-semibold">Pace</div>
-				{#each log_entry.overall_pace_seconds as time}
-					<div>{formatTime(time)}</div>
-				{/each}
+	<div class="mx-2 my-3 rounded-xl border bg-surface-200 p-4 shadow-sm">
+		<div class="grid grid-cols-2 gap-4 text-center">
+			<div>
+				<div class="text-xs font-medium uppercase text-gray-500 mb-1">
+					Duration
+				</div>
+				<div class="text-lg font-semibold text-gray-900">
+					{log_entry.duration}
+				</div>
 			</div>
-		{/if}
+
+			{#if log_entry.overall_pace_seconds}
+				<div>
+					<div class="text-xs font-medium uppercase text-gray-500 mb-1">
+						Pace
+					</div>
+					<div class="space-y-1">
+						{#each log_entry.overall_pace_seconds as time}
+							<div class="text-sm text-gray-700">
+								{formatTime(time)}
+							</div>
+						{/each}
+					</div>
+				</div>
+			{/if}
+		</div>
 	</div>
 {/if}

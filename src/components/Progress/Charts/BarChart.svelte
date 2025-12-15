@@ -2,51 +2,82 @@
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
 
-
 	interface Props {
 		data: number[];
 		labels: string[];
 	}
 
 	let { data, labels }: Props = $props();
-	let ctx;
-	//@ts-ignore
-	let canvas: HTMLCanvasElement = $state();
+
+	let canvas: HTMLCanvasElement;
+	let chart: Chart;
 
 
 
 	onMount(() => {
-		ctx = canvas.getContext('2d');
-		if (ctx) {
-			var chart = new Chart(ctx, {
-				type: 'bar',
-				data: {
-					labels: labels,
-					datasets: [
-						{
-							label: 'Rep Max',
-							data: data
-						}
-					]
+		const ctx = canvas.getContext('2d');
+		if (!ctx) return;
+
+		chart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels,
+				datasets: [
+					{
+						label: 'Rep Max',
+						data,
+						backgroundColor: 'rgba(59, 130, 246, 0.75)',
+						borderRadius: 6,
+						barThickness: 18
+					}
+				]
+			},
+			options: {
+				maintainAspectRatio: false,
+				responsive: true,
+				plugins: {
+					legend: {
+						display: false
+					},
+					tooltip: {
+						intersect: false,
+						mode: 'index'
+					}
 				},
-				options: {
-					scales: {
-						y: {
-							//@ts-ignore
-							min: Math.min(...data)-5
+				scales: {
+					x: {
+						grid: {
+							display: false
+						},
+						ticks: {
+							maxRotation: 0,
+							autoSkip: true
 						}
+					},
+					y: {
+						grid: {
+							color: 'rgba(0,0,0,0.05)'
+						},
+						min: Math.min(...data) - 5
 					}
 				}
-			});
-		}
+			}
+		});
 	});
 </script>
 
-<div class="relative">
-	<div class={`w-[365px] overflow-x-scroll h-[150px] flex justify-center`}>
-		<canvas bind:this={canvas}></canvas>
+<!-- Card container -->
+<div class="rounded-xl bg-transparent p-4">
+	<h3 class="text-sm font-semibold text-gray-700 mb-3">
+		Rep Max
+	</h3>
+
+	<!-- Horizontal scroll area -->
+	<div class="overflow-x-auto">
+		<div style={`width: full; height: 200px;`}>
+			<canvas bind:this={canvas}></canvas>
+		</div>
 	</div>
-	
 </div>
 
 <style>

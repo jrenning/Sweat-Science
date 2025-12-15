@@ -10,7 +10,7 @@
 </script>
 
 <div
-	class="rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center"
+	class="rounded-xl border bg-white p-2  shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center"
 >
 	<span class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-1">
 		{name}
