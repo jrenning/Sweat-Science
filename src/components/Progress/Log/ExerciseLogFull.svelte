@@ -43,7 +43,7 @@
 		{/if}
 
 		<!-- // if there is a point to compare against (2 total) -->
-		<PercentChangeInfo exercise_data={comparison_data} />
+		<PercentChangeInfo exercise_data={comparison_data} current_data={log}/>
 		<RankInfo log={log} last_performed={comparison_data[last_idx]}/>
 	{:else if log.exercise.category === 'Strength' && chart}
 		<ExerciseLogEntryChart log_data={log} />

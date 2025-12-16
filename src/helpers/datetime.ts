@@ -1,6 +1,11 @@
-type Scale = 'Year' | 'Quarter' | 'Month' | "Last Performed";
-export function getPercentChangeOverTime(data: number[], dates: Date[], time: Scale) {
-	let target = new Date();
+type Scale = 'Year' | 'Quarter' | 'Month' | 'Last Performed';
+export function getPercentChangeOverTime(
+	data: number[],
+	dates: Date[],
+	time: Scale,
+	target_date?: Date
+) {
+	let target = target_date ? new Date(target_date) : new Date();
 
 	if (time == 'Year') {
 		target.setFullYear(target.getFullYear() - 1);
@@ -24,6 +29,9 @@ export function getPercentChangeOverTime(data: number[], dates: Date[], time: Sc
 
 	if (time == 'Last Performed') {
 		idx = data.length - 2;
+		if (target_date) {
+			idx = dates.findIndex((d)=> d.getTime() == target_date.getTime())-1;
+		}
 	}
 
 	let current = data.at(data.length - 1);
@@ -119,8 +127,8 @@ export const formatTime = (time: number) => {
 };
 
 export function getDaysDiff(date1: Date, date2: Date) {
-  const oneDayMs = 1000 * 60 * 60 * 24;
+	const oneDayMs = 1000 * 60 * 60 * 24;
 
- let res = ((date1.getTime() - date2.getTime()) / oneDayMs);
-  return res < 0 ? -Math.ceil(-res) : Math.ceil(res)
+	let res = (date1.getTime() - date2.getTime()) / oneDayMs;
+	return res < 0 ? -Math.ceil(-res) : Math.ceil(res);
 }

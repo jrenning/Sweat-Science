@@ -73,17 +73,19 @@ export async function getLastWorkout(user_id: string) {
 	});
 }
 
-export async function getLastWorkoutMetrics(workout: WorkoutLogWithExercises, user_id: string) {
-	//@ts-ignore
-	const previous_done = await getPreviousTimeWorkoutPerformed(
-		workout.name,
-		workout.created_at,
-		user_id
-	);
+export async function getLastWorkoutMetrics(workout: WorkoutLogWithExercises | undefined, user_id: string) {
+	let difference = 0;
+	if (workout && workout.name) {
+		//@ts-ignore
+		const previous_done = await getPreviousTimeWorkoutPerformed(
+			workout.name,
+			workout.created_at,
+			user_id
+		);
 
-	let difference = 0
-	if (previous_done) {
-		difference = getPercentDifBetweenWorkouts(workout, previous_done);
+		if (previous_done) {
+			difference = getPercentDifBetweenWorkouts(workout, previous_done);
+		}
 	}
 
 	// top lift, go through each exerise and see if it improved. Choose the highest

@@ -7,12 +7,10 @@ function rgbToHex(r: number, g: number, b: number) {
 	return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
-
-
 export function rgbStringToHex(rgb: string) {
-	let arr = rgb.split(" ")
+	let arr = rgb.split(' ');
 
-	return rgbToHex(Number(arr[0]), Number(arr[1]), Number(arr[2]))
+	return rgbToHex(Number(arr[0]), Number(arr[1]), Number(arr[2]));
 }
 
 export function hexToRgb(hex: string) {
@@ -22,11 +20,13 @@ export function hexToRgb(hex: string) {
 				r: parseInt(result[1], 16),
 				g: parseInt(result[2], 16),
 				b: parseInt(result[3], 16)
-		  }
+			}
 		: null;
 }
 export function cssVar(name: string) {
-	return getComputedStyle(document.documentElement)
-		.getPropertyValue(name)
-		.trim();
+	if (document) {
+		return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+	} else {
+		return '';
+	}
 }
